@@ -760,87 +760,375 @@
             opacity: 1;
         }
 
-        /* Settings Page */
-        .settings-section {
+        /* Settings Page - New Modern Design */
+        .settings-page-header {
             background: white;
             border-radius: 16px;
-            padding: 30px;
+            padding: 30px 35px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             margin-bottom: 25px;
         }
 
-        .settings-section h3 {
-            font-size: 18px;
-            color: #2d3748;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .settings-row {
+        .settings-page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 20px 0;
-            border-bottom: 1px solid #e2e8f0;
+            gap: 12px;
+            margin-bottom: 8px;
         }
 
-        .settings-row:last-child {
-            border-bottom: none;
-        }
-
-        .settings-label {
+        .settings-page-subtitle {
             font-size: 15px;
-            color: #2d3748;
-            font-weight: 500;
+            color: #64748b;
+            margin: 0;
         }
 
-        .settings-description {
-            font-size: 13px;
-            color: #718096;
-            margin-top: 5px;
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 25px;
         }
 
-        .counter-select {
-            padding: 10px 20px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 16px;
+        .settings-card {
+            background: white;
+            border-radius: 16px;
+            padding: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .settings-card:hover {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .settings-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 25px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .settings-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .settings-icon svg {
+            width: 24px;
+            height: 24px;
+            color: white;
+        }
+
+        .settings-card-title {
+            font-size: 18px;
             font-weight: 600;
-            color: #2d3748;
-            cursor: pointer;
-            min-width: 120px;
+            color: #1e293b;
+            margin-bottom: 4px;
         }
 
-        .counter-select:focus {
-            outline: none;
+        .settings-card-description {
+            font-size: 13px;
+            color: #64748b;
+            margin: 0;
+        }
+
+        .settings-card-content {
+            padding: 25px;
+        }
+
+        /* Counter Selection */
+        .counter-selection-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+        }
+
+        .counter-option {
+            background: linear-gradient(to bottom, #ffffff, #f8fafc);
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .counter-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .counter-option:hover::before {
+            opacity: 1;
+        }
+
+        .counter-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.15);
             border-color: #667eea;
         }
 
-        .type-checkboxes {
-            display: flex;
+        .counter-option.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: #667eea;
+            color: white;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .counter-number {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .counter-option.active .counter-number {
+            color: white;
+        }
+
+        .counter-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        .counter-option.active .counter-label {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Patient Type Filter */
+        .patient-type-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 15px;
         }
 
-        .checkbox-label {
+        .patient-type-checkbox {
+            cursor: pointer;
+        }
+
+        .patient-type-checkbox input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkbox-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            padding: 8px 16px;
-            border: 2px solid #e2e8f0;
+            gap: 12px;
+            position: relative;
+        }
+
+        .checkbox-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .checkbox-icon {
+            width: 42px;
+            height: 42px;
             border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .checkbox-icon svg {
+            width: 22px;
+            height: 22px;
+            color: white;
+        }
+
+        .general-type .checkbox-icon {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+        }
+
+        .wheelchair-type .checkbox-icon {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+        }
+
+        .urgent-type .checkbox-icon {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+        }
+
+        .container-type .checkbox-icon {
+            background: linear-gradient(135deg, #9f7aea, #805ad5);
+        }
+
+        .checkbox-card span {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1e293b;
+            flex: 1;
+        }
+
+        .checkbox-indicator {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: 2px solid #cbd5e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: transparent;
             transition: all 0.3s ease;
         }
 
-        .checkbox-label:hover {
+        .patient-type-checkbox input:checked + .checkbox-card {
             border-color: #667eea;
-            background: rgba(102, 126, 234, 0.05);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
         }
 
-        .checkbox-label input[type="checkbox"] {
+        .patient-type-checkbox input:checked + .checkbox-card .checkbox-indicator {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: #667eea;
+            color: white;
+        }
+
+        .patient-type-checkbox input:checked + .general-type {
+            border-color: #48bb78;
+            background: linear-gradient(135deg, rgba(72, 187, 120, 0.05), rgba(56, 161, 105, 0.05));
+        }
+
+        .patient-type-checkbox input:checked + .general-type .checkbox-indicator {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            border-color: #48bb78;
+        }
+
+        .patient-type-checkbox input:checked + .wheelchair-type {
+            border-color: #ed8936;
+            background: linear-gradient(135deg, rgba(237, 137, 54, 0.05), rgba(221, 107, 32, 0.05));
+        }
+
+        .patient-type-checkbox input:checked + .wheelchair-type .checkbox-indicator {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+            border-color: #ed8936;
+        }
+
+        .patient-type-checkbox input:checked + .urgent-type {
+            border-color: #f56565;
+            background: linear-gradient(135deg, rgba(245, 101, 101, 0.05), rgba(229, 62, 62, 0.05));
+        }
+
+        .patient-type-checkbox input:checked + .urgent-type .checkbox-indicator {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+            border-color: #f56565;
+        }
+
+        .patient-type-checkbox input:checked + .container-type {
+            border-color: #9f7aea;
+            background: linear-gradient(135deg, rgba(159, 122, 234, 0.05), rgba(128, 90, 213, 0.05));
+        }
+
+        .patient-type-checkbox input:checked + .container-type .checkbox-indicator {
+            background: linear-gradient(135deg, #9f7aea, #805ad5);
+            border-color: #9f7aea;
+        }
+
+        /* Notification Toggle */
+        .notification-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .notification-toggle {
+            cursor: pointer;
+        }
+
+        .notification-toggle input[type="checkbox"] {
+            display: none;
+        }
+
+        .toggle-content {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-content:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e0;
+        }
+
+        .toggle-info {
+            flex: 1;
+        }
+
+        .toggle-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+
+        .toggle-description {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .toggle-switch {
+            width: 48px;
+            height: 26px;
+            background: #cbd5e0;
+            border-radius: 13px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
             width: 20px;
             height: 20px;
-            cursor: pointer;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification-toggle input:checked + .toggle-content {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-color: #667eea;
+        }
+
+        .notification-toggle input:checked + .toggle-content .toggle-switch {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .notification-toggle input:checked + .toggle-content .toggle-slider {
+            transform: translateX(22px);
         }
 
         /* Patient Details Page */
@@ -1499,62 +1787,201 @@
 
                 <!-- Settings Page -->
                 <div class="page" id="settingsPage">
-                    <div class="settings-section">
-                        <h3>ตั้งค่าช่องบริการ</h3>
-                        <div class="settings-row">
-                            <div>
-                                <div class="settings-label">เลือกช่องบริการ</div>
-                                <div class="settings-description">กำหนดหมายเลขช่องบริการของคุณ</div>
-                            </div>
-                            <select class="counter-select" id="counterSelect" onchange="updateCounter()">
-                                <option value="1">ช่อง 1</option>
-                                <option value="2">ช่อง 2</option>
-                                <option value="3">ช่อง 3</option>
-                                <option value="4">ช่อง 4</option>
-                                <option value="5">ช่อง 5</option>
-                            </select>
+                    <!-- Page Header -->
+                    <div class="settings-page-header">
+                        <div>
+                            <h2 class="settings-page-title">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 32px; height: 32px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                การตั้งค่าระบบ
+                            </h2>
+                            <p class="settings-page-subtitle">กำหนดค่าการใช้งานของคุณสำหรับระบบจัดการคิวห้องเจาะเลือด</p>
                         </div>
                     </div>
 
-                    <div class="settings-section">
-                        <h3>กรองประเภทผู้ป่วย</h3>
-                        <div class="settings-row">
-                            <div>
-                                <div class="settings-label">แสดงเฉพาะประเภท</div>
-                                <div class="settings-description">เลือกประเภทผู้ป่วยที่ต้องการแสดงในคิว</div>
+                    <!-- Settings Grid -->
+                    <div class="settings-grid">
+                        <!-- Counter Selection Card -->
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <div class="settings-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="settings-card-title">ช่องบริการของคุณ</h3>
+                                    <p class="settings-card-description">เลือกหมายเลขช่องที่คุณให้บริการ</p>
+                                </div>
                             </div>
-                            <div class="type-checkboxes">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" checked onchange="updateQueueFilter()">
-                                    <span>ทั่วไป</span>
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" checked onchange="updateQueueFilter()">
-                                    <span>รถเข็น</span>
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" checked onchange="updateQueueFilter()">
-                                    <span>เร่งด่วน</span>
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" checked onchange="updateQueueFilter()">
-                                    <span>กระปุก</span>
-                                </label>
+                            <div class="settings-card-content">
+                                <div class="counter-selection-grid">
+                                    <button class="counter-option active" onclick="selectCounter(1, this)">
+                                        <div class="counter-number">1</div>
+                                        <div class="counter-label">ช่อง 1</div>
+                                    </button>
+                                    <button class="counter-option" onclick="selectCounter(2, this)">
+                                        <div class="counter-number">2</div>
+                                        <div class="counter-label">ช่อง 2</div>
+                                    </button>
+                                    <button class="counter-option" onclick="selectCounter(3, this)">
+                                        <div class="counter-number">3</div>
+                                        <div class="counter-label">ช่อง 3</div>
+                                    </button>
+                                    <button class="counter-option" onclick="selectCounter(4, this)">
+                                        <div class="counter-number">4</div>
+                                        <div class="counter-label">ช่อง 4</div>
+                                    </button>
+                                    <button class="counter-option" onclick="selectCounter(5, this)">
+                                        <div class="counter-number">5</div>
+                                        <div class="counter-label">ช่อง 5</div>
+                                    </button>
+                                    <button class="counter-option" onclick="selectCounter(6, this)">
+                                        <div class="counter-number">6</div>
+                                        <div class="counter-label">ช่อง 6</div>
+                                    </button>
+                                    <button class="counter-option" onclick="selectCounter(7, this)">
+                                        <div class="counter-number">7</div>
+                                        <div class="counter-label">ช่อง 7</div>
+                                    </button>
+                                    <button class="counter-option" onclick="selectCounter(8, this)">
+                                        <div class="counter-number">8</div>
+                                        <div class="counter-label">ช่อง 8</div>
+                                    </button>
+                                    <button class="counter-option" onclick="selectCounter(9, this)">
+                                        <div class="counter-number">9</div>
+                                        <div class="counter-label">ช่อง 9</div>
+                                    </button>
+                                    <button class="counter-option" onclick="selectCounter(10, this)">
+                                        <div class="counter-number">10</div>
+                                        <div class="counter-label">ช่อง 10</div>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="settings-section">
-                        <h3>การแจ้งเตือน</h3>
-                        <div class="settings-row">
-                            <div>
-                                <div class="settings-label">เสียงแจ้งเตือน</div>
-                                <div class="settings-description">เปิดใช้งานเสียงเมื่อมีคิวใหม่</div>
+                        <!-- Patient Type Filter Card -->
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <div class="settings-icon" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="settings-card-title">กรองประเภทผู้ป่วย</h3>
+                                    <p class="settings-card-description">เลือกประเภทผู้ป่วยที่ต้องการแสดงในรายการคิว</p>
+                                </div>
                             </div>
-                            <label class="checkbox-label">
-                                <input type="checkbox" checked>
-                                <span>เปิดใช้งาน</span>
-                            </label>
+                            <div class="settings-card-content">
+                                <div class="patient-type-grid">
+                                    <label class="patient-type-checkbox">
+                                        <input type="checkbox" checked onchange="updateQueueFilter()">
+                                        <div class="checkbox-card general-type">
+                                            <div class="checkbox-icon">
+                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                                </svg>
+                                            </div>
+                                            <span>ทั่วไป</span>
+                                            <div class="checkbox-indicator">✓</div>
+                                        </div>
+                                    </label>
+                                    <label class="patient-type-checkbox">
+                                        <input type="checkbox" checked onchange="updateQueueFilter()">
+                                        <div class="checkbox-card wheelchair-type">
+                                            <div class="checkbox-icon">
+                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                            </div>
+                                            <span>รถเข็น</span>
+                                            <div class="checkbox-indicator">✓</div>
+                                        </div>
+                                    </label>
+                                    <label class="patient-type-checkbox">
+                                        <input type="checkbox" checked onchange="updateQueueFilter()">
+                                        <div class="checkbox-card urgent-type">
+                                            <div class="checkbox-icon">
+                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                                </svg>
+                                            </div>
+                                            <span>เร่งด่วน</span>
+                                            <div class="checkbox-indicator">✓</div>
+                                        </div>
+                                    </label>
+                                    <label class="patient-type-checkbox">
+                                        <input type="checkbox" checked onchange="updateQueueFilter()">
+                                        <div class="checkbox-card container-type">
+                                            <div class="checkbox-icon">
+                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                                </svg>
+                                            </div>
+                                            <span>กระปุก</span>
+                                            <div class="checkbox-indicator">✓</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notification Settings Card -->
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <div class="settings-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="settings-card-title">การแจ้งเตือน</h3>
+                                    <p class="settings-card-description">ตั้งค่าเสียงและการแจ้งเตือนต่างๆ</p>
+                                </div>
+                            </div>
+                            <div class="settings-card-content">
+                                <div class="notification-options">
+                                    <label class="notification-toggle">
+                                        <input type="checkbox" checked>
+                                        <div class="toggle-content">
+                                            <div class="toggle-info">
+                                                <div class="toggle-title">เสียงแจ้งเตือนคิวใหม่</div>
+                                                <div class="toggle-description">เล่นเสียงเมื่อมีผู้ป่วยลงทะเบียนใหม่</div>
+                                            </div>
+                                            <div class="toggle-switch">
+                                                <span class="toggle-slider"></span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <label class="notification-toggle">
+                                        <input type="checkbox" checked>
+                                        <div class="toggle-content">
+                                            <div class="toggle-info">
+                                                <div class="toggle-title">แจ้งเตือนคิวเร่งด่วน</div>
+                                                <div class="toggle-description">แจ้งเตือนพิเศษเมื่อมีผู้ป่วยเร่งด่วน</div>
+                                            </div>
+                                            <div class="toggle-switch">
+                                                <span class="toggle-slider"></span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <label class="notification-toggle">
+                                        <input type="checkbox">
+                                        <div class="toggle-content">
+                                            <div class="toggle-info">
+                                                <div class="toggle-title">เสียงเรียกคิว</div>
+                                                <div class="toggle-description">เปิดเสียงประกาศเรียกคิวผ่านลำโพง</div>
+                                            </div>
+                                            <div class="toggle-switch">
+                                                <span class="toggle-slider"></span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1685,30 +2112,86 @@
             };
     
                     let queueData = [
-                        { 
-                            id: 'A032', name: 'นางสาวสมหญิง รักดี', hn: 'HN123456', type: 'general', status: 'waiting', time: '08:30', sex: 'หญิง', age: '34 ปี', ward: 'OPD Med', right: 'ประกันสังคม', notes: 'แพ้ยา Penicillin', photo: 'https://randomuser.me/api/portraits/women/68.jpg', 
+                        {
+                            id: 'A030', name: 'นายวิชัย มั่งคั่ง', hn: 'HN111111', type: 'general', status: 'waiting', time: '08:15', sex: 'ชาย', age: '45 ปี', ward: 'OPD Med', right: 'บัตรทอง', notes: '-', photo: 'https://randomuser.me/api/portraits/men/32.jpg',
                             tubes: [
-                                { id: 1, color: 'red', name: '🔴 Red Top', volume: '5 mL', tests: 'Chemistry', details: 'ตรวจเคมีในเลือดทั่วไป', additives: ['Clot Activator'], scanned: false },
-                                { id: 2, color: 'purple', name: '🟣 Lavender Top', volume: '3 mL', tests: 'CBC', details: 'ตรวจความสมบูรณ์ของเม็ดเลือด', additives: ['EDTA'], scanned: false }
+                                { id: 1, color: 'red', name: '🔴 Red Top', volume: '5 mL', tests: 'Chemistry Panel', details: 'ตรวจเคมีในเลือดทั่วไป', additives: ['Clot Activator'], scanned: false },
+                                { id: 2, color: 'purple', name: '🟣 Lavender Top', volume: '3 mL', tests: 'CBC', details: 'ตรวจนับเม็ดเลือด', additives: ['EDTA'], scanned: false },
+                                { id: 3, color: 'yellow', name: '🟡 Yellow Top', volume: '5 mL', tests: 'Lipid Profile', details: 'ตรวจไขมันในเลือด', additives: ['Gel Separator'], scanned: false }
                             ]
                         },
-                        { 
-                            id: 'U005', name: 'นายประชา สุขใจ', hn: 'HN234567', type: 'urgent', status: 'waiting', time: '08:35', sex: 'ชาย', age: '51 ปี', ward: 'OPD Sur', right: 'ข้าราชการ', notes: '-', photo: 'https://randomuser.me/api/portraits/men/43.jpg', 
+                        {
+                            id: 'A031', name: 'นางสาวพิมพ์ใจ สวยงาม', hn: 'HN222222', type: 'general', status: 'waiting', time: '08:20', sex: 'หญิง', age: '38 ปี', ward: 'OPD Med', right: 'ประกันสังคม', notes: 'ตรวจสุขภาพประจำปี', photo: 'https://randomuser.me/api/portraits/women/65.jpg',
                             tubes: [
-                                { id: 3, color: 'light-blue', name: '🔵 Light Blue Top', volume: '2.7 mL', tests: 'Coagulation (PT, PTT)', details: 'ตรวจการแข็งตัวของเลือด', additives: ['Sodium Citrate'], scanned: false }
+                                { id: 4, color: 'red', name: '🔴 Red Top', volume: '5 mL', tests: 'LFT, RFT', details: 'ตรวจการทำงานของตับและไต', additives: ['Clot Activator'], scanned: false },
+                                { id: 5, color: 'purple', name: '🟣 Lavender Top', volume: '3 mL', tests: 'CBC', details: 'ตรวจความสมบูรณ์ของเม็ดเลือด', additives: ['EDTA'], scanned: false },
+                                { id: 6, color: 'gray', name: '⚪ Gray Top', volume: '3 mL', tests: 'Glucose', details: 'ตรวจระดับน้ำตาลในเลือด', additives: ['Sodium Fluoride'], scanned: false },
+                                { id: 7, color: 'green', name: '🟢 Green Top', volume: '4 mL', tests: 'Electrolytes', details: 'ตรวจอิเล็กโทรไลต์', additives: ['Lithium Heparin'], scanned: false },
+                                { id: 8, color: 'light-blue', name: '🔵 Light Blue Top', volume: '2.7 mL', tests: 'PT/PTT', details: 'ตรวจการแข็งตัวของเลือด', additives: ['Sodium Citrate'], scanned: false },
+                                { id: 9, color: 'yellow', name: '🟡 Yellow Top', volume: '5 mL', tests: 'Thyroid Function', details: 'ตรวจการทำงานของต่อมไทรอยด์', additives: ['Gel Separator'], scanned: false }
                             ]
                         },
-                        { 
-                            id: 'A033', name: 'นางสาววรรณา มีสุข', hn: 'HN345678', type: 'general', status: 'serving', time: '08:40', sex: 'หญิง', age: '28 ปี', ward: 'OPD Med', right: 'ชำระเงินเอง', notes: '-', photo: 'https://randomuser.me/api/portraits/women/44.jpg', calledByStaff: 'admin', calledByCounter: 1, serviceStartTime: new Date(Date.now() - 5 * 60000).toISOString(), 
+                        {
+                            id: 'A032', name: 'นางสาวสมหญิง รักดี', hn: 'HN123456', type: 'general', status: 'waiting', time: '08:30', sex: 'หญิง', age: '34 ปี', ward: 'OPD Med', right: 'ประกันสังคม', notes: 'แพ้ยา Penicillin', photo: 'https://randomuser.me/api/portraits/women/68.jpg',
                             tubes: [
-                                { id: 4, color: 'red', name: '🔴 Red Top', volume: '5 mL', tests: 'Chemistry, BUN, Creatinine', details: 'ตรวจการทำงานของไต', additives: ['Clot Activator'], scanned: true },
-                                { id: 5, color: 'green', name: '🟢 Green Top', volume: '4 mL', tests: 'Ammonia', details: 'ตรวจระดับแอมโมเนีย', additives: ['Lithium Heparin'], scanned: false }
+                                { id: 10, color: 'red', name: '🔴 Red Top', volume: '5 mL', tests: 'Chemistry', details: 'ตรวจเคมีในเลือดทั่วไป', additives: ['Clot Activator'], scanned: false },
+                                { id: 11, color: 'purple', name: '🟣 Lavender Top', volume: '3 mL', tests: 'CBC', details: 'ตรวจความสมบูรณ์ของเม็ดเลือด', additives: ['EDTA'], scanned: false }
                             ]
                         },
-                        { 
-                            id: 'W002', name: 'นายสมชาย ใจดี', hn: 'HN456789', type: 'wheelchair', status: 'waiting', time: '08:45', sex: 'ชาย', age: '65 ปี', ward: 'IPD 1A', right: 'บัตรทอง', notes: 'ผู้ป่วยติดเตียง', photo: 'https://randomuser.me/api/portraits/men/46.jpg', 
+                        {
+                            id: 'U005', name: 'นายประชา สุขใจ', hn: 'HN234567', type: 'urgent', status: 'waiting', time: '08:35', sex: 'ชาย', age: '51 ปี', ward: 'OPD Sur', right: 'ข้าราชการ', notes: 'ผู้ป่วยผ่าตัดฉุกเฉิน', photo: 'https://randomuser.me/api/portraits/men/43.jpg',
                             tubes: [
-                                { id: 6, color: 'yellow', name: '🟡 Yellow Top', volume: '8.5 mL', tests: 'Blood Culture', details: 'เพาะเชื้อในกระแสเลือด', additives: ['SPS'], scanned: false }
+                                { id: 12, color: 'light-blue', name: '🔵 Light Blue Top', volume: '2.7 mL', tests: 'Coagulation (PT, PTT)', details: 'ตรวจการแข็งตัวของเลือด', additives: ['Sodium Citrate'], scanned: false },
+                                { id: 13, color: 'purple', name: '🟣 Lavender Top', volume: '3 mL', tests: 'CBC', details: 'ตรวจนับเม็ดเลือด', additives: ['EDTA'], scanned: false },
+                                { id: 14, color: 'red', name: '🔴 Red Top', volume: '5 mL', tests: 'Type & Screen', details: 'ตรวจหมู่เลือดและ Crossmatch', additives: ['Clot Activator'], scanned: false }
+                            ]
+                        },
+                        {
+                            id: 'A033', name: 'นางสาววรรณา มีสุข', hn: 'HN345678', type: 'general', status: 'serving', time: '08:40', sex: 'หญิง', age: '28 ปี', ward: 'OPD Med', right: 'ชำระเงินเอง', notes: '-', photo: 'https://randomuser.me/api/portraits/women/44.jpg', calledByStaff: 'admin', calledByCounter: 1, serviceStartTime: new Date(Date.now() - 5 * 60000).toISOString(),
+                            tubes: [
+                                { id: 15, color: 'red', name: '🔴 Red Top', volume: '5 mL', tests: 'Chemistry, BUN, Creatinine', details: 'ตรวจการทำงานของไต', additives: ['Clot Activator'], scanned: true },
+                                { id: 16, color: 'green', name: '🟢 Green Top', volume: '4 mL', tests: 'Ammonia', details: 'ตรวจระดับแอมโมเนีย', additives: ['Lithium Heparin'], scanned: false }
+                            ]
+                        },
+                        {
+                            id: 'W002', name: 'นายสมชาย ใจดี', hn: 'HN456789', type: 'wheelchair', status: 'waiting', time: '08:45', sex: 'ชาย', age: '65 ปี', ward: 'IPD 1A', right: 'บัตรทอง', notes: 'ผู้ป่วยติดเตียง', photo: 'https://randomuser.me/api/portraits/men/46.jpg',
+                            tubes: [
+                                { id: 17, color: 'yellow', name: '🟡 Yellow Top', volume: '8.5 mL', tests: 'Blood Culture', details: 'เพาะเชื้อในกระแสเลือด', additives: ['SPS'], scanned: false }
+                            ]
+                        },
+                        {
+                            id: 'A034', name: 'นายเดชา กล้าหาญ', hn: 'HN567890', type: 'general', status: 'waiting', time: '08:50', sex: 'ชาย', age: '52 ปี', ward: 'OPD Med', right: 'ข้าราชการ', notes: 'โรคเบาหวาน, ความดันโลหิตสูง', photo: 'https://randomuser.me/api/portraits/men/52.jpg',
+                            tubes: [
+                                { id: 18, color: 'gray', name: '⚪ Gray Top', volume: '3 mL', tests: 'FBS, HbA1C', details: 'ตรวจน้ำตาลในเลือดและระยะยาว', additives: ['Sodium Fluoride'], scanned: false },
+                                { id: 19, color: 'red', name: '🔴 Red Top', volume: '5 mL', tests: 'LFT, RFT, Lipid', details: 'ตรวจตับ ไต และไขมัน', additives: ['Clot Activator'], scanned: false },
+                                { id: 20, color: 'purple', name: '🟣 Lavender Top', volume: '3 mL', tests: 'CBC', details: 'ตรวจนับเม็ดเลือด', additives: ['EDTA'], scanned: false },
+                                { id: 21, color: 'yellow', name: '🟡 Yellow Top', volume: '5 mL', tests: 'Electrolytes', details: 'ตรวจอิเล็กโทรไลต์', additives: ['Gel Separator'], scanned: false }
+                            ]
+                        },
+                        {
+                            id: 'C003', name: 'นางสาวมานี ส่งตัวอย่าง', hn: 'HN678901', type: 'container', status: 'waiting', time: '08:55', sex: 'หญิง', age: '42 ปี', ward: 'OPD Med', right: 'บัตรทอง', notes: 'ส่งตัวอย่างปัสสาวะ', photo: 'https://randomuser.me/api/portraits/women/55.jpg',
+                            tubes: [
+                                { id: 22, color: 'yellow', name: '🟡 Yellow Top', volume: '10 mL', tests: 'Urine Analysis', details: 'ตรวจปัสสาวะ', additives: ['Preservative'], scanned: false }
+                            ]
+                        },
+                        {
+                            id: 'A035', name: 'นายอนุชา รุ่งเรือง', hn: 'HN789012', type: 'general', status: 'waiting', time: '09:00', sex: 'ชาย', age: '60 ปี', ward: 'OPD Med', right: 'ประกันสุขภาพ', notes: 'ตรวจสุขภาพก่อนเข้ารับการผ่าตัด', photo: 'https://randomuser.me/api/portraits/men/60.jpg',
+                            tubes: [
+                                { id: 23, color: 'purple', name: '🟣 Lavender Top', volume: '3 mL', tests: 'CBC', details: 'ตรวจนับเม็ดเลือด', additives: ['EDTA'], scanned: false },
+                                { id: 24, color: 'light-blue', name: '🔵 Light Blue Top', volume: '2.7 mL', tests: 'PT/INR, PTT', details: 'ตรวจการแข็งตัวของเลือด', additives: ['Sodium Citrate'], scanned: false },
+                                { id: 25, color: 'red', name: '🔴 Red Top', volume: '5 mL', tests: 'LFT, RFT', details: 'ตรวจตับและไต', additives: ['Clot Activator'], scanned: false },
+                                { id: 26, color: 'green', name: '🟢 Green Top', volume: '4 mL', tests: 'Electrolytes', details: 'ตรวจอิเล็กโทรไลต์', additives: ['Lithium Heparin'], scanned: false },
+                                { id: 27, color: 'yellow', name: '🟡 Yellow Top', volume: '5 mL', tests: 'Viral Markers', details: 'ตรวจหาเชื้อไวรัส HIV, HBV, HCV', additives: ['Gel Separator'], scanned: false },
+                                { id: 28, color: 'red', name: '🔴 Red Top', volume: '5 mL', tests: 'Blood Typing', details: 'ตรวจหมู่เลือด', additives: ['Clot Activator'], scanned: false },
+                                { id: 29, color: 'gray', name: '⚪ Gray Top', volume: '3 mL', tests: 'Glucose', details: 'ตรวจระดับน้ำตาล', additives: ['Sodium Fluoride'], scanned: false }
+                            ]
+                        },
+                        {
+                            id: 'W003', name: 'นางสมใจ ดีมาก', hn: 'HN890123', type: 'wheelchair', status: 'waiting', time: '09:05', sex: 'หญิง', age: '72 ปี', ward: 'IPD 2B', right: 'บัตรทอง', notes: 'ผู้สูงอายุ ใช้รถเข็น', photo: 'https://randomuser.me/api/portraits/women/72.jpg',
+                            tubes: [
+                                { id: 30, color: 'purple', name: '🟣 Lavender Top', volume: '3 mL', tests: 'CBC', details: 'ตรวจนับเม็ดเลือด', additives: ['EDTA'], scanned: false },
+                                { id: 31, color: 'red', name: '🔴 Red Top', volume: '5 mL', tests: 'Chemistry Panel', details: 'ตรวจเคมีในเลือด', additives: ['Clot Activator'], scanned: false },
+                                { id: 32, color: 'green', name: '🟢 Green Top', volume: '4 mL', tests: 'Electrolytes', details: 'ตรวจอิเล็กโทรไลต์', additives: ['Lithium Heparin'], scanned: false }
                             ]
                         }
                     ];    
@@ -2018,6 +2501,26 @@
             function difficultDraw() { alert('บันทึกว่าเป็นเคสเจาะเลือดยาก'); }
             function recallNew() { alert('แสดงหน้าต่างสำหรับบันทึกเหตุผลและรอเรียกใหม่'); }
             function labelling() { alert('พิมพ์ Label ซ้ำ'); }
+
+            // Settings Page Functions
+            function selectCounter(counterNum, element) {
+                currentCounter = counterNum;
+                document.getElementById('counterNumber').textContent = counterNum;
+
+                // Remove active class from all counter options
+                document.querySelectorAll('.counter-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+
+                // Add active class to selected counter
+                element.classList.add('active');
+            }
+
+            function updateCounter() {
+                const select = document.getElementById('counterSelect');
+                currentCounter = parseInt(select.value);
+                document.getElementById('counterNumber').textContent = currentCounter;
+            }
     
             // --- Init & Event Listeners ---
             window.addEventListener('DOMContentLoaded', () => {
