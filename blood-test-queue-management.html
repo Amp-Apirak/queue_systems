@@ -496,21 +496,27 @@
         }
 
         .btn-action {
-            padding: 8px 16px;
+            padding: 12px 24px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 600;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .btn-action svg {
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
         }
 
         .btn-call {
@@ -545,12 +551,13 @@
             grid-column: 1 / -1;
             background: white;
             border-radius: 16px;
-            padding: 20px;
+            padding: 18px 22px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 15px;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
         .detail-patient-info {
@@ -606,22 +613,46 @@
         }
 
         .timer-display, .channel-display {
-            background: #f7fafc;
-            padding: 10px 20px;
-            border-radius: 12px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            padding: 12px 24px;
+            border-radius: 14px;
             text-align: center;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            min-width: 140px;
         }
 
         .timer-display .label, .channel-display .label {
-            font-size: 12px;
-            color: #718096;
-            margin-bottom: 4px;
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 6px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .timer-display .value, .channel-display .value {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 700;
-            color: #2d3748;
+            color: #1e293b;
+        }
+
+        .channel-display {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-color: #93c5fd;
+        }
+
+        .channel-display .value {
+            color: #1e40af;
+        }
+
+        .timer-display {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-color: #fcd34d;
+        }
+
+        .timer-display .value {
+            color: #92400e;
         }
 
         .patient-info-grid-new {
@@ -659,21 +690,66 @@
 
         .tube-actions {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 15px;
-            margin-left: auto;
+            gap: 10px;
+            flex-shrink: 0;
         }
+
         .tube-action-icon {
             cursor: pointer;
-            font-size: 20px;
-            color: #a0aec0;
-            transition: color 0.3s ease;
+            font-size: 26px;
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #94a3b8;
+            position: relative;
         }
+
         .tube-action-icon:hover {
             color: #667eea;
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.25);
         }
+
         .tube-action-icon.scanned {
-            color: #48bb78; /* Green */
+            color: #22c55e;
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-color: #86efac;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        }
+
+        .tube-action-icon.scanned:hover {
+            color: #16a34a;
+            border-color: #4ade80;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+        }
+
+        .tube-action-icon::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 12px;
+            padding: 2px;
+            background: linear-gradient(135deg, transparent, transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tube-action-icon:hover::before {
+            opacity: 1;
         }
 
         /* Settings Page */
@@ -901,7 +977,7 @@
             flex: 1;
         }
 
-        /* Blood Tubes Display - Horizontal */
+        /* Blood Tubes Display - Horizontal Realistic Style */
         .tubes-section {
             margin-top: 30px;
         }
@@ -920,82 +996,142 @@
         }
 
         .tube-item {
-            background: white;
+            background: linear-gradient(to bottom, #ffffff 0%, #f9fafb 100%);
             border: 2px solid #e2e8f0;
             border-radius: 16px;
-            padding: 20px;
-            display: flex; /* Ensures horizontal layout by default */
-            align-items: center;
-            gap: 20px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .tube-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
             border-color: #cbd5e0;
         }
 
-        .tube-visual {
-            flex-shrink: 0;
+        .tube-visual-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
         }
 
+        .tube-visual {
+            flex: 1;
+            position: relative;
+        }
+
+        /* Horizontal Tube - Beautiful Realistic Design */
         .tube-icon-horizontal {
-            width: 40px;
-            height: 120px;
-            border-radius: 8px;
+            width: 100%;
+            height: 45px;
+            border-radius: 10px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-            background: linear-gradient(to bottom, #fdfdff 0%, #f7fafc 25%, #edf2f7 25%); /* White/Clear Body */
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0.95) 0%,
+                rgba(248, 250, 252, 0.98) 50%,
+                rgba(255, 255, 255, 0.95) 100%
+            );
+            border: 2px solid rgba(203, 213, 225, 0.5);
         }
 
+        /* Blood inside tube (horizontal flow) */
         .tube-icon-horizontal::before {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 75%;
+            left: 28px;
+            top: 5px;
+            bottom: 5px;
+            width: calc(75% - 28px);
             z-index: 1;
-            background: linear-gradient(to top, #e53e3e, #fc8181); /* Standard red "blood" */
+            background: linear-gradient(
+                to right,
+                #dc2626 0%,
+                #ef4444 40%,
+                #f87171 70%,
+                #fca5a5 100%
+            );
+            border-radius: 6px;
+            opacity: 0.92;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
+        /* Colored Cap at Left Side */
         .tube-cap-horizontal {
             position: absolute;
-            top: 0;
             left: 0;
-            right: 0;
-            height: 18px;
+            top: 0;
+            bottom: 0;
+            width: 26px;
             z-index: 2;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) inset;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+            border-radius: 12px 0 0 12px;
         }
 
+        /* Cap texture/grip (horizontal lines) */
         .tube-cap-horizontal::after {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 20px;
-            height: 8px;
-            background: rgba(0,0,0,0.2);
+            width: 12px;
+            height: 30px;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15) 0px,
+                rgba(0, 0, 0, 0.15) 2px,
+                transparent 2px,
+                transparent 5px
+            );
             border-radius: 2px;
         }
 
-        /* Colored Caps */
-        .tube-icon-horizontal.red .tube-cap-horizontal { background: #e53e3e; }
-        .tube-icon-horizontal.purple .tube-cap-horizontal { background: #805ad5; }
-        .tube-icon-horizontal.green .tube-cap-horizontal { background: #38a169; }
-        .tube-icon-horizontal.blue .tube-cap-horizontal { background: #1976d2; }
-        .tube-icon-horizontal.yellow .tube-cap-horizontal { background: #d69e2e; }
-        .tube-icon-horizontal.gray .tube-cap-horizontal { background: #718096; }
-        .tube-icon-horizontal.light-blue .tube-cap-horizontal { background: #0288d1; }
-        .tube-icon-horizontal.pink .tube-cap-horizontal { background: #d81b60; }
-        .tube-icon-horizontal.orange .tube-cap-horizontal { background: #ed8936; }
+        /* Colored Caps by Type */
+        .tube-icon-horizontal.red .tube-cap-horizontal {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        }
+        .tube-icon-horizontal.purple .tube-cap-horizontal {
+            background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%);
+        }
+        .tube-icon-horizontal.green .tube-cap-horizontal {
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+        }
+        .tube-icon-horizontal.blue .tube-cap-horizontal {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        }
+        .tube-icon-horizontal.yellow .tube-cap-horizontal {
+            background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+        }
+        .tube-icon-horizontal.gray .tube-cap-horizontal {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+        }
+        .tube-icon-horizontal.light-blue .tube-cap-horizontal {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+        }
+        .tube-icon-horizontal.pink .tube-cap-horizontal {
+            background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+        }
+        .tube-icon-horizontal.orange .tube-cap-horizontal {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        }
+        .tube-icon-horizontal.black .tube-cap-horizontal {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        }
+        .tube-icon-horizontal.white .tube-cap-horizontal {
+            background: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%);
+            border: 1px solid #d1d5db;
+        }
 
         .tube-content {
-            flex: 1;
+            width: 100%;
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -1005,49 +1141,67 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .tube-name-detail {
-            font-size: 16px;
-            color: #2d3748;
+            font-size: 17px;
+            color: #1e293b;
             font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .tube-volume {
-            font-size: 13px;
-            color: #718096;
-            background: #f7fafc;
-            padding: 4px 12px;
+            font-size: 14px;
+            color: #6366f1;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+            padding: 5px 12px;
             border-radius: 8px;
-            font-weight: 600;
+            font-weight: 700;
+            border: 1.5px solid rgba(99, 102, 241, 0.3);
+            box-shadow: 0 2px 6px rgba(99, 102, 241, 0.15);
         }
 
         .tube-test-name {
             font-size: 14px;
-            color: #4a5568;
+            color: #475569;
             font-weight: 600;
+            line-height: 1.4;
         }
 
         .tube-details {
             font-size: 13px;
-            color: #718096;
-            line-height: 1.6;
+            color: #64748b;
+            line-height: 1.5;
+            padding: 4px 0;
         }
 
         .tube-additives {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
-            margin-top: 6px;
+            margin-top: 4px;
         }
 
         .additive-tag {
-            font-size: 11px;
-            background: #edf2f7;
-            color: #4a5568;
-            padding: 3px 10px;
-            border-radius: 6px;
+            font-size: 12px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: #475569;
+            padding: 4px 10px;
+            border-radius: 8px;
             font-weight: 600;
+            border: 1.5px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .additive-tag:hover {
+            border-color: #cbd5e0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            transform: translateY(-1px);
         }
 
         /* Print Button */
@@ -1107,13 +1261,37 @@
             }
 
             .tube-item {
+                padding: 18px;
+            }
+
+            .tube-visual-wrapper {
                 flex-direction: column;
-                text-align: center;
+                gap: 12px;
+            }
+
+            .tube-actions {
+                flex-direction: row;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .tube-action-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .tube-icon-horizontal {
+                height: 45px;
             }
 
             .tube-header {
-                flex-direction: column;
-                gap: 8px;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .tube-name-detail {
+                font-size: 17px;
             }
 
             .patient-photo img {
@@ -1122,8 +1300,8 @@
             }
 
             .tube-icon-horizontal {
-                width: 35px;
-                height: 100px;
+                width: 100px;
+                height: 35px;
             }
         }
     </style>
@@ -1716,9 +1894,15 @@
                         }
                         tubeContent.innerHTML = '<div class="tubes-list">' + tubes.map(tube => `
                             <div class="tube-item">
-                                <div class="tube-visual">
-                                    <div class="tube-icon-horizontal ${tube.color}">
-                                        <div class="tube-cap-horizontal"></div>
+                                <div class="tube-visual-wrapper">
+                                    <div class="tube-visual">
+                                        <div class="tube-icon-horizontal ${tube.color}">
+                                            <div class="tube-cap-horizontal"></div>
+                                        </div>
+                                    </div>
+                                    <div class="tube-actions">
+                                        <span class="tube-action-icon" onclick="alert('พิมพ์สติ๊กเกอร์สำหรับหลอด ${tube.name}')" title="พิมพ์สติ๊กเกอร์">🖨️</span>
+                                        <span class="tube-action-icon ${tube.scanned ? 'scanned' : ''}" onclick="scanTube(${tube.id})" title="สแกนหลอดเลือด">✔️</span>
                                     </div>
                                 </div>
                                 <div class="tube-content">
@@ -1731,10 +1915,6 @@
                                     <div class="tube-additives">
                                         ${tube.additives.map(tag => `<span class="additive-tag">${tag}</span>`).join('')}
                                     </div>
-                                </div>
-                                <div class="tube-actions">
-                                    <span class="tube-action-icon" onclick="alert('พิมพ์สติ๊กเกอร์สำหรับหลอด ${tube.name}')" title="พิมพ์สติ๊กเกอร์">🖨️</span>
-                                    <span class="tube-action-icon ${tube.scanned ? 'scanned' : ''}" onclick="scanTube(${tube.id})" title="สแกนหลอดเลือด">✔️</span>
                                 </div>
                             </div>
                         `).join('') + '</div>';
