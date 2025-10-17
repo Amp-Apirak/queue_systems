@@ -2237,6 +2237,7 @@
                                     <th>เวลาเริ่ม</th>
                                     <th>เวลาเสร็จ</th>
                                     <th>ระยะเวลา</th>
+                                    <th>การดำเนินการ</th>
                                 </tr>
                             </thead>
                             <tbody id="historyTableBody">
@@ -2604,6 +2605,11 @@
                                 <td>${item.startTime}</td>
                                 <td>${item.endTime}</td>
                                 <td>${item.duration}</td>
+                                <td>
+                                    <button class="btn-action" style="padding: 6px 14px; font-size: 13px;" onclick="viewHistoryDetail('${item.id}')">
+                                        ดูรายละเอียด
+                                    </button>
+                                </td>
                             `;
                             tbody.appendChild(row);
                         });
@@ -2903,17 +2909,42 @@
                 currentCounter = parseInt(select.value);
                 document.getElementById('counterNumber').textContent = currentCounter;
             }
-    
+
+            // View history detail - show patient detail page from history
+            function viewHistoryDetail(queueId) {
+                // Find the queue data by ID
+                const queue = queueData.find(q => q.id === queueId);
+
+                if (!queue) {
+                    alert('ไม่พบข้อมูลคิวนี้ในระบบ');
+                    return;
+                }
+
+                // Use the existing viewPatient function to display details
+                // But we'll hide the action buttons since this is history view
+                viewPatient(queueId);
+
+                // Hide action buttons for history view
+                document.getElementById('initial-actions').style.display = 'none';
+                document.getElementById('in-service-actions').style.display = 'none';
+            }
+
             // --- Init & Event Listeners ---
             window.addEventListener('DOMContentLoaded', () => {
-                document.querySelector('#initial-actions button:nth-child(1)').onclick = recallPatient;
-                document.querySelector('#initial-actions button:nth-child(2)').onclick = releaseQueue;
-                document.querySelector('#initial-actions button:nth-child(3)').onclick = startService;
-                document.querySelector('#initial-actions button:nth-child(4)').onclick = difficultDraw;
-                document.querySelector('#in-service-actions button:nth-child(1)').onclick = completeService;
-                document.querySelector('#in-service-actions button:nth-child(2)').onclick = recallNew;
-                document.querySelector('#in-service-actions button:nth-child(3)').onclick = cancelQueue;
-                document.querySelector('#in-service-actions button:nth-child(4)').onclick = labelling;
+                // Initial actions buttons
+                const initialButtons = document.querySelectorAll('#initial-actions > button');
+                if (initialButtons[0]) initialButtons[0].onclick = recallPatient;
+                if (initialButtons[1]) initialButtons[1].onclick = releaseQueue;
+                if (initialButtons[2]) initialButtons[2].onclick = startService;
+                // Note: button 4 is now inside dropdown div, handled by its own onclick
+
+                // In-service actions buttons
+                const serviceButtons = document.querySelectorAll('#in-service-actions > button');
+                if (serviceButtons[0]) serviceButtons[0].onclick = completeService;
+                if (serviceButtons[1]) serviceButtons[1].onclick = recallNew;
+                if (serviceButtons[2]) serviceButtons[2].onclick = cancelQueue;
+                if (serviceButtons[3]) serviceButtons[3].onclick = labelling;
+
                 document.getElementById('username').value = 'admin';
                 document.getElementById('password').value = 'admin';
             });
