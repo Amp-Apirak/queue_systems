@@ -816,6 +816,7 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: #94a3b8;
             position: relative;
+            overflow: hidden;
         }
 
         .tube-action-icon:hover {
@@ -855,6 +856,42 @@
 
         .tube-action-icon:hover::before {
             opacity: 1;
+        }
+
+        .tube-action-icon.barcode-indicator {
+            font-size: 0;
+            padding: 0;
+        }
+
+        .tube-action-icon.barcode-indicator::after {
+            content: '';
+            width: 22px;
+            height: 24px;
+            display: block;
+            border-radius: 4px;
+            background: repeating-linear-gradient(
+                90deg,
+                rgba(100, 116, 139, 0.85) 0px,
+                rgba(100, 116, 139, 0.85) 2px,
+                rgba(226, 232, 240, 0.2) 2px,
+                rgba(226, 232, 240, 0.2) 4px
+            );
+            transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tube-action-icon.barcode-indicator:hover::after {
+            transform: translateY(-1px);
+        }
+
+        .tube-action-icon.barcode-indicator.scanned::after {
+            background: repeating-linear-gradient(
+                90deg,
+                rgba(34, 197, 94, 0.9) 0px,
+                rgba(34, 197, 94, 0.9) 2px,
+                rgba(134, 239, 172, 0.3) 2px,
+                rgba(134, 239, 172, 0.3) 4px
+            );
+            box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.35), 0 4px 12px rgba(34, 197, 94, 0.25);
         }
 
         /* Settings Page - New Modern Design */
@@ -2664,12 +2701,28 @@
 
                         window.currentPatientQueueId = queueId;
                         stopServiceTimer();
-                        document.getElementById('detail-timer').textContent = '00:00:00';
 
-                        const isServing = queue.serviceStartTime != null;
-                        document.getElementById('initial-actions').style.display = isServing ? 'none' : 'flex';
-                        document.getElementById('in-service-actions').style.display = isServing ? 'flex' : 'none';
-                        if(isServing) startServiceTimer(queue.serviceStartTime);
+                        const timerElement = document.getElementById('detail-timer');
+                        const durationElement = document.getElementById('detail-duration');
+                        const initialActions = document.getElementById('initial-actions');
+                        const inServiceActions = document.getElementById('in-service-actions');
+                        const isWaiting = queue.status === 'waiting';
+                        const isServing = queue.status === 'serving';
+                        const hasStarted = !!queue.serviceStartTime;
+
+                        timerElement.textContent = '00:00:00';
+                        durationElement.textContent = '00:00:00';
+
+                        initialActions.style.display = (isWaiting || (isServing && !hasStarted)) ? 'flex' : 'none';
+                        inServiceActions.style.display = (isServing && hasStarted) ? 'flex' : 'none';
+
+                        if (isServing && hasStarted) {
+                            startServiceTimer(queue.serviceStartTime);
+                        } else {
+                            const durationToShow = queue.serviceDuration || '00:00:00';
+                            timerElement.textContent = durationToShow;
+                            durationElement.textContent = durationToShow;
+                        }
 
                         document.getElementById('detail-channel').textContent = queue.calledByCounter || '-';
                         document.getElementById('detail-patient-photo').src = queue.photo;
@@ -2689,7 +2742,6 @@
 
                         document.getElementById('detail-call-time').textContent = queue.queueCallTime || '-';
                         document.getElementById('detail-target-time').textContent = queue.targetTime || '-';
-                        document.getElementById('detail-duration').textContent = '00:00:00';
                         document.getElementById('detail-billing-no').textContent = queue.billingNo || '-';
                         document.getElementById('detail-billing-date').textContent = queue.billingDate || '-';
                         document.getElementById('detail-service-start').textContent = queue.serviceStartTime ? new Date(queue.serviceStartTime).toLocaleString('th-TH') : '-';
@@ -2723,7 +2775,7 @@
                                     </div>
                                     <div class="tube-actions">
                                         <span class="tube-action-icon" onclick="alert('พิมพ์สติ๊กเกอร์สำหรับหลอด ${tube.name}')" title="พิมพ์สติ๊กเกอร์">🖨️</span>
-                                        <span class="tube-action-icon ${tube.scanned ? 'scanned' : ''}" onclick="scanTube(${tube.id})" title="สแกนหลอดเลือด">✔️</span>
+                                        <span class="tube-action-icon barcode-indicator ${tube.scanned ? 'scanned' : ''}" onclick="scanTube(${tube.id})" title="สแกนส่งหลอดเลือด"></span>
                                     </div>
                                 </div>
                                 <div class="tube-content">
@@ -2773,6 +2825,8 @@
                 if (!queue) return;
                 alert('เริ่มให้บริการและดำเนินการพิมพ์ Label');
                 queue.serviceStartTime = new Date().toISOString();
+                queue.serviceDuration = null;
+                queue.serviceEndTime = null;
                 viewPatient(queue.id);
             }
     
@@ -2784,6 +2838,8 @@
                     queue.calledByCounter = null;
                     queue.queueCallTime = null;
                     queue.serviceStartTime = null;
+                    queue.serviceDuration = null;
+                    queue.serviceEndTime = null;
                     stopServiceTimer();
                     renderQueue();
                     backToQueue();
@@ -2791,32 +2847,39 @@
             }
     
                     function completeService() {
-                        stopServiceTimer();
                         const queue = queueData.find(q => q.id === window.currentPatientQueueId);
-                        if (queue && confirm(`ยืนยันการให้บริการเสร็จสิ้นสำหรับคิว ${queue.id}?`)) {
-                            queue.status = 'completed';
-                            queue.drawOutcome = 'สำเร็จ';
-                            
-                            // Add to history
-                            const now = new Date();
-                            const endTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-                            const duration = document.getElementById('detail-duration').textContent;
-            
-                            historyData.unshift({ // Add to the top of the history
-                                id: queue.id,
-                                name: queue.name,
-                                hn: queue.hn,
-                                type: queue.type,
-                                startTime: new Date(queue.serviceStartTime).toLocaleTimeString('th-TH'),
-                                endTime: endTime,
-                                duration: duration
-                            });
-            
-                            renderQueue();
-                            renderHistory(); // Call the render function
-                            updateStats();
-                            backToQueue();
-                        }
+                        if (!queue) return;
+                        if (!confirm(`ยืนยันการให้บริการเสร็จสิ้นสำหรับคิว ${queue.id}?`)) return;
+
+                        stopServiceTimer();
+
+                        const now = new Date();
+                        const duration = document.getElementById('detail-duration').textContent || '00:00:00';
+                        const endISOString = now.toISOString();
+
+                        queue.status = 'completed';
+                        queue.drawOutcome = 'สำเร็จ';
+                        queue.serviceEndTime = endISOString;
+                        queue.serviceDuration = duration;
+
+                        const startDisplay = queue.serviceStartTime ? new Date(queue.serviceStartTime).toLocaleTimeString('th-TH') : '-';
+                        const endDisplay = new Date(endISOString).toLocaleTimeString('th-TH');
+
+                        historyData = historyData.filter(item => item.id !== queue.id);
+                        historyData.unshift({
+                            id: queue.id,
+                            name: queue.name,
+                            hn: queue.hn,
+                            type: queue.type,
+                            startTime: startDisplay,
+                            endTime: endDisplay,
+                            duration: duration
+                        });
+
+                        renderQueue();
+                        renderHistory();
+                        updateStats();
+                        backToQueue();
                     }    
             function cancelQueue() {
                 const queueIndex = queueData.findIndex(q => q.id === window.currentPatientQueueId);
