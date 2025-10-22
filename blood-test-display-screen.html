@@ -274,7 +274,7 @@
         .waiting-item {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             padding: 18px 20px;
             background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
             border-radius: 12px;
@@ -306,24 +306,6 @@
             min-width: 100px;
         }
 
-        .waiting-counter {
-            font-size: 28px;
-            font-weight: 700;
-            color: #718096;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .counter-badge {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 10px;
-            font-size: 24px;
-            font-weight: 800;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        }
 
         /* Footer */
         .footer {
@@ -471,11 +453,11 @@
         };
 
         let waitingQueues = [
-            { queueNumber: 'A036', counterNumber: 1 },
-            { queueNumber: 'A037', counterNumber: 2 },
-            { queueNumber: 'W003', counterNumber: 3 },
-            { queueNumber: 'A038', counterNumber: 1 },
-            { queueNumber: 'U006', counterNumber: 2 }
+            { queueNumber: 'A036' },
+            { queueNumber: 'A037' },
+            { queueNumber: 'W003' },
+            { queueNumber: 'A038' },
+            { queueNumber: 'U006' }
         ];
 
         // Render current queue
@@ -511,9 +493,6 @@
                 listDiv.innerHTML = waitingQueues.map(queue => `
                     <div class="waiting-item">
                         <div class="waiting-queue-num">${queue.queueNumber}</div>
-                        <div class="waiting-counter">
-                            ช่อง <span class="counter-badge">${queue.counterNumber}</span>
-                        </div>
                     </div>
                 `).join('');
             } else {
