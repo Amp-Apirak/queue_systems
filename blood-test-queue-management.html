@@ -181,6 +181,18 @@
         gap: 8px;
       }
 
+      #forgotPasswordModalContent {
+        padding: 50px 70px !important;
+        max-width: 600px !important;
+        width: 88% !important;
+      }
+
+      #forgotPasswordModalContent form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
       /* Custom Scrollbar for Modal */
       .modal-content::-webkit-scrollbar {
         width: 8px;
@@ -410,6 +422,12 @@
           width: 85% !important;
         }
 
+        #forgotPasswordModalContent {
+          padding: 40px 50px !important;
+          max-width: 550px !important;
+          width: 85% !important;
+        }
+
         .modal-icon {
           width: 70px;
           height: 70px;
@@ -468,6 +486,12 @@
         }
 
         #userModalContent {
+          padding: 35px 30px !important;
+          max-width: 100% !important;
+          width: 92% !important;
+        }
+
+        #forgotPasswordModalContent {
           padding: 35px 30px !important;
           max-width: 100% !important;
           width: 92% !important;
@@ -2529,7 +2553,7 @@
 
     <!-- Forgot Password Modal -->
     <div class="modal-overlay" id="forgotPasswordModal">
-      <div class="modal-content">
+      <div class="modal-content" id="forgotPasswordModalContent">
         <div class="modal-icon">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -2560,17 +2584,20 @@
             style="
               display: flex;
               justify-content: center;
-              gap: 10px;
-              margin-top: 30px;
+              gap: 12px;
+              margin-top: 35px;
+              flex-wrap: wrap;
+              width: 100%;
             "
           >
-            <button type="submit" class="btn-submit">
+            <button type="submit" class="btn-submit" style="flex: 1; min-width: 150px">
               ส่งลิงก์รีเซ็ตรหัสผ่าน
             </button>
             <button
               type="button"
               class="btn-cancel"
               onclick="closeForgotPasswordModal()"
+              style="flex: 1; min-width: 100px"
             >
               ยกเลิก
             </button>
@@ -2907,7 +2934,7 @@
                 <div class="stat-header">
                   <div>
                     <div class="stat-number" id="statAllServiced">0</div>
-                    <div class="stat-label">All Patient Serviced</div>
+                    <div class="stat-label">บริการผู้ป่วยทั้งหมด</div>
                   </div>
                   <div class="stat-icon serviced-all">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2926,7 +2953,7 @@
                 <div class="stat-header">
                   <div>
                     <div class="stat-number" id="statOvertimeServiced">0</div>
-                    <div class="stat-label">Overtime Patient Service</div>
+                    <div class="stat-label">บริการผู้ป่วยเกินเวลาที่กำหนด</div>
                   </div>
                   <div class="stat-icon serviced-overtime">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2945,7 +2972,7 @@
                 <div class="stat-header">
                   <div>
                     <div class="stat-number" id="statMyServiced">0</div>
-                    <div class="stat-label">Your Serviced</div>
+                    <div class="stat-label">บริการของคุณ</div>
                   </div>
                   <div class="stat-icon my-serviced">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2964,7 +2991,7 @@
                 <div class="stat-header">
                   <div>
                     <div class="stat-number" id="statMyOvertime">0</div>
-                    <div class="stat-label">Your Overtime Serviced</div>
+                    <div class="stat-label">บริการเกินเวลาที่กำหนดของคุณ</div>
                   </div>
                   <div class="stat-icon my-overtime">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -3572,8 +3599,8 @@
                         "
                       >
                         หากเกินเวลาเป้าหมาย ระบบจะแสดงจำนวนที่การ์ด
-                        <strong>Overtime Patient Service</strong> และ
-                        <strong>Your Overtime Serviced</strong> ในหน้า Dashboard
+                        <strong>บริการผู้ป่วยนอกเวลา</strong> และ
+                        <strong>บริการนอกเวลาของคุณ</strong> ในหน้า Dashboard
                       </div>
                     </div>
                   </div>
