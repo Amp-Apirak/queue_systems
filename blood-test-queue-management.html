@@ -158,15 +158,27 @@
       .modal-content {
         background: white;
         border-radius: 24px;
-        padding: 40px 50px;
-        max-width: 500px;
+        padding: 45px 60px;
+        max-width: 700px;
         width: 90%;
-        max-height: 90vh;
+        max-height: 95vh;
         overflow-y: auto;
         text-align: center;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
         animation: slideUp 0.4s ease-out;
         position: relative;
+      }
+
+      #userModalContent {
+        padding: 50px 70px !important;
+        max-width: 750px !important;
+        width: 88% !important;
+      }
+
+      #userModalContent form {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
       }
 
       /* Custom Scrollbar for Modal */
@@ -224,25 +236,26 @@
       }
 
       .modal-form-group {
-        margin-bottom: 18px;
+        margin-bottom: 25px;
         text-align: left;
       }
 
       .modal-form-group label {
         display: block;
-        font-size: 14px;
+        font-size: 15px;
         color: #2d3748;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
         font-weight: 500;
       }
 
       .modal-form-group input {
         width: 100%;
-        padding: 12px 16px;
+        padding: 13px 18px;
         font-size: 15px;
         border: 2px solid #e2e8f0;
         border-radius: 12px;
         transition: all 0.3s ease;
+        box-sizing: border-box;
       }
 
       .modal-form-group input:focus {
@@ -352,13 +365,14 @@
 
       .modal-form-group select {
         width: 100%;
-        padding: 14px 18px;
-        font-size: 16px;
+        padding: 13px 18px;
+        font-size: 15px;
         border: 2px solid #e2e8f0;
         border-radius: 12px;
         transition: all 0.3s ease;
         background: white;
         cursor: pointer;
+        box-sizing: border-box;
       }
 
       .modal-form-group select:focus {
@@ -368,11 +382,32 @@
       }
 
       /* Responsive Modal */
+      @media (max-width: 1024px) {
+        .modal-content {
+          padding: 40px 50px;
+          max-width: 600px;
+          width: 90%;
+        }
+
+        #userModalContent {
+          padding: 45px 60px !important;
+          max-width: 680px !important;
+          width: 86% !important;
+        }
+      }
+
       @media (max-width: 768px) {
         .modal-content {
-          padding: 30px 25px;
-          width: 95%;
-          max-height: 85vh;
+          padding: 35px 40px;
+          width: 88%;
+          max-height: 92vh;
+          max-width: 550px;
+        }
+
+        #userModalContent {
+          padding: 40px 50px !important;
+          max-width: 600px !important;
+          width: 85% !important;
         }
 
         .modal-icon {
@@ -387,7 +422,7 @@
         }
 
         .modal-content h2 {
-          font-size: 20px;
+          font-size: 22px;
           margin-bottom: 8px;
         }
 
@@ -401,19 +436,19 @@
         }
 
         .modal-form-group label {
-          font-size: 13px;
+          font-size: 14px;
           margin-bottom: 6px;
         }
 
         .modal-form-group input,
         .modal-form-group select {
-          padding: 10px 14px;
-          font-size: 14px;
+          padding: 11px 14px;
+          font-size: 15px;
         }
 
         .btn-submit,
         .btn-cancel {
-          padding: 10px 30px;
+          padding: 11px 35px;
           font-size: 15px;
           width: 48%;
         }
@@ -426,8 +461,41 @@
 
       @media (max-width: 480px) {
         .modal-content {
-          padding: 25px 20px;
-          width: 98%;
+          padding: 30px 22px;
+          width: 94%;
+          max-width: 100%;
+          border-radius: 16px;
+        }
+
+        #userModalContent {
+          padding: 35px 30px !important;
+          max-width: 100% !important;
+          width: 92% !important;
+        }
+
+        .modal-content h2 {
+          font-size: 21px;
+        }
+
+        .modal-form-group {
+          margin-bottom: 20px;
+        }
+
+        .modal-form-group label {
+          font-size: 15px;
+          margin-bottom: 8px;
+        }
+
+        .modal-form-group input,
+        .modal-form-group select {
+          padding: 12px 14px;
+          font-size: 16px;
+        }
+
+        /* Grid Form Layout for Mobile */
+        div[style*="grid-template-columns: 1fr 1fr"] {
+          grid-template-columns: 1fr !important;
+          gap: 18px !important;
         }
 
         .btn-submit,
@@ -435,10 +503,17 @@
           width: 100%;
           margin-left: 0;
           margin-top: 8px;
+          padding: 10px 30px;
+          font-size: 14px;
         }
 
         .btn-submit {
           order: -1;
+        }
+
+        .password-requirement {
+          font-size: 12px;
+          padding: 3px 0;
         }
       }
 
@@ -2506,7 +2581,7 @@
 
     <!-- User Management Modal -->
     <div class="modal-overlay" id="userModal">
-      <div class="modal-content" style="max-width: 600px">
+      <div class="modal-content" id="userModalContent">
         <div class="modal-icon">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -2535,7 +2610,7 @@
             />
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%">
             <div class="modal-form-group">
               <label for="userPosition"
                 >ตำแหน่ง <span style="color: red">*</span></label
@@ -2640,15 +2715,16 @@
             style="
               display: flex;
               justify-content: center;
-              gap: 10px;
-              margin-top: 25px;
+              gap: 12px;
+              margin-top: 30px;
               flex-wrap: wrap;
+              width: 100%;
             "
           >
-            <button type="submit" class="btn-submit" id="userSubmitBtn">
+            <button type="submit" class="btn-submit" id="userSubmitBtn" style="flex: 1; min-width: 120px">
               บันทึก
             </button>
-            <button type="button" class="btn-cancel" onclick="closeUserModal()">
+            <button type="button" class="btn-cancel" onclick="closeUserModal()" style="flex: 1; min-width: 120px">
               ยกเลิก
             </button>
           </div>
@@ -4066,6 +4142,10 @@
                   alt="Patient Photo"
                 />
                 <div class="patient-info-grid-new">
+                  <div class="info-item">
+                    <div class="label">ชื่อ - นามสกุล</div>
+                    <div class="value" id="detail-patient-name">-</div>
+                  </div>
                   <div class="info-item">
                     <div class="label">คิวที่</div>
                     <div class="value" id="detail-queue-no">-</div>
@@ -5720,6 +5800,7 @@
               document.getElementById("detail-channel").textContent =
                 queue.calledByCounter || "-";
               document.getElementById("detail-patient-photo").src = queue.photo;
+              document.getElementById("detail-patient-name").textContent = queue.name || "-";
               document.getElementById("detail-queue-no").textContent = queue.id;
               document.getElementById("detail-type").textContent =
                 typeLabels[queue.type] || "-";
