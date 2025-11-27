@@ -2765,6 +2765,76 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Target Time Setting Card -->
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <div class="settings-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="settings-card-title">เวลาเป้าหมาย (Target Time)</h3>
+                                    <p class="settings-card-description">กำหนดเวลาเป้าหมายในการให้บริการแต่ละคิว</p>
+                                </div>
+                            </div>
+                            <div class="settings-card-content">
+                                <div style="display: flex; flex-direction: column; gap: 20px;">
+                                    <div style="display: flex; align-items: center; gap: 15px;">
+                                        <div style="flex: 1;">
+                                            <label for="targetTimeInput" style="display: block; font-size: 15px; font-weight: 600; color: #1e293b; margin-bottom: 10px;">
+                                                เวลาเป้าหมาย (นาที)
+                                            </label>
+                                            <input
+                                                type="number"
+                                                id="targetTimeInput"
+                                                min="5"
+                                                max="120"
+                                                value="30"
+                                                style="width: 100%; padding: 14px 18px; font-size: 18px; font-weight: 700; border: 2px solid #e2e8f0; border-radius: 12px; transition: all 0.3s ease; text-align: center; background: linear-gradient(to bottom, #ffffff, #f8fafc);"
+                                                onchange="updateTargetTime()"
+                                                onfocus="this.style.borderColor='#10b981'; this.style.boxShadow='0 0 0 3px rgba(16, 185, 129, 0.1)';"
+                                                onblur="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none';"
+                                            >
+                                        </div>
+                                        <div style="display: flex; align-items: center; justify-content: center; width: 80px; height: 80px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1)); border-radius: 16px; border: 2px solid rgba(16, 185, 129, 0.3);">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 40px; height: 40px; color: #10b981;">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(5, 150, 105, 0.08)); padding: 18px 20px; border-radius: 12px; border: 2px solid rgba(16, 185, 129, 0.2);">
+                                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 24px; height: 24px; color: #10b981; flex-shrink: 0;">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            <div style="font-size: 15px; font-weight: 600; color: #047857;">
+                                                เวลาเป้าหมายปัจจุบัน: <span id="targetTimeDisplay" style="color: #10b981; font-size: 18px;">00:30:00</span>
+                                            </div>
+                                        </div>
+                                        <div style="font-size: 13px; color: #065f46; line-height: 1.6; padding-left: 36px;">
+                                            หากเกินเวลาเป้าหมาย ระบบจะแสดงจำนวนที่การ์ด <strong>Overtime Patient Service</strong> และ <strong>Your Overtime Serviced</strong> ในหน้า Dashboard
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Save All Settings Button -->
+                    <div style="margin-top: 30px; display: flex; justify-content: center;">
+                        <button
+                            class="btn"
+                            onclick="saveAllSettings()"
+                            style="min-width: 350px; padding: 18px 60px; font-size: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4); border-radius: 16px;"
+                        >
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 24px; height: 24px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            บันทึกการตั้งค่าทั้งหมด
+                        </button>
                     </div>
                 </div>
 
@@ -3889,6 +3959,153 @@
                 document.getElementById('counterNumber').textContent = currentCounter;
             }
 
+            // Target Time Setting Functions
+            function updateTargetTime() {
+                const minutes = parseInt(document.getElementById('targetTimeInput').value) || 30;
+
+                // Validate range
+                if (minutes < 5) {
+                    document.getElementById('targetTimeInput').value = 5;
+                    minutes = 5;
+                } else if (minutes > 120) {
+                    document.getElementById('targetTimeInput').value = 120;
+                    minutes = 120;
+                }
+
+                // Convert to HH:MM:SS format
+                const hours = Math.floor(minutes / 60);
+                const mins = minutes % 60;
+                const timeString = `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:00`;
+
+                // Update display
+                document.getElementById('targetTimeDisplay').textContent = timeString;
+            }
+
+            function saveTargetTimeSetting(showAlert = true) {
+                const minutes = parseInt(document.getElementById('targetTimeInput').value) || 30;
+
+                // Validate range
+                if (minutes < 5 || minutes > 120) {
+                    if (showAlert) {
+                        alert('⚠️ กรุณากรอกเวลาระหว่าง 5-120 นาที');
+                    }
+                    return false;
+                }
+
+                // Save to localStorage
+                localStorage.setItem('targetTimeMinutes', minutes);
+
+                // Update global variable
+                window.targetTimeMinutes = minutes;
+
+                // Update display
+                updateTargetTime();
+
+                // Show success message only if requested
+                if (showAlert) {
+                    alert('✅ บันทึกการตั้งค่าเวลาเป้าหมายเรียบร้อยแล้ว!\n\nเวลาเป้าหมาย: ' + minutes + ' นาที');
+                }
+
+                // Update stats if needed
+                updateStats();
+
+                return true;
+            }
+
+            function saveAllSettings() {
+                let successCount = 0;
+                let settingsSummary = [];
+
+                // 1. Save Counter Selection
+                if (currentCounter) {
+                    localStorage.setItem('selectedCounter', currentCounter);
+                    settingsSummary.push('✓ ช่องบริการ: ช่อง ' + currentCounter);
+                    successCount++;
+                }
+
+                // 2. Save Patient Type Filter
+                const patientTypes = {
+                    general: false,
+                    wheelchair: false,
+                    urgent: false,
+                    container: false
+                };
+
+                const checkboxes = document.querySelectorAll('.patient-type-checkbox input[type="checkbox"]');
+                const typeLabels = ['ทั่วไป', 'รถเข็น', 'เร่งด่วน', 'กระปุก'];
+                let selectedTypes = [];
+
+                checkboxes.forEach((checkbox, index) => {
+                    const isChecked = checkbox.checked;
+                    const typeKey = ['general', 'wheelchair', 'urgent', 'container'][index];
+                    patientTypes[typeKey] = isChecked;
+                    if (isChecked) {
+                        selectedTypes.push(typeLabels[index]);
+                    }
+                });
+
+                localStorage.setItem('patientTypeFilter', JSON.stringify(patientTypes));
+                settingsSummary.push('✓ ประเภทผู้ป่วย: ' + (selectedTypes.length > 0 ? selectedTypes.join(', ') : 'ไม่มี'));
+                successCount++;
+
+                // 3. Save Notification Settings
+                const notificationToggles = document.querySelectorAll('.notification-toggle input[type="checkbox"]');
+                const notificationSettings = {
+                    newQueue: notificationToggles[0]?.checked || false,
+                    urgentQueue: notificationToggles[1]?.checked || false,
+                    voiceAnnouncement: notificationToggles[2]?.checked || false
+                };
+
+                localStorage.setItem('notificationSettings', JSON.stringify(notificationSettings));
+
+                let notificationStatus = [];
+                if (notificationSettings.newQueue) notificationStatus.push('คิวใหม่');
+                if (notificationSettings.urgentQueue) notificationStatus.push('คิวเร่งด่วน');
+                if (notificationSettings.voiceAnnouncement) notificationStatus.push('เสียงเรียกคิว');
+
+                settingsSummary.push('✓ การแจ้งเตือน: ' + (notificationStatus.length > 0 ? notificationStatus.join(', ') : 'ปิดทั้งหมด'));
+                successCount++;
+
+                // 4. Save Target Time Setting
+                const targetSaved = saveTargetTimeSetting(false);
+                if (targetSaved) {
+                    const minutes = parseInt(document.getElementById('targetTimeInput').value) || 30;
+                    settingsSummary.push('✓ เวลาเป้าหมาย: ' + minutes + ' นาที');
+                    successCount++;
+                }
+
+                // Show comprehensive success message
+                const summaryText = settingsSummary.join('\n');
+                alert('✅ บันทึกการตั้งค่าทั้งหมดเรียบร้อยแล้ว!\n\n' +
+                      '📋 สรุปการตั้งค่า:\n' +
+                      summaryText + '\n\n' +
+                      '💾 บันทึกสำเร็จ ' + successCount + ' รายการ');
+
+                // Update stats and UI
+                updateStats();
+            }
+
+            function loadTargetTimeSetting() {
+                // Load from localStorage or use default 30 minutes
+                const savedMinutes = localStorage.getItem('targetTimeMinutes');
+                const minutes = savedMinutes ? parseInt(savedMinutes) : 30;
+
+                // Set to global variable
+                window.targetTimeMinutes = minutes;
+
+                // Update input field
+                if (document.getElementById('targetTimeInput')) {
+                    document.getElementById('targetTimeInput').value = minutes;
+                }
+
+                // Update display
+                updateTargetTime();
+            }
+
+            function getTargetTimeMinutes() {
+                return window.targetTimeMinutes || 30;
+            }
+
             // View history detail - show patient detail page from history
             function viewHistoryDetail(queueId) {
                 // Find the queue data by ID
@@ -3923,6 +4140,9 @@
                 if (serviceButtons[1]) serviceButtons[1].onclick = recallNew;
                 if (serviceButtons[2]) serviceButtons[2].onclick = cancelQueue;
                 if (serviceButtons[3]) serviceButtons[3].onclick = labelling;
+
+                // Load Target Time Setting
+                loadTargetTimeSetting();
 
                 document.getElementById('username').value = 'admin';
                 document.getElementById('password').value = 'admin';
