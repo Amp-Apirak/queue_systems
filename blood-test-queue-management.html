@@ -3021,14 +3021,28 @@
               <table class="queue-table">
                 <thead>
                   <tr>
-                    <th>หมายเลขคิว</th>
-                    <th>ชื่อผู้ป่วย</th>
-                    <th>HN</th>
-                    <th>ประเภท</th>
-                    <th>สถานะ</th>
-                    <th>เวลาลงทะเบียน</th>
+                    <th onclick="sortQueue('id')" style="cursor: pointer; user-select: none;">
+                      หมายเลขคิว <span class="sort-icon">↕</span>
+                    </th>
+                    <th onclick="sortQueue('name')" style="cursor: pointer; user-select: none;">
+                      ชื่อผู้ป่วย <span class="sort-icon">↕</span>
+                    </th>
+                    <th onclick="sortQueue('hn')" style="cursor: pointer; user-select: none;">
+                      HN <span class="sort-icon">↕</span>
+                    </th>
+                    <th onclick="sortQueue('type')" style="cursor: pointer; user-select: none;">
+                      ประเภท <span class="sort-icon">↕</span>
+                    </th>
+                    <th onclick="sortQueue('status')" style="cursor: pointer; user-select: none;">
+                      สถานะ <span class="sort-icon">↕</span>
+                    </th>
+                    <th onclick="sortQueue('time')" style="cursor: pointer; user-select: none;">
+                      เวลาลงทะเบียน <span class="sort-icon">↕</span>
+                    </th>
                     <th>ช่อง</th>
-                    <th>เจ้าหน้าที่</th>
+                    <th onclick="sortQueue('calledByStaff')" style="cursor: pointer; user-select: none;">
+                      เจ้าหน้าที่ <span class="sort-icon">↕</span>
+                    </th>
                     <th>การดำเนินการ</th>
                   </tr>
                 </thead>
@@ -3926,11 +3940,21 @@
               <table class="queue-table">
                 <thead>
                   <tr>
-                    <th>ชื่อผู้ใช้งาน</th>
-                    <th>ชื่อ-สกุล</th>
-                    <th>ตำแหน่ง</th>
-                    <th>แผนก</th>
-                    <th>บทบาท</th>
+                    <th onclick="sortUsers('username')" style="cursor: pointer; user-select: none;">
+                      ชื่อผู้ใช้งาน <span class="sort-icon">↕</span>
+                    </th>
+                    <th onclick="sortUsers('fullName')" style="cursor: pointer; user-select: none;">
+                      ชื่อ-สกุล <span class="sort-icon">↕</span>
+                    </th>
+                    <th onclick="sortUsers('position')" style="cursor: pointer; user-select: none;">
+                      ตำแหน่ง <span class="sort-icon">↕</span>
+                    </th>
+                    <th onclick="sortUsers('department')" style="cursor: pointer; user-select: none;">
+                      แผนก <span class="sort-icon">↕</span>
+                    </th>
+                    <th onclick="sortUsers('role')" style="cursor: pointer; user-select: none;">
+                      บทบาท <span class="sort-icon">↕</span>
+                    </th>
                     <th>การจัดการ</th>
                   </tr>
                 </thead>
@@ -5373,6 +5397,76 @@
               if (pageId === "userManagementPage") {
                 renderUsers();
               }
+            }
+
+            // Sort variables for queue and users
+            let queueSortColumn = null;
+            let queueSortDirection = 'asc';
+            let usersSortColumn = null;
+            let usersSortDirection = 'asc';
+
+            // Sort Queue Table
+            function sortQueue(column) {
+              if (queueSortColumn === column) {
+                queueSortDirection = queueSortDirection === 'asc' ? 'desc' : 'asc';
+              } else {
+                queueSortColumn = column;
+                queueSortDirection = 'asc';
+              }
+
+              // Sort queueData
+              queueData.sort((a, b) => {
+                let valA = a[column];
+                let valB = b[column];
+
+                // Handle null/undefined values
+                valA = valA || '';
+                valB = valB || '';
+
+                // String comparison
+                if (typeof valA === 'string' && typeof valB === 'string') {
+                  valA = valA.toLowerCase();
+                  valB = valB.toLowerCase();
+                }
+
+                if (valA < valB) return queueSortDirection === 'asc' ? -1 : 1;
+                if (valA > valB) return queueSortDirection === 'asc' ? 1 : -1;
+                return 0;
+              });
+
+              renderQueue();
+            }
+
+            // Sort Users Table
+            function sortUsers(column) {
+              if (usersSortColumn === column) {
+                usersSortDirection = usersSortDirection === 'asc' ? 'desc' : 'asc';
+              } else {
+                usersSortColumn = column;
+                usersSortDirection = 'asc';
+              }
+
+              // Sort userData
+              userData.sort((a, b) => {
+                let valA = a[column];
+                let valB = b[column];
+
+                // Handle null/undefined values
+                valA = valA || '';
+                valB = valB || '';
+
+                // String comparison
+                if (typeof valA === 'string' && typeof valB === 'string') {
+                  valA = valA.toLowerCase();
+                  valB = valB.toLowerCase();
+                }
+
+                if (valA < valB) return usersSortDirection === 'asc' ? -1 : 1;
+                if (valA > valB) return usersSortDirection === 'asc' ? 1 : -1;
+                return 0;
+              });
+
+              renderUsers();
             }
 
             function backToQueue() {
