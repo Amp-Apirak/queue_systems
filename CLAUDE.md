@@ -4,10 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **Blood Test Queue Management System** for Thammarat Advanced Medical Center (THAMC). The system consists of two main components:
+This is a **Blood Test Queue Management System** for Thammarat Advanced Medical Center (THAMC). The system consists of three main components:
 
 1. **Patient Registration System** (`blood-test-registration-system.html`) - A kiosk interface for patients to register and get queue numbers
 2. **Staff Queue Management System** (`blood-test-queue-management.html`) - An admin dashboard for staff to manage blood test queues
+3. **Queue Display Screen** (`blood-test-display-screen.html`) - A monitor display showing currently called queues for the waiting area
 
 The system implements a "One Queue" workflow where patients use their hospital registration queue number to check in at the blood test department.
 
@@ -25,6 +26,7 @@ The system implements a "One Queue" workflow where patients use their hospital r
 queue_systems/
 ├── blood-test-registration-system.html  # Patient-facing kiosk interface
 ├── blood-test-queue-management.html     # Staff dashboard (embedded CSS/JS)
+├── blood-test-display-screen.html       # Queue display monitor (embedded CSS/JS)
 ├── css/
 │   └── style.css                        # Styles for registration system
 ├── js/
@@ -33,6 +35,15 @@ queue_systems/
 ├── เพิ่มเติม.txt                        # Additional feature specifications
 └── *.png                                # UI mockups/references
 ```
+
+### Architecture Pattern
+
+All three HTML files are **standalone single-page applications** with embedded CSS and JavaScript:
+- `blood-test-registration-system.html` uses external `css/style.css` and `js/main.js`
+- `blood-test-queue-management.html` has all CSS and JS embedded in `<style>` and `<script>` tags
+- `blood-test-display-screen.html` has all CSS and JS embedded in `<style>` and `<script>` tags
+
+**Important**: When editing the management or display screen files, CSS and JS changes must be made directly in the HTML file, not in separate files.
 
 ### System Flow
 
@@ -49,6 +60,12 @@ queue_systems/
    - Start service → prints blood tube labels automatically
    - Scan blood tubes as they're sent via pneumatic tube system
    - Complete or manage exceptions (difficult draw, no-show, etc.)
+
+3. **Queue Display Screen** (`blood-test-display-screen.html`):
+   - Shows currently called queue numbers on large monitor in waiting area
+   - Displays queue number, patient type, and counter number
+   - Updates automatically when staff calls new queues
+   - Shows recent queue history (last 4 called queues)
 
 ### Data Model
 
@@ -170,10 +187,10 @@ Use these prefixes to generate different queue types:
 - **Billing status**: Verify payment before service
 
 ### Hardware Integration
-- **QR Code Scanner**: Patient appointment QR codes
-- **Label Printer**: Blood tube labels with patient info and test codes
-- **Barcode Scanner**: Scan tube barcodes when sending via pneumatic system
-- **Display Monitor**: Queue announcement display (not yet implemented)
+- **QR Code Scanner**: Patient appointment QR codes (simulated in current version)
+- **Label Printer**: Blood tube labels with patient info and test codes (simulated via `printLabel()` and `printAllLabels()` functions)
+- **Barcode Scanner**: Scan tube barcodes when sending via pneumatic system (simulated via click toggle in current version)
+- **Display Monitor**: Queue announcement display (`blood-test-display-screen.html` - implemented, needs integration)
 - **Audio System**: Voice announcement when calling queue (not yet implemented)
 
 ## Common Workflows
@@ -183,12 +200,18 @@ Use these prefixes to generate different queue types:
 ```bash
 # No build required - pure HTML/CSS/JS
 # Open in browser directly:
+
 # For kiosk interface:
 open blood-test-registration-system.html
 
 # For staff dashboard:
 open blood-test-queue-management.html
 # Login: username=admin, password=admin (pre-filled)
+# Select counter number (1-5) after login
+
+# For display monitor (for waiting area):
+open blood-test-display-screen.html
+# No login required - displays called queues automatically
 ```
 
 ### Testing Different Scenarios
@@ -225,12 +248,26 @@ The system uses `showPage()` and `showCard()` functions to toggle between views 
 ### History Tracking
 Completed queues are added to `historyData` array and displayed in the History page. In production, this should sync with the database.
 
+## Current Limitations & Data Synchronization
+
+**Important**: The three HTML files currently operate independently with their own mock data:
+- Queue data is stored in browser memory (JavaScript arrays) and is lost on page refresh
+- No real-time synchronization between registration system, management system, and display screen
+- Mock data is used for patient lookup and blood test orders
+
+**To integrate into production**:
+1. Implement shared backend API or database for queue data
+2. Use WebSocket or Server-Sent Events for real-time updates across all three screens
+3. Connect to actual HIS API for patient demographics and lab orders
+4. Integrate with physical hardware (QR scanners, label printers, barcode scanners)
+5. Add audio announcement system with Thai voice synthesis
+
 ## Future Enhancements
 
 Based on requirements, planned features include:
-- Monitor display system for queue announcements
-- Audio announcement system
-- Real-time integration with HIS database
-- WebSocket for live queue updates across multiple counters
-- Reporting and analytics dashboard
-- Mobile app for patients to check queue status
+- Real-time data synchronization across all three components
+- Audio announcement system with Thai TTS
+- Complete integration with HIS database
+- WebSocket for live queue updates across multiple counters and display screens
+- Reporting and analytics dashboard for queue performance metrics
+- Mobile app for patients to check queue status remotely

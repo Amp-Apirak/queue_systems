@@ -1,6 +1,7 @@
         let currentCard = 'mainScreen';
         let selectedPatientType = null;
         let patientData = null;
+        let searchTimeout = null;
 
         // Update time display
         function updateTime() {
@@ -47,18 +48,45 @@
             showCard('mainScreen');
         }
 
+        // Show loading modal
+        function showLoadingModal() {
+            document.getElementById('loadingModal').classList.add('active');
+        }
+
+        // Hide loading modal
+        function hideLoadingModal() {
+            document.getElementById('loadingModal').classList.remove('active');
+        }
+
+        // Cancel search
+        function cancelSearch() {
+            // Clear the timeout
+            if (searchTimeout) {
+                clearTimeout(searchTimeout);
+                searchTimeout = null;
+            }
+            // Hide modal
+            hideLoadingModal();
+        }
+
         // Search patient
         function searchPatient(event) {
             event.preventDefault();
             const searchValue = document.getElementById('searchInput').value.trim();
-            
+
             if (!searchValue) {
                 alert('กรุณากรอกชื่อ, LN, หรือ HN');
                 return;
             }
-            
+
+            // Show loading modal
+            showLoadingModal();
+
             // Simulate search (replace with actual API call)
-            setTimeout(() => {
+            searchTimeout = setTimeout(() => {
+                // Hide loading modal
+                hideLoadingModal();
+
                 // Check if patient found
                 if (searchValue.toLowerCase().includes('error')) {
                     showError('ไม่พบข้อมูลผู้รับบริการที่ค้นหา');
@@ -72,7 +100,9 @@
                     };
                     showVerification(mockData);
                 }
-            }, 1000);
+
+                searchTimeout = null;
+            }, 2000);
         }
 
         // Show verification screen with patient data
