@@ -185,6 +185,7 @@
             cursor: pointer;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
             transition: all 0.3s ease;
             box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
@@ -438,18 +439,82 @@
         }
 
         /* Queue Success Screen */
+        .queue-display {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 20px;
+            padding: 35px 30px;
+            margin: 30px 0;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .queue-label {
+            font-size: 16px;
+            color: #718096;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
         .queue-number {
-            font-size: 72px;
-            font-weight: 700;
+            font-size: 80px;
+            font-weight: 800;
             color: #667eea;
-            margin: 25px 0;
-            letter-spacing: 4px;
+            margin: 20px 0;
+            letter-spacing: 6px;
+            text-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
         }
 
         .success-message {
             font-size: 18px;
             color: #4a5568;
             margin-bottom: 25px;
+        }
+
+        .info-box {
+            background: rgba(247, 250, 252, 0.9);
+            border-radius: 16px;
+            padding: 20px 25px;
+            margin: 25px 0;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            text-align: left;
+        }
+
+        .info-box p {
+            font-size: 16px;
+            color: #4a5568;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        .info-box strong {
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        @media (max-width: 768px) {
+            .queue-number {
+                font-size: 64px;
+                letter-spacing: 4px;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn-group .btn {
+                width: 100%;
+            }
         }
 
         .instructions {
@@ -983,34 +1048,49 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
             </div>
-            
-            <h2 style="color: #38a169;">ลงทะเบียนสำเร็จ!</h2>
-            <p>คุณได้ลงทะเบียนเข้าคิวเรียบร้อยแล้ว</p>
 
+            <h2 style="color: #38a169;">ลงทะเบียนสำเร็จ!</h2>
+            <p style="margin-bottom: 10px;">คุณได้ลงทะเบียนเข้าคิวเรียบร้อยแล้ว</p>
+
+            <!-- Queue Number Display -->
             <div class="queue-display">
                 <div class="queue-label">หมายเลขคิวของคุณ</div>
                 <div class="queue-number" id="queueNumber">A038</div>
-                <div class="queue-label">กรุณารอที่บริเวณห้องเจาะเลือด</div>
+                <div class="queue-label" style="margin-top: 20px; margin-bottom: 0;">กรุณารอที่บริเวณห้องเจาะเลือด</div>
             </div>
 
-            <div class="status-message success">
+            <!-- Status Message -->
+            <div class="status-message success" style="margin-top: 30px;">
                 <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                 </svg>
-                <span>ระบบจะเรียกคิวของคุณเมื่อถึงลำดับ</span>
+                <span>ระบบจะเรียกคิวของคุณเมื่อถึงลำดับ กรุณาฟังประกาศจากระบบ</span>
             </div>
 
-            <p style="font-size: 16px; color: #718096; margin-top: 20px;">
-                คิวปัจจุบันที่กำลังให้บริการ: <strong style="color: #2d3748;">A032</strong><br>
-                คาดว่าจะถึงคิวของคุณในอีก <strong style="color: #2d3748;">15-20 นาที</strong>
-            </p>
+            <!-- Queue Info Box -->
+            <div class="info-box">
+                <p>
+                    📊 <strong>คิวปัจจุบันที่กำลังให้บริการ:</strong> A032<br>
+                    ⏱️ <strong>เวลารอโดยประมาณ:</strong> 15-20 นาที<br>
+                    🏥 <strong>สถานที่:</strong> ห้องเจาะเลือด ชั้น 2 อาคารผู้ป่วยนอก
+                </p>
+            </div>
 
-            <button class="btn btn-secondary" onclick="backToHome()" style="margin-top: 30px;">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                </svg>
-                กลับหน้าหลัก
-            </button>
+            <!-- Action Buttons -->
+            <div class="btn-group">
+                <button class="btn" onclick="printQueueTicket()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                    </svg>
+                    พิมพ์บัตรคิว
+                </button>
+                <button class="btn btn-secondary" onclick="backToHome()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                    กลับหน้าหลัก
+                </button>
+            </div>
         </div>
 
         <!-- Error Screen -->
@@ -1064,6 +1144,28 @@
             <h2 id="loadingTitle">กำลังค้นหาข้อมูล...</h2>
             <p id="loadingDescription">กรุณารอสักครู่ ระบบกำลังดึงข้อมูลจากฐานข้อมูล</p>
             <button class="btn-cancel" onclick="cancelLoading()">ยกเลิก</button>
+        </div>
+    </div>
+
+    <!-- Contact Staff Modal -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-content">
+            <div class="modal-icon" style="background: linear-gradient(135deg, rgba(72, 187, 120, 0.15) 0%, rgba(56, 161, 105, 0.15) 100%);">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #38a169;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                </svg>
+            </div>
+            <h2 style="color: #38a169; margin-bottom: 30px;">ติดต่อเจ้าหน้าที่</h2>
+
+            <div style="background: rgba(72, 187, 120, 0.1); border-radius: 16px; padding: 30px; margin-bottom: 30px; border: 2px solid rgba(72, 187, 120, 0.3);">
+                <p style="font-size: 16px; color: #2f855a; margin-bottom: 15px; font-weight: 500;">📞 โทรศัพท์ติดต่อ:</p>
+                <p style="font-size: 36px; font-weight: 700; color: #38a169; letter-spacing: 2px; margin: 0;">02-XXX-XXXX</p>
+                <p style="font-size: 20px; color: #2f855a; margin-top: 10px; margin-bottom: 0; font-weight: 600;">ต่อ 1234</p>
+            </div>
+
+            <button class="btn-cancel" onclick="closeContactModal()" style="background: #38a169; color: white;">
+                ตกลง
+            </button>
         </div>
     </div>
 
@@ -1300,7 +1402,24 @@
 
         // Contact staff
         function contactStaff() {
-            alert('กำลังเรียกเจ้าหน้าที่...\n\nเจ้าหน้าที่จะมาให้บริการในไม่ช้า\nหรือโทร: 02-XXX-XXXX ต่อ 1234');
+            // แสดง Contact Modal
+            document.getElementById('contactModal').classList.add('active');
+        }
+
+        // Close contact modal
+        function closeContactModal() {
+            document.getElementById('contactModal').classList.remove('active');
+        }
+
+        // Print queue ticket
+        function printQueueTicket() {
+            // ในการใช้งานจริง จะเชื่อมต่อกับเครื่องพิมพ์
+            // ตอนนี้แสดง modal แจ้งเตือน
+            const queueNumber = document.getElementById('queueNumber').textContent;
+            alert('กำลังพิมพ์บัตรคิว ' + queueNumber + '\n\nกรุณารับบัตรคิวที่เครื่องพิมพ์\nและนำไปแสดงที่เคาน์เตอร์เจาะเลือด');
+
+            // TODO: เชื่อมต่อกับ Printer API เช่น:
+            // window.print() หรือ เรียก API ของเครื่องพิมพ์
         }
 
         // Back to home
