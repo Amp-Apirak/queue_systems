@@ -387,6 +387,56 @@
             font-size: 15px;
         }
 
+        /* Status Message */
+        .status-message {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: rgba(247, 250, 252, 0.9);
+            border-radius: 16px;
+            padding: 20px 25px;
+            margin-bottom: 35px;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            text-align: left;
+        }
+
+        .status-message svg {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .status-message span {
+            color: #4a5568;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .status-message.success {
+            background: rgba(72, 187, 120, 0.1);
+            border-color: rgba(72, 187, 120, 0.3);
+        }
+
+        .status-message.success svg {
+            color: #38a169;
+        }
+
+        .status-message.success span {
+            color: #2f855a;
+        }
+
+        .status-message.error {
+            background: rgba(229, 62, 62, 0.1);
+            border-color: rgba(229, 62, 62, 0.3);
+        }
+
+        .status-message.error svg {
+            color: #e53e3e;
+        }
+
+        .status-message.error span {
+            color: #c53030;
+        }
+
         /* Queue Success Screen */
         .queue-number {
             font-size: 72px;
@@ -526,6 +576,155 @@
 
             .patient-info {
                 padding: 20px;
+            }
+        }
+
+        /* Loading Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(102, 126, 234, 0.15);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 50px 60px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .modal-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+        }
+
+        .modal-icon svg {
+            width: 55px;
+            height: 55px;
+            color: #667eea;
+        }
+
+        .loading-spinner {
+            animation: spin 1.5s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .modal-content h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .modal-content p {
+            font-size: 16px;
+            color: #718096;
+            margin-bottom: 35px;
+            line-height: 1.6;
+        }
+
+        .btn-cancel {
+            background: #e2e8f0;
+            color: #4a5568;
+            border: none;
+            padding: 14px 50px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        .btn-cancel:hover {
+            background: #cbd5e0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-cancel:active {
+            transform: translateY(0);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Modal */
+        @media (max-width: 768px) {
+            .modal-content {
+                padding: 40px 30px;
+                max-width: 90%;
+            }
+
+            .modal-icon {
+                width: 80px;
+                height: 80px;
+            }
+
+            .modal-icon svg {
+                width: 45px;
+                height: 45px;
+            }
+
+            .modal-content h2 {
+                font-size: 24px;
+            }
+
+            .modal-content p {
+                font-size: 15px;
+            }
+
+            .btn-cancel {
+                padding: 12px 40px;
+                font-size: 16px;
             }
         }
     </style>
@@ -829,7 +1028,7 @@
                 <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
                 </svg>
-                <span>กรุณาตรวจสอบข้อมูลและลองใหม่อีกครั้ง หรือติดต่อเจ้าหน้าที่</span>
+                <span>กรุณาตรวจสอบข้อมูลและลองใหม่อีกครั้ง หรือติดต่อเจ้าหน้าที่หน้าเคาน์เตอร์</span>
             </div>
 
             <div class="btn-group">
@@ -854,10 +1053,27 @@
         <p>หากมีปัญหาหรือต้องการความช่วยเหลือ กรุณาติดต่อเจ้าหน้าที่ห้องเจาะเลือด | โทร: 02-XXX-XXXX ต่อ 1234</p>
     </div>
 
+    <!-- Loading Modal -->
+    <div class="modal-overlay" id="loadingModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="loading-spinner">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+            </div>
+            <h2 id="loadingTitle">กำลังค้นหาข้อมูล...</h2>
+            <p id="loadingDescription">กรุณารอสักครู่ ระบบกำลังดึงข้อมูลจากฐานข้อมูล</p>
+            <button class="btn-cancel" onclick="cancelLoading()">ยกเลิก</button>
+        </div>
+    </div>
+
     <script>
         let currentCard = 'mainScreen';
         let selectedPatientType = null;
         let patientData = null;
+        let loadingTimeout = null;
+        let scanTimeout = null;
+        let currentLoadingType = null; // 'search' or 'scan'
 
         // Update time display
         function updateTime() {
@@ -883,19 +1099,33 @@
 
         // Start scanning
         function startScanning() {
+            // แสดงหน้า scanningScreen (มี animation และข้อความ "กำลังสแกน QR Code" อยู่แล้ว)
             showCard('scanningScreen');
-            
-            // Simulate QR code scanning (replace with actual scanning logic)
-            setTimeout(() => {
-                // Simulate finding patient data
-                const mockData = {
-                    ln: 'LN20251016001',
-                    hn: 'HN123456',
-                    name: 'คุณสมชาย ใจดี',
-                    date: '16 ตุลาคม 2568',
-                    tests: 'Complete Blood Count (CBC), Lipid Profile'
-                };
-                showVerification(mockData);
+
+            // Simulate QR code scanning - รอ 3 วินาที
+            scanTimeout = setTimeout(() => {
+                // เมื่อสแกนเสร็จ แสดง modal "กำลังค้นหาข้อมูล..." (เหมือนกับการค้นหา)
+                showLoadingModal('search', 'กำลังค้นหาข้อมูล...', 'กรุณารอสักครู่ ระบบกำลังดึงข้อมูลจากฐานข้อมูล');
+
+                // Simulate ดึงข้อมูลจาก database - รอ 2 วินาที
+                loadingTimeout = setTimeout(() => {
+                    // ซ่อน modal
+                    hideLoadingModal();
+
+                    // แสดงข้อมูลผู้ป่วย
+                    const mockData = {
+                        ln: 'LN20251016001',
+                        hn: 'HN123456',
+                        name: 'คุณสมชาย ใจดี',
+                        date: '16 ตุลาคม 2568',
+                        tests: 'Complete Blood Count (CBC), Lipid Profile'
+                    };
+                    showVerification(mockData);
+
+                    loadingTimeout = null;
+                }, 2000);
+
+                scanTimeout = null;
             }, 3000);
         }
 
@@ -904,18 +1134,57 @@
             showCard('mainScreen');
         }
 
+        // Show loading modal
+        function showLoadingModal(type, title, description) {
+            currentLoadingType = type;
+            document.getElementById('loadingTitle').textContent = title;
+            document.getElementById('loadingDescription').textContent = description;
+            document.getElementById('loadingModal').classList.add('active');
+        }
+
+        // Hide loading modal
+        function hideLoadingModal() {
+            document.getElementById('loadingModal').classList.remove('active');
+            currentLoadingType = null;
+        }
+
+        // Cancel loading (ทั้ง search และ scan)
+        function cancelLoading() {
+            // Clear ทั้งสอง timeout (scanning และ loading)
+            if (scanTimeout) {
+                clearTimeout(scanTimeout);
+                scanTimeout = null;
+            }
+            if (loadingTimeout) {
+                clearTimeout(loadingTimeout);
+                loadingTimeout = null;
+            }
+
+            // Hide modal
+            hideLoadingModal();
+
+            // กลับหน้าหลักเสมอ
+            showCard('mainScreen');
+        }
+
         // Search patient
         function searchPatient(event) {
             event.preventDefault();
             const searchValue = document.getElementById('searchInput').value.trim();
-            
+
             if (!searchValue) {
                 alert('กรุณากรอกชื่อ, LN, หรือ HN');
                 return;
             }
-            
+
+            // Show loading modal
+            showLoadingModal('search', 'กำลังค้นหาข้อมูล...', 'กรุณารอสักครู่ ระบบกำลังดึงข้อมูลจากฐานข้อมูล');
+
             // Simulate search (replace with actual API call)
-            setTimeout(() => {
+            loadingTimeout = setTimeout(() => {
+                // Hide loading modal
+                hideLoadingModal();
+
                 // Check if patient found
                 if (searchValue.toLowerCase().includes('error')) {
                     showError('ไม่พบข้อมูลผู้รับบริการที่ค้นหา');
@@ -929,7 +1198,9 @@
                     };
                     showVerification(mockData);
                 }
-            }, 1000);
+
+                loadingTimeout = null;
+            }, 2000);
         }
 
         // Show verification screen with patient data
