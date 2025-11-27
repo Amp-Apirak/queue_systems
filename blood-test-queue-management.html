@@ -2285,6 +2285,106 @@
       .dropdown-items::-webkit-scrollbar-thumb:hover {
         background: #a0aec0;
       }
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(5px);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 0;
+        border: 1px solid #888;
+        width: 90%;
+        max-width: 600px;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        animation: modalFadeIn 0.3s;
+        position: relative;
+      }
+
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .modal-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f7fafc;
+        border-radius: 16px 16px 0 0;
+      }
+
+      .modal-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #2d3748;
+        margin: 0;
+      }
+
+      .close-btn {
+        color: #a0aec0;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        background: none;
+        border: none;
+        line-height: 1;
+        padding: 0;
+        transition: color 0.2s;
+      }
+
+      .close-btn:hover {
+        color: #e53e3e;
+      }
+
+      .modal-body {
+        padding: 24px;
+      }
+
+      .modal-footer {
+        padding: 20px 24px;
+        border-top: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        background: #f7fafc;
+        border-radius: 0 0 16px 16px;
+      }
+
+      .btn-secondary {
+        background: #e2e8f0;
+        color: #4a5568;
+      }
+      
+      .btn-secondary:hover {
+        background: #cbd5e0;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
     </style>
   </head>
   <body>
@@ -3764,6 +3864,63 @@
               </table>
             </div>
           </div>
+          
+          <!-- Difficult Blood Draw Modal -->
+          <div id="difficultDrawModal" class="modal" style="display: none;">
+            <div class="modal-content" style="max-width: 500px">
+              <div class="modal-header">
+                <h2 class="modal-title">บันทึกกรณีเจาะเลือดยาก</h2>
+                <button class="close-btn" onclick="closeDifficultDrawModal()">
+                  &times;
+                </button>
+              </div>
+              <div class="modal-body">
+                <div style="margin-bottom: 20px">
+                  <label
+                    style="
+                      display: block;
+                      margin-bottom: 10px;
+                      font-weight: 600;
+                      color: #4a5568;
+                    "
+                    >สาเหตุ:</label
+                  >
+                  <select id="difficultReasonSelect" class="form-input" style="width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #e2e8f0; font-family: 'Sarabun', sans-serif; font-size: 16px;">
+                    <option value="เส้นเลือดแตก">เส้นเลือดแตก</option>
+                    <option value="เส้นเลือดจม/ลึก">เส้นเลือดจม/ลึก</option>
+                    <option value="คนไข้ดิ้น/ไม่ร่วมมือ">คนไข้ดิ้น/ไม่ร่วมมือ</option>
+                    <option value="อื่นๆ">อื่นๆ</option>
+                  </select>
+                </div>
+                <div>
+                  <label
+                    style="
+                      display: block;
+                      margin-bottom: 10px;
+                      font-weight: 600;
+                      color: #4a5568;
+                    "
+                    >ความคิดเห็นเพิ่มเติม:</label
+                  >
+                  <textarea
+                    id="difficultDrawComment"
+                    class="form-input"
+                    rows="3"
+                    placeholder="ระบุรายละเอียดเพิ่มเติม..."
+                    style="width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #e2e8f0; font-family: 'Sarabun', sans-serif; font-size: 16px;"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeDifficultDrawModal()" style="flex: 1;">
+                  ยกเลิก
+                </button>
+                <button class="btn btn-primary" onclick="saveDifficultDraw()" style="flex: 1;">
+                  บันทึก
+                </button>
+              </div>
+            </div>
+          </div>
 
           <!-- New Patient Detail Page -->
           <div class="page" id="patientDetailPage">
@@ -3820,10 +3977,50 @@
                   id="in-service-actions"
                   style="display: none"
                 >
-                  <button class="btn-action">สำเร็จ</button>
+                  <button
+                    class="btn-action btn-complete"
+                    style="
+                      background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+                      color: white;
+                      font-weight: 700;
+                      font-size: 18px;
+                      padding: 12px 30px;
+                      box-shadow: 0 4px 15px rgba(66, 153, 225, 0.4);
+                      border: none;
+                      transform: scale(1.05);
+                      transition: all 0.3s ease;
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                    "
+                    onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 6px 20px rgba(66, 153, 225, 0.6)';"
+                    onmouseout="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 15px rgba(66, 153, 225, 0.4)';"
+                  >
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      style="width: 24px; height: 24px"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 13l4 4L19 7"
+                      ></path>
+                    </svg>
+                    สำเร็จ
+                  </button>
                   <button class="btn-action">รอเรียกใหม่</button>
                   <button class="btn-action">ปิดคิว</button>
-                  <button class="btn-action">Labelling</button>
+                  <button class="btn-action">พิมพ์สติ๊กเกอร์</button>
+                  <button
+                    class="btn-action"
+                    style="background: #ed8936; color: white; border: none"
+                    onclick="openDifficultDrawModal()"
+                  >
+                    เจาะเลือดยาก
+                  </button>
                 </div>
                 <div
                   style="
@@ -5683,9 +5880,8 @@
               );
               if (!queue) return;
               alert("เริ่มให้บริการและดำเนินการพิมพ์ Label");
+              queue.status = "serving";
               queue.serviceStartTime = new Date().toISOString();
-              queue.serviceDuration = null;
-              queue.serviceEndTime = null;
               viewPatient(queue.id);
             }
 
@@ -5710,6 +5906,7 @@
                 renderQueue();
                 updateStats();
                 backToQueue();
+                alert("⚠️ ปล่อยคิวเรียบร้อยแล้ว");
               }
             }
 
@@ -5718,9 +5915,7 @@
                 (q) => q.id === window.currentPatientQueueId
               );
               if (!queue) return;
-              if (!confirm(`ยืนยันการให้บริการเสร็จสิ้นสำหรับคิว ${queue.id}?`))
-                return;
-
+              
               stopServiceTimer();
 
               const now = new Date();
@@ -5741,119 +5936,84 @@
                 "th-TH"
               );
 
-              historyData = historyData.filter((item) => item.id !== queue.id);
+              // Add to history
               historyData.unshift({
                 id: queue.id,
                 name: queue.name,
                 hn: queue.hn,
-                type: queue.type,
+                type: queue.type === 0 ? "general" : queue.type === 1 ? "wheelchair" : queue.type === 2 ? "urgent" : "container",
                 startTime: startDisplay,
                 endTime: endDisplay,
                 duration: duration
               });
 
+              // Remove from active queue
+              const queueIndex = queueData.findIndex(q => q.id === queue.id);
+              if (queueIndex > -1) {
+                queueData.splice(queueIndex, 1);
+              }
+
               renderQueue();
               renderHistory();
               updateStats();
               backToQueue();
+              alert("✅ บันทึกการให้บริการสำเร็จ");
             }
 
             function cancelQueue() {
               const queueIndex = queueData.findIndex(
                 (q) => q.id === window.currentPatientQueueId
               );
-              if (
-                queueIndex > -1 &&
-                confirm(
-                  `ต้องการลบรายการของ ${queueData[queueIndex].name} ออกจากระบบใช่หรือไม่?`
-                )
-              ) {
-                queueData.splice(queueIndex, 1);
-                renderQueue();
-                updateStats();
-                backToQueue();
+              if (queueIndex > -1) {
+                if (confirm("ยืนยันการปิดคิว?")) {
+                  queueData.splice(queueIndex, 1);
+                  renderQueue();
+                  updateStats();
+                  backToQueue();
+                }
               }
+            }
+
+            function recallNew() {
+              alert("🔔 แจ้งเตือน: รอเรียกใหม่");
+            }
+            function labelling() {
+              alert("🖨️ กำลังพิมพ์สติ๊กเกอร์...");
             }
 
             function recallPatient() {
-              alert("เรียกผู้ป่วยซ้ำ");
+              alert("📢 กำลังเรียกผู้ป่วยซ้ำ...");
             }
 
-            // Dropdown Functions
-            function toggleDropdown(event) {
-              event.stopPropagation();
-              const dropdown = document.getElementById("difficultDrawDropdown");
-              const trigger = event.currentTarget;
-
-              dropdown.classList.toggle("active");
-              trigger.classList.toggle("active");
-
-              // Clear search when opening
-              if (dropdown.classList.contains("active")) {
-                document.getElementById("dropdownSearchInput").value = "";
-                filterDropdownItems();
-                document.getElementById("dropdownSearchInput").focus();
-              }
+            function openDifficultDrawModal() {
+              document.getElementById("difficultDrawModal").style.display = "flex";
             }
 
-            function selectDifficultReason(reason, event) {
-              event.stopPropagation();
+            function closeDifficultDrawModal() {
+              document.getElementById("difficultDrawModal").style.display = "none";
+              // Reset form
+              document.getElementById("difficultDrawComment").value = "";
+              document.getElementById("difficultReasonSelect").selectedIndex = 0;
+            }
+
+            function saveDifficultDraw() {
+              const reason = document.getElementById("difficultReasonSelect").value;
+              const comment = document.getElementById("difficultDrawComment").value;
+              
               const queue = queueData.find(
                 (q) => q.id === window.currentPatientQueueId
               );
+              
               if (queue) {
-                queue.difficultDrawReason = reason;
-                alert(
-                  `✅ บันทึกเหตุผล: ${reason}\n\nคิว: ${queue.id}\nชื่อ: ${queue.name}`
-                );
-                closeDropdown();
+                queue.difficultDraw = {
+                  reason: reason,
+                  comment: comment,
+                  timestamp: new Date().toLocaleString('th-TH')
+                };
+                
+                alert(`✅ บันทึกข้อมูลเรียบร้อย\n\nสาเหตุ: ${reason}\nเพิ่มเติม: ${comment || "-"}`);
+                closeDifficultDrawModal();
               }
-            }
-
-            function filterDropdownItems() {
-              const searchInput = document
-                .getElementById("dropdownSearchInput")
-                .value.toLowerCase();
-              const dropdownItems = document.querySelectorAll(".dropdown-item");
-
-              dropdownItems.forEach((item) => {
-                const itemText = item
-                  .querySelector(".dropdown-text")
-                  .textContent.toLowerCase();
-                if (itemText.includes(searchInput)) {
-                  item.classList.remove("hidden");
-                } else {
-                  item.classList.add("hidden");
-                }
-              });
-            }
-
-            function closeDropdown() {
-              const dropdown = document.getElementById("difficultDrawDropdown");
-              const trigger = document.querySelector(".dropdown-trigger");
-              dropdown.classList.remove("active");
-              if (trigger) trigger.classList.remove("active");
-            }
-
-            // Close dropdown when clicking outside
-            document.addEventListener("click", function (event) {
-              const dropdown = document.getElementById("difficultDrawDropdown");
-              const customDropdown = document.querySelector(".custom-dropdown");
-
-              if (
-                dropdown &&
-                customDropdown &&
-                !customDropdown.contains(event.target)
-              ) {
-                closeDropdown();
-              }
-            });
-
-            function recallNew() {
-              alert("แสดงหน้าต่างสำหรับบันทึกเหตุผลและรอเรียกใหม่");
-            }
-            function labelling() {
-              alert("พิมพ์ Label ซ้ำ");
             }
 
             // Settings Page Functions
@@ -6105,11 +6265,11 @@
               const serviceButtons = document.querySelectorAll(
                 "#in-service-actions > button"
               );
-              if (serviceButtons[0])
-                serviceButtons[0].onclick = completeService;
+              if (serviceButtons[0]) serviceButtons[0].onclick = completeService;
               if (serviceButtons[1]) serviceButtons[1].onclick = recallNew;
               if (serviceButtons[2]) serviceButtons[2].onclick = cancelQueue;
               if (serviceButtons[3]) serviceButtons[3].onclick = labelling;
+              if (serviceButtons[4]) serviceButtons[4].onclick = openDifficultDrawModal;
 
               // Load Target Time Setting
               loadTargetTimeSetting();
