@@ -3771,77 +3771,49 @@
               <!-- Section 1: Action Panel -->
               <div class="detail-actions-panel">
                 <div class="action-btn-group" id="initial-actions">
+                  <button
+                    class="btn-action btn-call"
+                    style="
+                      background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+                      color: white;
+                      font-weight: 700;
+                      font-size: 18px;
+                      padding: 12px 30px;
+                      box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
+                      border: none;
+                      transform: scale(1.05);
+                      transition: all 0.3s ease;
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      margin-right: 20px;
+                    "
+                    onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 6px 20px rgba(72, 187, 120, 0.6)';"
+                    onmouseout="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 15px rgba(72, 187, 120, 0.4)';"
+                  >
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      style="width: 24px; height: 24px"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+                      ></path>
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      ></path>
+                    </svg>
+                    เริ่มให้บริการ
+                  </button>
                   <button class="btn-action">เรียกซ้ำ</button>
                   <button class="btn-action">ปล่อยคิว</button>
-                  <button class="btn-action btn-call">เริ่มให้บริการ</button>
-                  <div class="custom-dropdown">
-                    <button
-                      class="btn-action dropdown-trigger"
-                      onclick="toggleDropdown(event)"
-                    >
-                      <span>เจาะเลือดยาก</span>
-                      <svg
-                        style="width: 16px; height: 16px; margin-left: 6px"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
-                    </button>
-                    <div class="dropdown-menu" id="difficultDrawDropdown">
-                      <div class="dropdown-search">
-                        <input
-                          type="text"
-                          id="dropdownSearchInput"
-                          placeholder="ค้นหาสาเหตุ..."
-                          oninput="filterDropdownItems()"
-                        />
-                      </div>
-                      <div class="dropdown-items">
-                        <div
-                          class="dropdown-item"
-                          onclick="selectDifficultReason('เส้นเลือดแตก', event)"
-                        >
-                          <span class="dropdown-icon">💔</span>
-                          <span class="dropdown-text">เส้นเลือดแตก</span>
-                        </div>
-                        <div
-                          class="dropdown-item"
-                          onclick="selectDifficultReason('คนไข้เปลี่ยนใจไม่ตรวจแล้ว', event)"
-                        >
-                          <span class="dropdown-icon">🚫</span>
-                          <span class="dropdown-text"
-                            >คนไข้เปลี่ยนใจไม่ตรวจแล้ว</span
-                          >
-                        </div>
-                        <div
-                          class="dropdown-item"
-                          onclick="selectDifficultReason('คนไข้เป็นลม', event)"
-                        >
-                          <span class="dropdown-icon">😵</span>
-                          <span class="dropdown-text">คนไข้เป็นลม</span>
-                        </div>
-                        <div
-                          class="dropdown-item"
-                          onclick="selectDifficultReason('คนไข้ไม่มาเจาะ', event)"
-                        >
-                          <span class="dropdown-icon">❌</span>
-                          <span class="dropdown-text">คนไข้ไม่มาเจาะ</span>
-                        </div>
-                        <div
-                          class="dropdown-item"
-                          onclick="selectDifficultReason('คนไข้ย้ายไป Admin', event)"
-                        >
-                          <span class="dropdown-icon">🔄</span>
-                          <span class="dropdown-text">คนไข้ย้ายไป Admin</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
                 <div
                   class="action-btn-group"
@@ -6124,9 +6096,9 @@
               const initialButtons = document.querySelectorAll(
                 "#initial-actions > button"
               );
-              if (initialButtons[0]) initialButtons[0].onclick = recallPatient;
-              if (initialButtons[1]) initialButtons[1].onclick = releaseQueue;
-              if (initialButtons[2]) initialButtons[2].onclick = startService;
+              if (initialButtons[0]) initialButtons[0].onclick = startService;
+              if (initialButtons[1]) initialButtons[1].onclick = recallPatient;
+              if (initialButtons[2]) initialButtons[2].onclick = releaseQueue;
               // Note: button 4 is now inside dropdown div, handled by its own onclick
 
               // In-service actions buttons
