@@ -5992,11 +5992,20 @@
             }
 
             function completeService() {
+              console.log("completeService called");
+              console.log("currentPatientQueueId:", window.currentPatientQueueId);
+
               const queue = queueData.find(
                 (q) => q.id === window.currentPatientQueueId
               );
-              if (!queue) return;
-              
+
+              console.log("queue found:", queue);
+              if (!queue) {
+                console.error("Queue not found!");
+                alert("ไม่พบข้อมูลผู้ป่วย");
+                return;
+              }
+
               stopServiceTimer();
 
               const now = new Date();
@@ -6017,19 +6026,41 @@
                 "th-TH"
               );
 
-              // Add to history
-              historyData.unshift({
+              // Add complete data to history with all queue information
+              const historyRecord = {
                 id: queue.id,
                 name: queue.name,
                 hn: queue.hn,
-                type: queue.type === 0 ? "general" : queue.type === 1 ? "wheelchair" : queue.type === 2 ? "urgent" : "container",
+                sex: queue.sex || "-",
+                birthdate: queue.birthdate || "-",
+                age: queue.age || "-",
+                ward: queue.ward || "-",
+                right: queue.right || "-",
+                department: queue.department || "-",
+                nationality: queue.nationality || "-",
+                notes: queue.notes || "-",
+                photo: queue.photo || "",
+                type: queue.type || "general",
                 startTime: startDisplay,
                 endTime: endDisplay,
-                duration: duration
-              });
+                duration: duration,
+                queueCallTime: queue.queueCallTime || "-",
+                billingNo: queue.billingNo || "-",
+                billingDate: queue.billingDate || "-",
+                serviceStartTime: queue.serviceStartTime || "-",
+                drawOutcome: "สำเร็จ",
+                tubes: queue.tubes || [],
+                calledByStaff: queue.calledByStaff || "-",
+                calledByCounter: queue.calledByCounter || "-"
+              };
+
+              console.log("historyRecord:", historyRecord);
+              historyData.unshift(historyRecord);
+              console.log("historyData after unshift:", historyData);
 
               // Remove from active queue
               const queueIndex = queueData.findIndex(q => q.id === queue.id);
+              console.log("queueIndex to remove:", queueIndex);
               if (queueIndex > -1) {
                 queueData.splice(queueIndex, 1);
               }
@@ -6037,8 +6068,14 @@
               renderQueue();
               renderHistory();
               updateStats();
+
+              // Show success message
+              console.log("Showing success message");
+              alert("✅ บันทึกการให้บริการสำเร็จ\n\nรายการนี้ได้ถูกเพิ่มเข้าประวัติการให้บริการแล้ว");
+
+              // Return to queue page
+              console.log("Returning to queue page");
               backToQueue();
-              alert("✅ บันทึกการให้บริการสำเร็จ");
             }
 
             function cancelQueue() {
@@ -6313,22 +6350,78 @@
 
             // View history detail - show patient detail page from history
             function viewHistoryDetail(queueId) {
-              // Find the queue data by ID
-              const queue = queueData.find((q) => q.id === queueId);
+              console.log("viewHistoryDetail called with ID:", queueId);
 
+              // Find the queue data from history first, then from active queue
+              let queue = historyData.find((q) => q.id === queueId);
+
+              // If not in history, try to find in active queue data
+              if (!queue) {
+                queue = queueData.find((q) => q.id === queueId);
+              }
+
+              console.log("queue found:", queue);
               if (!queue) {
                 alert("ไม่พบข้อมูลคิวนี้ในระบบ");
                 return;
               }
 
-              // Use the existing viewPatient function to display details
-              // But we'll hide the action buttons since this is history view
-              viewPatient(queueId);
+              // Store current queue for viewing
+              window.currentPatientQueueId = queueId;
+
+              // Display patient details on patient detail page
+              showPage("patientDetailPage");
+
+              // Update the detail page with history data
+              const typeLabels = {
+                general: "ผู้ป่วยทั่วไป",
+                wheelchair: "ผู้ป่วยรถเข็น",
+                urgent: "ผู้ป่วยเร่งด่วน",
+                container: "กระปุก"
+              };
+
+              // Update all detail fields
+              document.getElementById("detail-patient-name").textContent = queue.name || "-";
+              document.getElementById("detail-queue-no").textContent = queue.id;
+              document.getElementById("detail-type").textContent =
+                typeLabels[queue.type] || "-";
+              document.getElementById("detail-hn").textContent = queue.hn || "-";
+              document.getElementById("detail-sex").textContent = queue.sex || "-";
+              document.getElementById("detail-birthdate").textContent = queue.birthdate || "-";
+              document.getElementById("detail-age").textContent = queue.age || "-";
+              document.getElementById("detail-ward").textContent = queue.ward || "-";
+              document.getElementById("detail-right").textContent = queue.right || "-";
+              document.getElementById("detail-department").textContent = queue.department || "-";
+              document.getElementById("detail-nationality").textContent = queue.nationality || "-";
+              document.getElementById("detail-notes").textContent = queue.notes || "-";
+              document.getElementById("detail-patient-photo").src = queue.photo || "";
+
+              // Update service information
+              document.getElementById("detail-call-time").textContent = queue.queueCallTime || queue.startTime || "-";
+              document.getElementById("detail-billing-no").textContent = queue.billingNo || "-";
+              document.getElementById("detail-billing-date").textContent = queue.billingDate || "-";
+              document.getElementById("detail-service-start").textContent = queue.serviceStartTime || "-";
+              document.getElementById("detail-draw-outcome").textContent = queue.drawOutcome || "สำเร็จ";
+              document.getElementById("detail-provider").textContent = queue.calledByStaff || "-";
+
+              // Set channel and counter
+              document.getElementById("detail-channel").textContent = queue.calledByCounter || "-";
+
+              // Display duration
+              if (queue.duration) {
+                document.getElementById("detail-duration").textContent = queue.duration;
+              }
+
+              // Render tube list if available
+              if (queue.tubes && queue.tubes.length > 0) {
+                renderTubeList(queue.tubes);
+              }
 
               // Hide action buttons for history view
               document.getElementById("initial-actions").style.display = "none";
-              document.getElementById("in-service-actions").style.display =
-                "none";
+              document.getElementById("in-service-actions").style.display = "none";
+
+              console.log("History detail displayed successfully");
             }
 
             // --- Init & Event Listeners ---
