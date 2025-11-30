@@ -175,6 +175,12 @@
         width: 88% !important;
       }
 
+      #profileModalContent {
+        padding: 50px 70px !important;
+        max-width: 750px !important;
+        width: 88% !important;
+      }
+
       #userModalContent form {
         display: flex;
         flex-direction: column;
@@ -406,6 +412,12 @@
           max-width: 680px !important;
           width: 86% !important;
         }
+
+        #profileModalContent {
+          padding: 45px 60px !important;
+          max-width: 680px !important;
+          width: 86% !important;
+        }
       }
 
       @media (max-width: 768px) {
@@ -417,6 +429,12 @@
         }
 
         #userModalContent {
+          padding: 40px 50px !important;
+          max-width: 600px !important;
+          width: 85% !important;
+        }
+
+        #profileModalContent {
           padding: 40px 50px !important;
           max-width: 600px !important;
           width: 85% !important;
@@ -486,6 +504,12 @@
         }
 
         #userModalContent {
+          padding: 35px 30px !important;
+          max-width: 100% !important;
+          width: 92% !important;
+        }
+
+        #profileModalContent {
           padding: 35px 30px !important;
           max-width: 100% !important;
           width: 92% !important;
@@ -2759,6 +2783,58 @@
       </div>
     </div>
 
+    <!-- Profile Modal -->
+    <div class="modal-overlay" id="profileModal">
+      <div class="modal-content" id="profileModalContent">
+        <div class="modal-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+          </svg>
+        </div>
+        <h2>แก้ไขข้อมูลโปรไฟล์</h2>
+        <p>แก้ไขข้อมูลส่วนตัวของคุณ</p>
+
+        <form onsubmit="handleProfileSubmit(event)">
+          <div class="modal-form-group">
+            <label for="profileFullName">ชื่อ-สกุล <span style="color: red">*</span></label>
+            <input type="text" id="profileFullName" placeholder="เช่น นายสมชาย ใจดี" required />
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%">
+            <div class="modal-form-group">
+              <label for="profilePosition">ตำแหน่ง <span style="color: red">*</span></label>
+              <input type="text" id="profilePosition" placeholder="เช่น พยาบาล" required />
+            </div>
+
+            <div class="modal-form-group">
+              <label for="profileDepartment">แผนก <span style="color: red">*</span></label>
+              <input type="text" id="profileDepartment" placeholder="เช่น ห้องเจาะเลือด" required />
+            </div>
+          </div>
+
+          <div class="modal-form-group">
+            <label for="profileUsername">ชื่อผู้ใช้งาน <span style="color: red">*</span></label>
+            <input type="text" id="profileUsername" placeholder="เช่น somchai.j" required readonly style="background-color: #f7fafc; cursor: not-allowed;" />
+          </div>
+
+          <div class="modal-form-group">
+            <label for="profilePassword">รหัสผ่านใหม่ (เว้นว่างหากไม่ต้องการเปลี่ยน)</label>
+            <input type="password" id="profilePassword" placeholder="กรอกรหัสผ่านใหม่" />
+          </div>
+
+          <div class="modal-form-group">
+            <label for="profileRole">บทบาท</label>
+            <input type="text" id="profileRole" readonly style="background-color: #f7fafc; cursor: not-allowed;" />
+          </div>
+
+          <div style="display: flex; justify-content: center; gap: 12px; margin-top: 30px; flex-wrap: wrap; width: 100%;">
+            <button type="submit" class="btn-submit" style="flex: 1; min-width: 120px">บันทึก</button>
+            <button type="button" class="btn-cancel" onclick="closeProfileModal()" style="flex: 1; min-width: 120px">ยกเลิก</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <!-- Dashboard -->
     <div class="dashboard" id="dashboard">
       <!-- Header -->
@@ -2777,18 +2853,40 @@
           </div>
         </div>
         <div class="header-right">
-          <div class="user-info">
-            <div class="user-avatar" id="userAvatar">A</div>
-            <div class="user-details">
-              <div class="user-name" id="userName">Admin User</div>
-              <div class="counter-badge">
-                ช่อง <span id="counterNumber">1</span>
+          <div class="custom-dropdown">
+            <div class="user-info dropdown-trigger" onclick="toggleProfileDropdown()">
+              <div class="user-avatar" id="userAvatar">A</div>
+              <div class="user-details">
+                <div class="user-name" id="userName">Admin User</div>
+                <div class="counter-badge">
+                  ช่อง <span id="counterNumber">1</span>
+                </div>
+              </div>
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-left: 8px; color: #718096;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
+            <div class="dropdown-menu" id="profileDropdown" style="min-width: 200px; right: 0; top: 100%; margin-top: 10px;">
+              <div class="dropdown-items">
+                <div class="dropdown-item" onclick="openProfileModal()">
+                  <div class="dropdown-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                  </div>
+                  <div class="dropdown-text">โปรไฟล์</div>
+                </div>
+                <div class="dropdown-item" onclick="handleLogout()">
+                  <div class="dropdown-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                    </svg>
+                  </div>
+                  <div class="dropdown-text">ออกจากระบบ</div>
+                </div>
               </div>
             </div>
           </div>
-          <button class="btn-logout" onclick="handleLogout()">
-            ออกจากระบบ
-          </button>
         </div>
       </div>
 
@@ -6543,6 +6641,79 @@
               document.getElementById("in-service-actions").style.display = "none";
 
               console.log("History detail displayed successfully");
+            }
+
+            // Profile Management Functions
+            function toggleProfileDropdown() {
+              const dropdown = document.getElementById('profileDropdown');
+              const trigger = document.querySelector('.dropdown-trigger');
+              
+              if (dropdown.classList.contains('active')) {
+                dropdown.classList.remove('active');
+                trigger.classList.remove('active');
+              } else {
+                dropdown.classList.add('active');
+                trigger.classList.add('active');
+              }
+            }
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+              const dropdown = document.getElementById('profileDropdown');
+              const trigger = document.querySelector('.dropdown-trigger');
+              const isClickInside = trigger && (trigger.contains(event.target) || dropdown.contains(event.target));
+              
+              if (dropdown && !isClickInside && dropdown.classList.contains('active')) {
+                dropdown.classList.remove('active');
+                trigger.classList.remove('active');
+              }
+            });
+
+            function openProfileModal() {
+              // Close dropdown first
+              document.getElementById('profileDropdown').classList.remove('active');
+              document.querySelector('.dropdown-trigger').classList.remove('active');
+              
+              // Get current user data (Mock data for now)
+              const currentUser = {
+                fullName: "Admin User",
+                position: "Admin",
+                department: "IT",
+                username: "admin",
+                role: "Admin"
+              };
+              
+              // Populate form
+              document.getElementById('profileFullName').value = currentUser.fullName;
+              document.getElementById('profilePosition').value = currentUser.position;
+              document.getElementById('profileDepartment').value = currentUser.department;
+              document.getElementById('profileUsername').value = currentUser.username;
+              document.getElementById('profileRole').value = currentUser.role;
+              document.getElementById('profilePassword').value = "";
+              
+              // Show modal
+              document.getElementById('profileModal').style.display = 'flex';
+            }
+
+            function closeProfileModal() {
+              document.getElementById('profileModal').style.display = 'none';
+            }
+
+            function handleProfileSubmit(event) {
+              event.preventDefault();
+              
+              const fullName = document.getElementById('profileFullName').value;
+              const position = document.getElementById('profilePosition').value;
+              const department = document.getElementById('profileDepartment').value;
+              const password = document.getElementById('profilePassword').value;
+              
+              // Simulate saving
+              alert(`✅ บันทึกข้อมูลโปรไฟล์เรียบร้อย\n\nชื่อ-สกุล: ${fullName}\nตำแหน่ง: ${position}\nแผนก: ${department}${password ? '\nรหัสผ่าน: เปลี่ยนเรียบร้อย' : ''}`);
+              
+              // Update UI
+              document.getElementById('userName').textContent = fullName;
+              
+              closeProfileModal();
             }
 
             // --- Init & Event Listeners ---
