@@ -5169,34 +5169,99 @@
               event.preventDefault();
               const email = document.getElementById("resetEmail").value.trim();
 
-              // Mock list of registered emails (ในการใช้งานจริงจะตรวจสอบกับ database)
-              const registeredEmails = [
-                "admin@thamc.com",
-                "staff@thamc.com",
-                "nurse@thamc.com",
-                "doctor@thamc.com",
-              ];
+              // ตรวจสอบว่ากรอก Email หรือไม่
+              if (!email) {
+                Swal.fire({
+                  icon: 'warning',
+                  title: 'กรุณากรอกอีเมล',
+                  text: 'กรุณากรอกที่อยู่อีเมลของคุณเพื่อรีเซ็ตรหัสผ่าน',
+                  confirmButtonText: 'ตกลง',
+                  confirmButtonColor: '#667eea'
+                });
+                return;
+              }
 
-              // ตรวจสอบว่า email อยู่ในระบบหรือไม่
-              if (registeredEmails.includes(email.toLowerCase())) {
-                // Email มีในระบบ - ส่ง link reset password
-                alert(
-                  "✅ สำเร็จ!\n\nระบบได้ส่งลิงก์สำหรับรีเซ็ตรหัสผ่านไปยังอีเมล:\n" +
-                    email +
-                    "\n\nกรุณาตรวจสอบอีเมลของคุณและคลิกลิงก์เพื่อรีเซ็ตรหัสผ่าน"
-                );
+              // ตรวจสอบรูปแบบ Email
+              const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+              if (!emailRegex.test(email)) {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'รูปแบบอีเมลไม่ถูกต้อง',
+                  text: 'กรุณากรอกอีเมลในรูปแบบที่ถูกต้อง เช่น example@domain.com',
+                  confirmButtonText: 'ตกลง',
+                  confirmButtonColor: '#667eea'
+                });
+                return;
+              }
+
+              // Email ที่ถูกต้องในระบบ
+              const validEmail = "admin@pointit.co.th";
+
+              // ตรวจสอบว่า email ตรงกับที่มีในระบบหรือไม่
+              if (email.toLowerCase() === validEmail.toLowerCase()) {
+                // Email ถูกต้อง - ปิด Modal ก่อนแสดง Sweet Alert
+                closeForgotPasswordModal();
+
+                // แสดง Sweet Alert ส่ง Link สำเร็จ
+                Swal.fire({
+                  icon: 'success',
+                  title: 'ส่งลิงก์รีเซ็ตรหัสผ่านสำเร็จ!',
+                  html: `
+                    <div style="text-align: center; padding: 20px;">
+                      <div style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-radius: 16px; padding: 25px; margin-bottom: 20px; border: 2px solid #86efac;">
+                        <p style="font-size: 18px; color: #065f46; margin: 0; font-weight: 600;">
+                          📧 ระบบได้ส่งลิงก์รีเซ็ตรหัสผ่านไปยัง
+                        </p>
+                        <p style="font-size: 20px; color: #047857; margin: 15px 0 0 0; font-weight: 700;">
+                          ${email}
+                        </p>
+                      </div>
+                      <div style="background: #f7fafc; border-radius: 12px; padding: 20px; border-left: 4px solid #667eea;">
+                        <p style="font-size: 15px; color: #4a5568; margin: 0; line-height: 1.8;">
+                          ✅ กรุณาตรวจสอบอีเมลของท่าน<br>
+                          🔗 คลิกลิงก์ในอีเมลเพื่อรีเซ็ตรหัสผ่าน<br>
+                          ⏰ ลิงก์จะหมดอายุภายใน 24 ชั่วโมง
+                        </p>
+                      </div>
+                      <div style="margin-top: 20px; padding: 15px; background: #fffbeb; border-radius: 10px; border: 1px solid #fcd34d;">
+                        <p style="font-size: 13px; color: #92400e; margin: 0;">
+                          💡 <strong>หมายเหตุ:</strong> หากไม่พบอีเมล กรุณาตรวจสอบในกล่อง Spam/Junk Mail
+                        </p>
+                      </div>
+                    </div>
+                  `,
+                  confirmButtonText: 'เข้าใจแล้ว',
+                  confirmButtonColor: '#667eea',
+                  width: '600px'
+                });
 
                 // TODO: ในการใช้งานจริง เรียก API เพื่อส่ง email reset password
                 // await sendPasswordResetEmail(email);
 
-                closeForgotPasswordModal();
               } else {
-                // Email ไม่มีในระบบ
-                alert(
-                  '❌ ไม่พบอีเมลในระบบ\n\nอีเมล "' +
-                    email +
-                    '" ไม่มีในระบบของเรา\n\nกรุณาตรวจสอบอีเมลอีกครั้งหรือติดต่อผู้ดูแลระบบ'
-                );
+                // Email ไม่มีในระบบ - ปิด Modal ก่อนแสดง Sweet Alert
+                closeForgotPasswordModal();
+
+                // แสดง Sweet Alert Error
+                Swal.fire({
+                  icon: 'error',
+                  title: 'ไม่พบอีเมลในระบบ',
+                  html: `
+                    <div style="text-align: center; padding: 15px;">
+                      <p style="font-size: 16px; color: #718096; margin-bottom: 15px;">
+                        อีเมล <strong style="color: #e53e3e;">"${email}"</strong> ไม่มีในระบบของเรา
+                      </p>
+                      <div style="background: #fff5f5; border: 1px solid #feb2b2; border-radius: 10px; padding: 15px; margin-top: 15px;">
+                        <p style="font-size: 14px; color: #c53030; margin: 0;">
+                          💡 กรุณาตรวจสอบอีเมลอีกครั้งหรือติดต่อผู้ดูแลระบบ
+                        </p>
+                      </div>
+                    </div>
+                  `,
+                  confirmButtonText: 'ลองใหม่',
+                  confirmButtonColor: '#667eea',
+                  showCancelButton: false
+                });
               }
             }
 
@@ -6742,19 +6807,70 @@
 
             function handleProfileSubmit(event) {
               event.preventDefault();
-              
-              const fullName = document.getElementById('profileFullName').value;
-              const position = document.getElementById('profilePosition').value;
-              const department = document.getElementById('profileDepartment').value;
+
+              const fullName = document.getElementById('profileFullName').value.trim();
+              const position = document.getElementById('profilePosition').value.trim();
+              const department = document.getElementById('profileDepartment').value.trim();
               const password = document.getElementById('profilePassword').value;
-              
-              // Simulate saving
-              alert(`✅ บันทึกข้อมูลโปรไฟล์เรียบร้อย\n\nชื่อ-สกุล: ${fullName}\nตำแหน่ง: ${position}\nแผนก: ${department}${password ? '\nรหัสผ่าน: เปลี่ยนเรียบร้อย' : ''}`);
-              
+
+              // ตรวจสอบว่ากรอกข้อมูลครบหรือไม่
+              if (!fullName || !position || !department) {
+                Swal.fire({
+                  icon: 'warning',
+                  title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+                  text: 'กรุณากรอกชื่อ-สกุล, ตำแหน่ง และแผนก',
+                  confirmButtonText: 'ตกลง',
+                  confirmButtonColor: '#667eea'
+                });
+                return;
+              }
+
+              // ปิด Modal ก่อนแสดง Sweet Alert
+              closeProfileModal();
+
+              // แสดง Sweet Alert บันทึกสำเร็จ
+              Swal.fire({
+                icon: 'success',
+                title: 'บันทึกข้อมูลโปรไฟล์เรียบร้อย!',
+                html: `
+                  <div style="text-align: left; padding: 20px; background: #f7fafc; border-radius: 12px; margin-top: 15px;">
+                    <h3 style="color: #2d3748; font-size: 18px; margin-bottom: 15px; text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">
+                      📋 ข้อมูลที่บันทึก
+                    </h3>
+                    <div style="display: grid; gap: 12px;">
+                      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                        <span style="color: #718096; font-weight: 500;">👤 ชื่อ-สกุล:</span>
+                        <span style="color: #2d3748; font-weight: 600;">${fullName}</span>
+                      </div>
+                      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                        <span style="color: #718096; font-weight: 500;">💼 ตำแหน่ง:</span>
+                        <span style="color: #2d3748; font-weight: 600;">${position}</span>
+                      </div>
+                      <div style="display: flex; justify-content: space-between; padding: 8px 0; ${password ? 'border-bottom: 1px solid #e2e8f0;' : ''}">
+                        <span style="color: #718096; font-weight: 500;">🏢 แผนก:</span>
+                        <span style="color: #2d3748; font-weight: 600;">${department}</span>
+                      </div>
+                      ${password ? `
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                          <span style="color: #718096; font-weight: 500;">🔐 รหัสผ่าน:</span>
+                          <span style="color: #38a169; font-weight: 700;">เปลี่ยนเรียบร้อย ✓</span>
+                        </div>
+                      ` : ''}
+                    </div>
+                    <div style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-radius: 10px; border-left: 4px solid #22c55e;">
+                      <p style="margin: 0; color: #065f46; font-size: 14px; font-weight: 500;">
+                        ✅ ข้อมูลโปรไฟล์ของคุณได้รับการอัปเดตเรียบร้อยแล้ว
+                      </p>
+                    </div>
+                  </div>
+                `,
+                confirmButtonText: 'ตกลง',
+                confirmButtonColor: '#667eea',
+                width: '550px'
+              });
+
               // Update UI
               document.getElementById('userName').textContent = fullName;
-              
-              closeProfileModal();
             }
 
             // --- Init & Event Listeners ---
