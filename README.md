@@ -60,6 +60,77 @@ open blood-test-queue-management.html
 
 ## 🆕 การอัปเดตล่าสุด (Latest Updates)
 
+### ✅ Version 1.3.0 - Patient Detail Page Sweet Alert Conversion
+
+#### 📌 **การแปลง Windows Alert เป็น Sweet Alert ในหน้ารายละเอียดผู้ป่วย**
+
+**ภาพรวม:**
+- ✅ แปลง `alert()` และ `confirm()` ทั้งหมดในหน้ารายละเอียดผู้ป่วยเป็น Sweet Alert 2
+- ✅ ปรับปรุง UX/UI ให้สวยงามและทันสมัย
+- ✅ คงข้อความเดิมไว้ทั้งหมด
+- ✅ รองรับ Auto-hide และ Progress Bar
+
+**ฟังก์ชันที่แปลงทั้งหมด (13 จุด):**
+
+1. **recallPatient()** - เรียกผู้ป่วยซ้ำ (บรรทัด 6482-6491)
+   - ✅ Info Alert พร้อมข้อความ "กำลังเรียกผู้ป่วยซ้ำ"
+
+2. **releaseQueue()** - ปล่อยคิวกลับไปรอเรียก (บรรทัด 6294-6334)
+   - ✅ Warning Confirm Dialog สำหรับยืนยัน
+   - ✅ Success Alert พร้อม Auto-hide (2 วินาที)
+
+3. **startService()** - เริ่มให้บริการและพิมพ์ Label (บรรทัด 6283-6302)
+   - ✅ Success Alert พร้อม Timer Progress Bar
+
+4. **completeService()** - บันทึกการให้บริการสำเร็จ (บรรทัด 6346-6445)
+   - ✅ Error Alert: "ไม่พบข้อมูลผู้ป่วย" (บรรทัด 6355-6365)
+   - ✅ Success Alert: "บันทึกการให้บริการสำเร็จ" (บรรทัด 6430-6444)
+
+5. **recallNew()** - รอเรียกใหม่ (บรรทัด 6461-6469)
+   - ✅ Warning Alert สำหรับแจ้งเตือน
+
+6. **cancelQueue()** - ปิดคิว (บรรทัด 6447-6470)
+   - ✅ Warning Confirm Dialog พร้อมสีปุ่มแดง (Red)
+
+7. **labelling()** - พิมพ์สติ๊กเกอร์ทั้งหมด (บรรทัด 6481-6491)
+   - ✅ Info Alert พร้อม Auto-hide
+
+8. **printTubeLabel()** - พิมพ์สติ๊กเกอร์หลอดเลือด (บรรทัด 6493-6503) *ใหม่*
+   - ✅ สร้างฟังก์ชันใหม่สำหรับพิมพ์สติ๊กเกอร์แต่ละหลอด
+   - ✅ แสดงชื่อหลอดเลือดใน Alert
+   - ✅ เปลี่ยนจาก inline `alert()` → function call
+
+9. **saveDifficultDraw()** - บันทึกเจาะเลือดยาก (บรรทัด 6524-6555)
+   - ✅ Success Alert แสดงสาเหตุและหมายเหตุ
+   - ✅ ปิด Modal ก่อนแสดง Alert (แก้ z-index)
+
+10. **saveTargetTimeSetting()** - บันทึกเวลาเป้าหมาย (บรรทัด 6605-6650)
+    - ✅ Warning Alert: Validation เวลา 5-120 นาที (บรรทัด 6611-6622)
+    - ✅ Success Alert: แสดงเวลาที่บันทึก (บรรทัด 6633-6644)
+
+11. **saveAllSettings()** - บันทึกการตั้งค่าทั้งหมด (บรรทัด 6642-6764)
+    - ✅ Success Alert แสดงสรุปการตั้งค่าทั้งหมด
+    - ✅ แสดงจำนวนรายการที่บันทึกสำเร็จ
+
+12. **viewHistoryDetail()** - ดูรายละเอียดคิวจากประวัติ (บรรทัด 6788-6813)
+    - ✅ Error Alert: "ไม่พบข้อมูลคิวนี้ในระบบ"
+
+13. **viewHistoryDetail()** - Placeholder (บรรทัด 6029-6037)
+    - ✅ Info Alert: แจ้งเตือนฟังก์ชันยังไม่เสร็จ
+
+**ไฟล์ที่แก้ไข:**
+- `blood-test-queue-management.html`
+- Sweet Alert 2 CDN: อยู่ที่บรรทัด 13-14
+
+**การปรับปรุง UX:**
+- 🎨 ใช้ไอคอนที่เหมาะสมกับแต่ละสถานการณ์ (info, success, warning, error)
+- ⏱️ Auto-hide Timer สำหรับ Alert ที่ไม่ต้องการ User Action
+- 📊 Progress Bar แสดงเวลาที่เหลือก่อน Auto-close
+- 🎯 Confirm Dialog สำหรับการกระทำที่สำคัญ (ปล่อยคิว, ปิดคิว)
+- 🔐 ปิด Modal ก่อนแสดง Sweet Alert (แก้ปัญหา z-index ทุกจุด)
+
+---
+
 ### ✅ Version 1.2.0 - Profile Management + Forgot Password Enhancement
 
 #### 📌 **1. ระบบจัดการโปรไฟล์ (Profile Management)**

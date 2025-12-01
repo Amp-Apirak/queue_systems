@@ -6027,7 +6027,13 @@
             }
 
             function viewHistoryDetail(id) {
-                alert('ดูรายละเอียดคิว: ' + id + '\\n(ฟังก์ชันนี้จะเชื่อมโยงไปยังหน้าแสดงรายละเอียดในอนาคต)');
+                Swal.fire({
+                  icon: 'info',
+                  title: 'ดูรายละเอียดคิว',
+                  html: `ดูรายละเอียดคิว: <strong>${id}</strong><br>(ฟังก์ชันนี้จะเชื่อมโยงไปยังหน้าแสดงรายละเอียดในอนาคต)`,
+                  confirmButtonText: 'ตกลง',
+                  confirmButtonColor: '#667eea'
+                });
             }
 
             // --- Patient Detail Page Functions ---
@@ -6203,9 +6209,7 @@
                                         </div>
                                     </div>
                                     <div class="tube-actions">
-                                        <span class="tube-action-icon" onclick="alert('พิมพ์สติ๊กเกอร์สำหรับหลอด ${
-                                          tube.name
-                                        }')" title="พิมพ์สติ๊กเกอร์">🖨️</span>
+                                        <span class="tube-action-icon" onclick="printTubeLabel('${tube.name}')" title="พิมพ์สติ๊กเกอร์">🖨️</span>
                                         <span class="tube-action-icon barcode-indicator ${
                                           tube.scanned ? "scanned" : ""
                                         }" onclick="scanTube(${
@@ -6285,7 +6289,17 @@
                 (q) => q.id === window.currentPatientQueueId
               );
               if (!queue) return;
-              alert("เริ่มให้บริการและดำเนินการพิมพ์ Label");
+
+              Swal.fire({
+                icon: 'success',
+                title: 'เริ่มให้บริการและดำเนินการพิมพ์ Label',
+                text: '🖨️ ระบบกำลังพิมพ์สติ๊กเกอร์หลอดเลือดทั้งหมด...',
+                confirmButtonText: 'ตกลง',
+                confirmButtonColor: '#667eea',
+                timer: 2000,
+                timerProgressBar: true
+              });
+
               queue.status = "serving";
               queue.serviceStartTime = new Date().toISOString();
               viewPatient(queue.id);
@@ -6295,24 +6309,41 @@
               const queue = queueData.find(
                 (q) => q.id === window.currentPatientQueueId
               );
-              if (
-                queue &&
-                confirm(
-                  `ยืนยันปล่อยคิว ${queue.id} (${queue.name}) กลับไปรอเรียก?`
-                )
-              ) {
-                queue.status = "waiting";
-                queue.calledByStaff = null;
-                queue.calledByCounter = null;
-                queue.queueCallTime = null;
-                queue.serviceStartTime = null;
-                queue.serviceDuration = null;
-                queue.serviceEndTime = null;
-                stopServiceTimer();
-                renderQueue();
-                updateStats();
-                backToQueue();
-                alert("⚠️ ปล่อยคิวเรียบร้อยแล้ว");
+              if (queue) {
+                Swal.fire({
+                  icon: 'warning',
+                  title: 'ยืนยันปล่อยคิว',
+                  html: `ยืนยันปล่อยคิว <strong>${queue.id}</strong> (<strong>${queue.name}</strong>) กลับไปรอเรียก?`,
+                  showCancelButton: true,
+                  confirmButtonText: 'ยืนยัน',
+                  cancelButtonText: 'ยกเลิก',
+                  confirmButtonColor: '#f59e0b',
+                  cancelButtonColor: '#6b7280'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    queue.status = "waiting";
+                    queue.calledByStaff = null;
+                    queue.calledByCounter = null;
+                    queue.queueCallTime = null;
+                    queue.serviceStartTime = null;
+                    queue.serviceDuration = null;
+                    queue.serviceEndTime = null;
+                    stopServiceTimer();
+                    renderQueue();
+                    updateStats();
+                    backToQueue();
+
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'ปล่อยคิวเรียบร้อยแล้ว',
+                      text: '⚠️ คิวได้ถูกส่งกลับไปรอเรียกใหม่',
+                      confirmButtonText: 'ตกลง',
+                      confirmButtonColor: '#667eea',
+                      timer: 2000,
+                      timerProgressBar: true
+                    });
+                  }
+                });
               }
             }
 
@@ -6327,7 +6358,13 @@
               console.log("queue found:", queue);
               if (!queue) {
                 console.error("Queue not found!");
-                alert("ไม่พบข้อมูลผู้ป่วย");
+                Swal.fire({
+                  icon: 'error',
+                  title: 'ไม่พบข้อมูลผู้ป่วย',
+                  text: 'ไม่พบข้อมูลคิวนี้ในระบบ',
+                  confirmButtonText: 'ตกลง',
+                  confirmButtonColor: '#667eea'
+                });
                 return;
               }
 
@@ -6396,11 +6433,19 @@
 
               // Show success message
               console.log("Showing success message");
-              alert("✅ บันทึกการให้บริการสำเร็จ\n\nรายการนี้ได้ถูกเพิ่มเข้าประวัติการให้บริการแล้ว");
-
-              // Return to queue page
-              console.log("Returning to queue page");
-              backToQueue();
+              Swal.fire({
+                icon: 'success',
+                title: 'บันทึกการให้บริการสำเร็จ',
+                html: '✅ รายการนี้ได้ถูกเพิ่มเข้าประวัติการให้บริการแล้ว',
+                confirmButtonText: 'ตกลง',
+                confirmButtonColor: '#667eea',
+                timer: 2000,
+                timerProgressBar: true
+              }).then(() => {
+                // Return to queue page
+                console.log("Returning to queue page");
+                backToQueue();
+              });
             }
 
             function cancelQueue() {
@@ -6408,24 +6453,67 @@
                 (q) => q.id === window.currentPatientQueueId
               );
               if (queueIndex > -1) {
-                if (confirm("ยืนยันการปิดคิว?")) {
-                  queueData.splice(queueIndex, 1);
-                  renderQueue();
-                  updateStats();
-                  backToQueue();
-                }
+                Swal.fire({
+                  icon: 'warning',
+                  title: 'ยืนยันการปิดคิว',
+                  text: 'คุณต้องการปิดคิวนี้ใช่หรือไม่?',
+                  showCancelButton: true,
+                  confirmButtonText: 'ยืนยัน',
+                  cancelButtonText: 'ยกเลิก',
+                  confirmButtonColor: '#ef4444',
+                  cancelButtonColor: '#6b7280'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    queueData.splice(queueIndex, 1);
+                    renderQueue();
+                    updateStats();
+                    backToQueue();
+                  }
+                });
               }
             }
 
             function recallNew() {
-              alert("🔔 แจ้งเตือน: รอเรียกใหม่");
+              Swal.fire({
+                icon: 'warning',
+                title: 'แจ้งเตือน: รอเรียกใหม่',
+                text: '🔔 คิวนี้จะถูกส่งกลับไปรอเรียกใหม่',
+                confirmButtonText: 'ตกลง',
+                confirmButtonColor: '#667eea'
+              });
             }
             function labelling() {
-              alert("🖨️ กำลังพิมพ์สติ๊กเกอร์...");
+              Swal.fire({
+                icon: 'info',
+                title: 'กำลังพิมพ์สติ๊กเกอร์',
+                text: '🖨️ ระบบกำลังดำเนินการพิมพ์สติ๊กเกอร์...',
+                confirmButtonText: 'ตกลง',
+                confirmButtonColor: '#667eea',
+                timer: 2000,
+                timerProgressBar: true
+              });
+            }
+
+            function printTubeLabel(tubeName) {
+              Swal.fire({
+                icon: 'info',
+                title: 'พิมพ์สติ๊กเกอร์สำหรับหลอด',
+                html: `🖨️ กำลังพิมพ์สติ๊กเกอร์สำหรับหลอด <strong>${tubeName}</strong>`,
+                confirmButtonText: 'ตกลง',
+                confirmButtonColor: '#667eea',
+                timer: 2000,
+                timerProgressBar: true
+              });
             }
 
             function recallPatient() {
-              alert("📢 กำลังเรียกผู้ป่วยซ้ำ...");
+              Swal.fire({
+                icon: 'info',
+                title: 'กำลังเรียกผู้ป่วยซ้ำ',
+                text: '📢 ระบบกำลังดำเนินการเรียกผู้ป่วยซ้ำ...',
+                confirmButtonText: 'ตกลง',
+                confirmButtonColor: '#667eea'
+              });
             }
 
             function openDifficultDrawModal() {
@@ -6453,9 +6541,22 @@
                   comment: comment,
                   timestamp: new Date().toLocaleString('th-TH')
                 };
-                
-                alert(`✅ บันทึกข้อมูลเรียบร้อย\n\nสาเหตุ: ${reason}\nเพิ่มเติม: ${comment || "-"}`);
+
                 closeDifficultDrawModal();
+
+                Swal.fire({
+                  icon: 'success',
+                  title: 'บันทึกข้อมูลเรียบร้อย',
+                  html: `
+                    <div style="text-align: left;">
+                      ✅ บันทึกข้อมูลการเจาะเลือดยากเรียบร้อยแล้ว<br><br>
+                      <strong>สาเหตุ:</strong> ${reason}<br>
+                      <strong>เพิ่มเติม:</strong> ${comment || "-"}
+                    </div>
+                  `,
+                  confirmButtonText: 'ตกลง',
+                  confirmButtonColor: '#667eea'
+                });
               }
             }
 
@@ -6515,7 +6616,13 @@
               // Validate range
               if (minutes < 5 || minutes > 120) {
                 if (showAlert) {
-                  alert("⚠️ กรุณากรอกเวลาระหว่าง 5-120 นาที");
+                  Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณากรอกเวลาให้ถูกต้อง',
+                    text: '⚠️ กรุณากรอกเวลาระหว่าง 5-120 นาที',
+                    confirmButtonText: 'ตกลง',
+                    confirmButtonColor: '#667eea'
+                  });
                 }
                 return false;
               }
@@ -6531,11 +6638,15 @@
 
               // Show success message only if requested
               if (showAlert) {
-                alert(
-                  "✅ บันทึกการตั้งค่าเวลาเป้าหมายเรียบร้อยแล้ว!\n\nเวลาเป้าหมาย: " +
-                    minutes +
-                    " นาที"
-                );
+                Swal.fire({
+                  icon: 'success',
+                  title: 'บันทึกการตั้งค่าเวลาเป้าหมายเรียบร้อยแล้ว',
+                  html: `✅ เวลาเป้าหมาย: <strong>${minutes}</strong> นาที`,
+                  confirmButtonText: 'ตกลง',
+                  confirmButtonColor: '#667eea',
+                  timer: 2000,
+                  timerProgressBar: true
+                });
               }
 
               // Update stats if needed
@@ -6637,16 +6748,22 @@
               }
 
               // Show comprehensive success message
-              const summaryText = settingsSummary.join("\n");
-              alert(
-                "✅ บันทึกการตั้งค่าทั้งหมดเรียบร้อยแล้ว!\n\n" +
-                  "📋 สรุปการตั้งค่า:\n" +
-                  summaryText +
-                  "\n\n" +
-                  "💾 บันทึกสำเร็จ " +
-                  successCount +
-                  " รายการ"
-              );
+              const summaryText = settingsSummary.map(item => `<div style="text-align: left;">${item}</div>`).join("");
+              Swal.fire({
+                icon: 'success',
+                title: 'บันทึกการตั้งค่าทั้งหมดเรียบร้อยแล้ว',
+                html: `
+                  <div style="text-align: left;">
+                    ✅ บันทึกการตั้งค่าสำเร็จ<br><br>
+                    <strong>📋 สรุปการตั้งค่า:</strong><br>
+                    ${summaryText}
+                    <br><br>
+                    <strong>💾 บันทึกสำเร็จ ${successCount} รายการ</strong>
+                  </div>
+                `,
+                confirmButtonText: 'ตกลง',
+                confirmButtonColor: '#667eea'
+              });
 
               // Update stats and UI
               updateStats();
@@ -6687,7 +6804,13 @@
 
               console.log("queue found:", queue);
               if (!queue) {
-                alert("ไม่พบข้อมูลคิวนี้ในระบบ");
+                Swal.fire({
+                  icon: 'error',
+                  title: 'ไม่พบข้อมูลคิวนี้ในระบบ',
+                  text: 'ไม่สามารถค้นหาข้อมูลคิวที่ต้องการได้',
+                  confirmButtonText: 'ตกลง',
+                  confirmButtonColor: '#667eea'
+                });
                 return;
               }
 
