@@ -10,6 +10,8 @@
       href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <!-- Sweet Alert 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
       * {
         margin: 0;
@@ -5481,8 +5483,24 @@
 
             function handleLogin(event) {
               event.preventDefault();
-              const username = document.getElementById("username").value;
-              if (username) {
+              const username = document.getElementById("username").value.trim();
+              const password = document.getElementById("password").value.trim();
+
+              // ตรวจสอบว่ากรอกข้อมูลครบหรือไม่
+              if (!username || !password) {
+                Swal.fire({
+                  icon: 'warning',
+                  title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+                  text: 'กรุณากรอก Username และ Password',
+                  confirmButtonText: 'ตกลง',
+                  confirmButtonColor: '#667eea'
+                });
+                return;
+              }
+
+              // ตรวจสอบ username และ password
+              if (username === "admin" && password === "admin") {
+                // Login สำเร็จ
                 currentUser = { name: username, counter: 1 };
                 document.getElementById("userName").textContent = username;
                 document.getElementById("userAvatar").textContent = username
@@ -5493,6 +5511,29 @@
                 renderQueue();
                 renderHistory();
                 updateStats();
+
+                // แสดงข้อความต้อนรับ
+                Swal.fire({
+                  icon: 'success',
+                  title: 'เข้าสู่ระบบสำเร็จ!',
+                  text: `ยินดีต้อนรับ ${username}`,
+                  timer: 1500,
+                  showConfirmButton: false
+                });
+              } else {
+                // Login ไม่สำเร็จ
+                Swal.fire({
+                  icon: 'error',
+                  title: 'เข้าสู่ระบบไม่สำเร็จ',
+                  html: '<p style="font-size: 16px; color: #718096;">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</p><p style="font-size: 14px; color: #a0aec0; margin-top: 10px;">กรุณาตรวจสอบและลองใหม่อีกครั้ง</p>',
+                  confirmButtonText: 'ลองใหม่',
+                  confirmButtonColor: '#667eea',
+                  showCancelButton: false
+                });
+
+                // Clear password field
+                document.getElementById("password").value = "";
+                document.getElementById("password").focus();
               }
             }
 
