@@ -2565,69 +2565,6 @@
             </svg>
             เข้าสู่ระบบ
           </button>
-
-          <a
-            href="#"
-            class="forgot-password-link"
-            onclick="openForgotPasswordModal(event)"
-          >
-            ลืมรหัสผ่าน?
-          </a>
-        </form>
-      </div>
-    </div>
-
-    <!-- Forgot Password Modal -->
-    <div class="modal-overlay" id="forgotPasswordModal">
-      <div class="modal-content" id="forgotPasswordModalContent">
-        <div class="modal-icon">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-            ></path>
-          </svg>
-        </div>
-        <h2>ลืมรหัสผ่าน</h2>
-        <p>
-          กรอกอีเมลที่ลงทะเบียนไว้ในระบบ<br />เราจะส่งลิงก์สำหรับรีเซ็ตรหัสผ่านให้คุณ
-        </p>
-
-        <form onsubmit="handleForgotPassword(event)">
-          <div class="modal-form-group">
-            <label for="resetEmail">อีเมล</label>
-            <input
-              type="email"
-              id="resetEmail"
-              placeholder="กรอกอีเมลของคุณ"
-              required
-            />
-          </div>
-
-          <div
-            style="
-              display: flex;
-              justify-content: center;
-              gap: 12px;
-              margin-top: 35px;
-              flex-wrap: wrap;
-              width: 100%;
-            "
-          >
-            <button type="submit" class="btn-submit" style="flex: 1; min-width: 150px">
-              ส่งลิงก์รีเซ็ตรหัสผ่าน
-            </button>
-            <button
-              type="button"
-              class="btn-cancel"
-              onclick="closeForgotPasswordModal()"
-              style="flex: 1; min-width: 100px"
-            >
-              ยกเลิก
-            </button>
-          </div>
         </form>
       </div>
     </div>
@@ -4023,7 +3960,7 @@
                 </div>
                 <button
                   class="btn"
-                  onclick="exportUsersToExcel()"
+                  onclick="importUsersFromExcel()"
                   style="width: auto; padding: 14px 30px"
                 >
                   <svg
@@ -4036,10 +3973,10 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                     ></path>
                   </svg>
-                  Export Excel
+                  Import
                 </button>
                 <button
                   class="btn"
@@ -5150,121 +5087,6 @@
             }
 
             // --- Core Functions ---
-            // Forgot Password Modal Functions
-            function openForgotPasswordModal(event) {
-              event.preventDefault();
-              document
-                .getElementById("forgotPasswordModal")
-                .classList.add("active");
-            }
-
-            function closeForgotPasswordModal() {
-              document
-                .getElementById("forgotPasswordModal")
-                .classList.remove("active");
-              document.getElementById("resetEmail").value = "";
-            }
-
-            function handleForgotPassword(event) {
-              event.preventDefault();
-              const email = document.getElementById("resetEmail").value.trim();
-
-              // ตรวจสอบว่ากรอก Email หรือไม่
-              if (!email) {
-                Swal.fire({
-                  icon: 'warning',
-                  title: 'กรุณากรอกอีเมล',
-                  text: 'กรุณากรอกที่อยู่อีเมลของคุณเพื่อรีเซ็ตรหัสผ่าน',
-                  confirmButtonText: 'ตกลง',
-                  confirmButtonColor: '#667eea'
-                });
-                return;
-              }
-
-              // ตรวจสอบรูปแบบ Email
-              const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-              if (!emailRegex.test(email)) {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'รูปแบบอีเมลไม่ถูกต้อง',
-                  text: 'กรุณากรอกอีเมลในรูปแบบที่ถูกต้อง เช่น example@domain.com',
-                  confirmButtonText: 'ตกลง',
-                  confirmButtonColor: '#667eea'
-                });
-                return;
-              }
-
-              // Email ที่ถูกต้องในระบบ
-              const validEmail = "admin@pointit.co.th";
-
-              // ตรวจสอบว่า email ตรงกับที่มีในระบบหรือไม่
-              if (email.toLowerCase() === validEmail.toLowerCase()) {
-                // Email ถูกต้อง - ปิด Modal ก่อนแสดง Sweet Alert
-                closeForgotPasswordModal();
-
-                // แสดง Sweet Alert ส่ง Link สำเร็จ
-                Swal.fire({
-                  icon: 'success',
-                  title: 'ส่งลิงก์รีเซ็ตรหัสผ่านสำเร็จ!',
-                  html: `
-                    <div style="text-align: center; padding: 20px;">
-                      <div style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-radius: 16px; padding: 25px; margin-bottom: 20px; border: 2px solid #86efac;">
-                        <p style="font-size: 18px; color: #065f46; margin: 0; font-weight: 600;">
-                          📧 ระบบได้ส่งลิงก์รีเซ็ตรหัสผ่านไปยัง
-                        </p>
-                        <p style="font-size: 20px; color: #047857; margin: 15px 0 0 0; font-weight: 700;">
-                          ${email}
-                        </p>
-                      </div>
-                      <div style="background: #f7fafc; border-radius: 12px; padding: 20px; border-left: 4px solid #667eea;">
-                        <p style="font-size: 15px; color: #4a5568; margin: 0; line-height: 1.8;">
-                          ✅ กรุณาตรวจสอบอีเมลของท่าน<br>
-                          🔗 คลิกลิงก์ในอีเมลเพื่อรีเซ็ตรหัสผ่าน<br>
-                          ⏰ ลิงก์จะหมดอายุภายใน 24 ชั่วโมง
-                        </p>
-                      </div>
-                      <div style="margin-top: 20px; padding: 15px; background: #fffbeb; border-radius: 10px; border: 1px solid #fcd34d;">
-                        <p style="font-size: 13px; color: #92400e; margin: 0;">
-                          💡 <strong>หมายเหตุ:</strong> หากไม่พบอีเมล กรุณาตรวจสอบในกล่อง Spam/Junk Mail
-                        </p>
-                      </div>
-                    </div>
-                  `,
-                  confirmButtonText: 'เข้าใจแล้ว',
-                  confirmButtonColor: '#667eea',
-                  width: '600px'
-                });
-
-                // TODO: ในการใช้งานจริง เรียก API เพื่อส่ง email reset password
-                // await sendPasswordResetEmail(email);
-
-              } else {
-                // Email ไม่มีในระบบ - ปิด Modal ก่อนแสดง Sweet Alert
-                closeForgotPasswordModal();
-
-                // แสดง Sweet Alert Error
-                Swal.fire({
-                  icon: 'error',
-                  title: 'ไม่พบอีเมลในระบบ',
-                  html: `
-                    <div style="text-align: center; padding: 15px;">
-                      <p style="font-size: 16px; color: #718096; margin-bottom: 15px;">
-                        อีเมล <strong style="color: #e53e3e;">"${email}"</strong> ไม่มีในระบบของเรา
-                      </p>
-                      <div style="background: #fff5f5; border: 1px solid #feb2b2; border-radius: 10px; padding: 15px; margin-top: 15px;">
-                        <p style="font-size: 14px; color: #c53030; margin: 0;">
-                          💡 กรุณาตรวจสอบอีเมลอีกครั้งหรือติดต่อผู้ดูแลระบบ
-                        </p>
-                      </div>
-                    </div>
-                  `,
-                  confirmButtonText: 'ลองใหม่',
-                  confirmButtonColor: '#667eea',
-                  showCancelButton: false
-                });
-              }
-            }
-
             // User Management Functions
             let usersData = [
               {
@@ -5530,20 +5352,133 @@
               closeUserModal();
             }
 
-            function exportUsersToExcel() {
-              // Mock export - ในการใช้งานจริงจะใช้ library เช่น SheetJS
-              alert(
-                "📊 กำลัง Export ข้อมูลผู้ใช้งาน " +
-                  usersData.length +
-                  " รายการ\n\nในการใช้งานจริง จะ export เป็นไฟล์ Excel"
-              );
+            function importUsersFromExcel() {
+              // สร้าง input file element แบบ hidden
+              const input = document.createElement('input');
+              input.type = 'file';
+              input.accept = '.xlsx, .xls, .csv';
 
-              // TODO: ในการใช้งานจริง
-              // const XLSX = window.XLSX;
-              // const ws = XLSX.utils.json_to_sheet(usersData);
-              // const wb = XLSX.utils.book_new();
-              // XLSX.utils.book_append_sheet(wb, ws, "Users");
-              // XLSX.writeFile(wb, "users_export.xlsx");
+              // เมื่อเลือกไฟล์เสร็จ
+              input.onchange = function(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                // แสดง SweetAlert2 ยืนยันการนำเข้า
+                Swal.fire({
+                  title: 'ยืนยันการนำเข้าข้อมูล',
+                  html: `
+                    <div style="text-align: left; padding: 20px;">
+                      <div style="background: #f7fafc; border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 2px solid #e2e8f0;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px;">
+                          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 32px; height: 32px; color: #667eea;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                          </svg>
+                          <div>
+                            <div style="font-size: 14px; color: #718096; margin-bottom: 3px;">ไฟล์ที่เลือก:</div>
+                            <div style="font-size: 16px; color: #2d3748; font-weight: 700;">${file.name}</div>
+                          </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 14px;">
+                          <div>
+                            <span style="color: #718096;">ขนาดไฟล์:</span>
+                            <span style="color: #2d3748; font-weight: 600; margin-left: 5px;">${(file.size / 1024).toFixed(2)} KB</span>
+                          </div>
+                          <div>
+                            <span style="color: #718096;">ประเภท:</span>
+                            <span style="color: #2d3748; font-weight: 600; margin-left: 5px;">${file.type || 'Excel'}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div style="background: #fff5f5; border: 2px solid #feb2b2; border-radius: 10px; padding: 15px; margin-bottom: 15px;">
+                        <div style="display: flex; align-items: start; gap: 10px;">
+                          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 24px; height: 24px; color: #e53e3e; flex-shrink: 0; margin-top: 2px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                          </svg>
+                          <div>
+                            <div style="font-size: 15px; color: #c53030; font-weight: 700; margin-bottom: 8px;">⚠️ คำเตือนสำคัญ</div>
+                            <div style="font-size: 13px; color: #742a2a; line-height: 1.6;">
+                              • ข้อมูลผู้ใช้ปัจจุบันที่ซ้ำกันจะถูกแทนที่<br>
+                              • ตรวจสอบรูปแบบข้อมูลให้ถูกต้องก่อนนำเข้า<br>
+                              • แนะนำให้สำรองข้อมูลเดิมก่อนดำเนินการ
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div style="text-align: center; font-size: 15px; color: #4a5568;">
+                        คุณต้องการนำเข้าข้อมูลผู้ใช้งานจากไฟล์นี้หรือไม่?
+                      </div>
+                    </div>
+                  `,
+                  icon: 'question',
+                  showCancelButton: true,
+                  confirmButtonColor: '#667eea',
+                  cancelButtonColor: '#e2e8f0',
+                  confirmButtonText: '✓ นำเข้าข้อมูล',
+                  cancelButtonText: '✕ ยกเลิก',
+                  width: '600px'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    // แสดง Loading
+                    Swal.fire({
+                      title: 'กำลังนำเข้าข้อมูล...',
+                      html: '<div style="padding: 20px;"><div class="spinner-border" role="status"></div><p style="margin-top: 15px; color: #718096;">กรุณารอสักครู่</p></div>',
+                      allowOutsideClick: false,
+                      showConfirmButton: false,
+                      didOpen: () => {
+                        Swal.showLoading();
+                      }
+                    });
+
+                    // Simulate import process (ในการใช้งานจริงจะใช้ SheetJS อ่านไฟล์)
+                    setTimeout(() => {
+                      // TODO: ในการใช้งานจริง อ่านไฟล์ Excel ด้วย SheetJS
+                      // const reader = new FileReader();
+                      // reader.onload = function(e) {
+                      //   const data = new Uint8Array(e.target.result);
+                      //   const workbook = XLSX.read(data, {type: 'array'});
+                      //   const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                      //   const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+                      //   // นำข้อมูลเข้าสู่ usersData
+                      // };
+                      // reader.readAsArrayBuffer(file);
+
+                      // Mock: สมมติว่านำเข้าสำเร็จ
+                      const mockImportedCount = Math.floor(Math.random() * 10) + 5;
+
+                      Swal.fire({
+                        icon: 'success',
+                        title: 'นำเข้าข้อมูลสำเร็จ!',
+                        html: `
+                          <div style="text-align: center; padding: 20px;">
+                            <div style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-radius: 16px; padding: 25px; margin-bottom: 20px; border: 2px solid #86efac;">
+                              <div style="font-size: 48px; margin-bottom: 10px;">✓</div>
+                              <div style="font-size: 20px; color: #065f46; font-weight: 700;">
+                                นำเข้า ${mockImportedCount} รายการสำเร็จ
+                              </div>
+                            </div>
+                            <div style="background: #f7fafc; border-radius: 12px; padding: 20px; text-align: left;">
+                              <div style="font-size: 15px; color: #4a5568; line-height: 1.8;">
+                                ✅ ข้อมูลได้ถูกนำเข้าสู่ระบบเรียบร้อยแล้ว<br>
+                                📊 กำลังรีเฟรชตารางผู้ใช้งาน<br>
+                                💾 บันทึกข้อมูลอัตโนมัติ
+                              </div>
+                            </div>
+                          </div>
+                        `,
+                        confirmButtonText: 'เข้าใจแล้ว',
+                        confirmButtonColor: '#667eea',
+                        width: '500px'
+                      }).then(() => {
+                        // รีเฟรชตารางผู้ใช้งาน
+                        renderUsers();
+                      });
+                    }, 2000);
+                  }
+                });
+              };
+
+              // เปิด file picker
+              input.click();
             }
 
             function handleLogin(event) {
