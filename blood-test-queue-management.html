@@ -342,6 +342,85 @@
         }
       }
 
+      @keyframes successPulse {
+        0% {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      /* Import Modal Step Styles */
+      .step-circle {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: white;
+        border: 3px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 700;
+        color: #94a3b8;
+        margin: 0 auto;
+        transition: all 0.4s ease;
+      }
+
+      .step-circle.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: #667eea;
+        color: white;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        transform: scale(1.1);
+      }
+
+      .step-circle.completed {
+        background: #10b981;
+        border-color: #10b981;
+        color: white;
+      }
+
+      .import-step {
+        animation: fadeInStep 0.4s ease-out;
+      }
+
+      @keyframes fadeInStep {
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      /* Drag and Drop Styles */
+      #dropZone.dragover {
+        border-color: #667eea !important;
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.1) 0%,
+          rgba(118, 75, 162, 0.1) 100%
+        ) !important;
+        transform: scale(1.02);
+      }
+
+      /* SweetAlert2 Custom Styles */
+      .swal-confirm-large {
+        padding: 16px 50px !important;
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        border-radius: 12px !important;
+      }
+
       /* Password Requirement Styles */
       .password-requirement {
         display: flex;
@@ -2501,7 +2580,7 @@
         background: #e2e8f0;
         color: #4a5568;
       }
-      
+
       .btn-secondary:hover {
         background: #cbd5e0;
       }
@@ -2569,6 +2648,671 @@
       </div>
     </div>
 
+    <!-- Import Users Modal -->
+    <div class="modal-overlay" id="importModal">
+      <div class="modal-content" style="max-width: 700px">
+        <div class="modal-header">
+          <h2 class="modal-title" id="importModalTitle">
+            นำเข้าข้อมูลผู้ใช้งาน
+          </h2>
+          <button class="close-btn" onclick="closeImportModal()">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Progress Steps -->
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 40px;
+              position: relative;
+            "
+          >
+            <div
+              style="
+                position: absolute;
+                top: 20px;
+                left: 0;
+                right: 0;
+                height: 3px;
+                background: #e2e8f0;
+                z-index: 0;
+              "
+            >
+              <div
+                id="progressBar"
+                style="
+                  height: 100%;
+                  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                  width: 0%;
+                  transition: width 0.4s ease;
+                "
+              ></div>
+            </div>
+            <div
+              style="
+                flex: 1;
+                text-align: center;
+                position: relative;
+                z-index: 1;
+              "
+            >
+              <div id="step1Circle" class="step-circle active">1</div>
+              <div
+                style="
+                  font-size: 13px;
+                  color: #667eea;
+                  font-weight: 600;
+                  margin-top: 8px;
+                "
+              >
+                ดาวน์โหลด Template
+              </div>
+            </div>
+            <div
+              style="
+                flex: 1;
+                text-align: center;
+                position: relative;
+                z-index: 1;
+              "
+            >
+              <div id="step2Circle" class="step-circle">2</div>
+              <div
+                style="
+                  font-size: 13px;
+                  color: #94a3b8;
+                  font-weight: 600;
+                  margin-top: 8px;
+                "
+              >
+                อัพโหลดไฟล์
+              </div>
+            </div>
+            <div
+              style="
+                flex: 1;
+                text-align: center;
+                position: relative;
+                z-index: 1;
+              "
+            >
+              <div id="step3Circle" class="step-circle">3</div>
+              <div
+                style="
+                  font-size: 13px;
+                  color: #94a3b8;
+                  font-weight: 600;
+                  margin-top: 8px;
+                "
+              >
+                เสร็จสิ้น
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 1: Download Template -->
+          <div id="importStep1" class="import-step">
+            <div style="text-align: center; padding: 30px 20px">
+              <div
+                style="
+                  width: 100px;
+                  height: 100px;
+                  margin: 0 auto 25px;
+                  background: linear-gradient(135deg, #e0e7ff 0%, #ddd6fe 100%);
+                  border-radius: 50%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  style="width: 50px; height: 50px; color: #667eea"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  ></path>
+                </svg>
+              </div>
+              <h3
+                style="
+                  font-size: 22px;
+                  color: #1e293b;
+                  margin-bottom: 15px;
+                  font-weight: 700;
+                "
+              >
+                ดาวน์โหลด Template Excel
+              </h3>
+              <p
+                style="
+                  font-size: 15px;
+                  color: #64748b;
+                  line-height: 1.7;
+                  margin-bottom: 30px;
+                "
+              >
+                ดาวน์โหลดไฟล์ Template เพื่อกรอกข้อมูลผู้ใช้งาน<br />
+                ตามรูปแบบที่กำหนด
+              </p>
+              <div
+                style="
+                  background: #f8fafc;
+                  border: 2px dashed #cbd5e1;
+                  border-radius: 12px;
+                  padding: 25px;
+                  margin-bottom: 30px;
+                  text-align: left;
+                "
+              >
+                <div
+                  style="
+                    font-size: 14px;
+                    color: #475569;
+                    font-weight: 600;
+                    margin-bottom: 15px;
+                  "
+                >
+                  📋 ข้อมูลใน Template:
+                </div>
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 10px;
+                    font-size: 13px;
+                    color: #64748b;
+                  "
+                >
+                  <div>• ชื่อผู้ใช้งาน (Username)</div>
+                  <div>• ชื่อ-สกุล (Full Name)</div>
+                  <div>• ตำแหน่ง (Position)</div>
+                  <div>• แผนก (Department)</div>
+                  <div>• รหัสผ่าน (Password)</div>
+                  <div>• บทบาท (Role: Admin/Staff)</div>
+                </div>
+              </div>
+              <button
+                class="btn"
+                onclick="downloadTemplate()"
+                style="padding: 16px 50px; font-size: 17px; font-weight: 700"
+              >
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  style="width: 22px; height: 22px"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  ></path>
+                </svg>
+                ดาวน์โหลด Template
+              </button>
+              <p style="font-size: 13px; color: #94a3b8; margin-top: 20px">
+                💡 หลังจากดาวน์โหลดแล้ว กรุณากรอกข้อมูลและบันทึกไฟล์
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 2: Upload File -->
+          <div id="importStep2" class="import-step" style="display: none">
+            <div style="padding: 20px">
+              <div style="text-align: center; margin-bottom: 25px">
+                <div
+                  style="
+                    width: 90px;
+                    height: 90px;
+                    margin: 0 auto 20px;
+                    background: linear-gradient(
+                      135deg,
+                      #dbeafe 0%,
+                      #bfdbfe 100%
+                    );
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <svg
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    style="width: 45px; height: 45px; color: #3b82f6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                    ></path>
+                  </svg>
+                </div>
+                <h3
+                  style="
+                    font-size: 20px;
+                    color: #1e293b;
+                    margin-bottom: 10px;
+                    font-weight: 700;
+                  "
+                >
+                  อัพโหลดไฟล์ Template
+                </h3>
+                <p style="font-size: 14px; color: #64748b">
+                  กรอกข้อมูลแล้ว? มาอัพโหลดไฟล์กันเลย!
+                </p>
+              </div>
+
+              <!-- Drag & Drop Zone -->
+              <div
+                id="dropZone"
+                style="
+                  border: 3px dashed #cbd5e1;
+                  border-radius: 16px;
+                  padding: 50px 30px;
+                  text-align: center;
+                  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+                  cursor: pointer;
+                  transition: all 0.3s ease;
+                  margin-bottom: 20px;
+                "
+                onclick="document.getElementById('fileInput').click()"
+                ondragover="handleDragOver(event)"
+                ondragleave="handleDragLeave(event)"
+                ondrop="handleDrop(event)"
+              >
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  style="
+                    width: 60px;
+                    height: 60px;
+                    color: #94a3b8;
+                    margin: 0 auto 20px;
+                  "
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  ></path>
+                </svg>
+                <div
+                  style="
+                    font-size: 16px;
+                    color: #475569;
+                    font-weight: 600;
+                    margin-bottom: 10px;
+                  "
+                >
+                  คลิกเพื่อเลือกไฟล์ หรือ ลากไฟล์มาวางที่นี่
+                </div>
+                <div style="font-size: 13px; color: #94a3b8">
+                  รองรับไฟล์: .xlsx, .xls, .csv (ขนาดไม่เกิน 5MB)
+                </div>
+              </div>
+              <input
+                type="file"
+                id="fileInput"
+                accept=".xlsx,.xls,.csv"
+                style="display: none"
+                onchange="handleFileSelect(event)"
+              />
+
+              <!-- Selected File Display -->
+              <div
+                id="selectedFileInfo"
+                style="
+                  display: none;
+                  background: #f0fdf4;
+                  border: 2px solid #86efac;
+                  border-radius: 12px;
+                  padding: 20px;
+                  margin-bottom: 25px;
+                "
+              >
+                <div style="display: flex; align-items: center; gap: 15px">
+                  <div
+                    style="
+                      width: 50px;
+                      height: 50px;
+                      background: #10b981;
+                      border-radius: 10px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      flex-shrink: 0;
+                    "
+                  >
+                    <svg
+                      fill="none"
+                      stroke="white"
+                      viewBox="0 0 24 24"
+                      style="width: 28px; height: 28px"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div style="flex: 1">
+                    <div
+                      style="
+                        font-size: 15px;
+                        color: #065f46;
+                        font-weight: 700;
+                        margin-bottom: 5px;
+                      "
+                      id="fileName"
+                    >
+                      filename.xlsx
+                    </div>
+                    <div style="font-size: 13px; color: #059669" id="fileSize">
+                      125 KB
+                    </div>
+                  </div>
+                  <button
+                    onclick="clearFile()"
+                    style="
+                      background: none;
+                      border: none;
+                      color: #dc2626;
+                      cursor: pointer;
+                      padding: 5px;
+                      font-size: 24px;
+                      line-height: 1;
+                    "
+                    title="ลบไฟล์"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+
+              <div
+                style="
+                  background: #fffbeb;
+                  border: 2px solid #fcd34d;
+                  border-radius: 10px;
+                  padding: 15px;
+                  margin-bottom: 25px;
+                "
+              >
+                <div style="display: flex; gap: 10px; align-items: start">
+                  <svg
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    style="
+                      width: 22px;
+                      height: 22px;
+                      color: #f59e0b;
+                      flex-shrink: 0;
+                      margin-top: 2px;
+                    "
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    ></path>
+                  </svg>
+                  <div
+                    style="font-size: 13px; color: #92400e; line-height: 1.6"
+                  >
+                    <strong>คำเตือน:</strong>
+                    กรุณาตรวจสอบข้อมูลในไฟล์ให้ถูกต้องก่อนอัพโหลด
+                    ข้อมูลที่ซ้ำกัน (Username) จะถูกแทนที่
+                  </div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 12px">
+                <button
+                  class="btn"
+                  onclick="goToStep(1)"
+                  style="flex: 1; background: #e2e8f0; color: #475569"
+                >
+                  ← ย้อนกลับ
+                </button>
+                <button
+                  class="btn"
+                  id="uploadBtn"
+                  onclick="processImport()"
+                  disabled
+                  style="flex: 2; opacity: 0.5; cursor: not-allowed"
+                >
+                  <svg
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    style="width: 20px; height: 20px"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                    ></path>
+                  </svg>
+                  เริ่มนำเข้าข้อมูล
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Success -->
+          <div id="importStep3" class="import-step" style="display: none">
+            <div style="text-align: center; padding: 40px 20px">
+              <div
+                style="
+                  width: 120px;
+                  height: 120px;
+                  margin: 0 auto 30px;
+                  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+                  border-radius: 50%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  animation: successPulse 1s ease-out;
+                "
+              >
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  style="width: 70px; height: 70px; color: #10b981"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2.5"
+                    d="M5 13l4 4L19 7"
+                  ></path>
+                </svg>
+              </div>
+              <h3
+                style="
+                  font-size: 26px;
+                  color: #065f46;
+                  margin-bottom: 15px;
+                  font-weight: 700;
+                "
+              >
+                นำเข้าข้อมูลสำเร็จ! 🎉
+              </h3>
+              <p style="font-size: 15px; color: #64748b; margin-bottom: 35px">
+                ระบบได้ทำการนำเข้าข้อมูลผู้ใช้งานเรียบร้อยแล้ว
+              </p>
+
+              <!-- Summary Cards -->
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(3, 1fr);
+                  gap: 15px;
+                  margin-bottom: 35px;
+                "
+              >
+                <div
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      #e0f2fe 0%,
+                      #bae6fd 100%
+                    );
+                    border-radius: 12px;
+                    padding: 20px;
+                    border: 2px solid #7dd3fc;
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 32px;
+                      font-weight: 700;
+                      color: #0369a1;
+                      margin-bottom: 5px;
+                    "
+                    id="totalImported"
+                  >
+                    15
+                  </div>
+                  <div
+                    style="font-size: 13px; color: #075985; font-weight: 600"
+                  >
+                    รายการทั้งหมด
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      #d1fae5 0%,
+                      #a7f3d0 100%
+                    );
+                    border-radius: 12px;
+                    padding: 20px;
+                    border: 2px solid #86efac;
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 32px;
+                      font-weight: 700;
+                      color: #047857;
+                      margin-bottom: 5px;
+                    "
+                    id="successImported"
+                  >
+                    12
+                  </div>
+                  <div
+                    style="font-size: 13px; color: #065f46; font-weight: 600"
+                  >
+                    สำเร็จ
+                  </div>
+                </div>
+                <div
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      #fee2e2 0%,
+                      #fecaca 100%
+                    );
+                    border-radius: 12px;
+                    padding: 20px;
+                    border: 2px solid #fca5a5;
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 32px;
+                      font-weight: 700;
+                      color: #b91c1c;
+                      margin-bottom: 5px;
+                    "
+                    id="failedImported"
+                  >
+                    3
+                  </div>
+                  <div
+                    style="font-size: 13px; color: #991b1b; font-weight: 600"
+                  >
+                    ข้ามแล้ว
+                  </div>
+                </div>
+              </div>
+
+              <div
+                style="
+                  background: #f8fafc;
+                  border-radius: 12px;
+                  padding: 20px;
+                  margin-bottom: 30px;
+                  text-align: left;
+                "
+              >
+                <div
+                  style="
+                    font-size: 14px;
+                    color: #475569;
+                    font-weight: 600;
+                    margin-bottom: 15px;
+                  "
+                >
+                  📊 สรุปผลการนำเข้า:
+                </div>
+                <div style="font-size: 13px; color: #64748b; line-height: 2">
+                  ✅ ข้อมูลได้ถูกบันทึกลงในระบบเรียบร้อยแล้ว<br />
+                  📋 ตารางผู้ใช้งานได้รับการอัพเดทแล้ว<br />
+                  💾 ระบบได้สำรองข้อมูลอัตโนมัติ<br />
+                  🔔 ผู้ใช้งานใหม่ได้รับอีเมลแจ้งเตือนแล้ว
+                </div>
+              </div>
+
+              <button
+                class="btn"
+                onclick="finishImport()"
+                style="padding: 16px 60px; font-size: 17px; font-weight: 700"
+              >
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  style="width: 20px; height: 20px"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  ></path>
+                </svg>
+                เสร็จสิ้น
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- User Management Modal -->
     <div class="modal-overlay" id="userModal">
       <div class="modal-content" id="userModalContent">
@@ -2600,7 +3344,14 @@
             />
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%">
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 20px;
+              width: 100%;
+            "
+          >
             <div class="modal-form-group">
               <label for="userPosition"
                 >ตำแหน่ง <span style="color: red">*</span></label
@@ -2698,6 +3449,8 @@
               <option value="">เลือกบทบาท</option>
               <option value="Admin">Admin</option>
               <option value="Staff">Staff</option>
+              <option value="HIS/LIS">HIS/LIS</option>
+              <option value="Security">Security</option>
             </select>
           </div>
 
@@ -2711,10 +3464,20 @@
               width: 100%;
             "
           >
-            <button type="submit" class="btn-submit" id="userSubmitBtn" style="flex: 1; min-width: 120px">
+            <button
+              type="submit"
+              class="btn-submit"
+              id="userSubmitBtn"
+              style="flex: 1; min-width: 120px"
+            >
               บันทึก
             </button>
-            <button type="button" class="btn-cancel" onclick="closeUserModal()" style="flex: 1; min-width: 120px">
+            <button
+              type="button"
+              class="btn-cancel"
+              onclick="closeUserModal()"
+              style="flex: 1; min-width: 120px"
+            >
               ยกเลิก
             </button>
           </div>
@@ -2727,7 +3490,12 @@
       <div class="modal-content" id="profileModalContent">
         <div class="modal-icon">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            ></path>
           </svg>
         </div>
         <h2>แก้ไขข้อมูลโปรไฟล์</h2>
@@ -2735,40 +3503,110 @@
 
         <form onsubmit="handleProfileSubmit(event)">
           <div class="modal-form-group">
-            <label for="profileFullName">ชื่อ-สกุล <span style="color: red">*</span></label>
-            <input type="text" id="profileFullName" placeholder="เช่น นายสมชาย ใจดี" required />
+            <label for="profileFullName"
+              >ชื่อ-สกุล <span style="color: red">*</span></label
+            >
+            <input
+              type="text"
+              id="profileFullName"
+              placeholder="เช่น นายสมชาย ใจดี"
+              required
+            />
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%">
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 20px;
+              width: 100%;
+            "
+          >
             <div class="modal-form-group">
-              <label for="profilePosition">ตำแหน่ง <span style="color: red">*</span></label>
-              <input type="text" id="profilePosition" placeholder="เช่น พยาบาล" required />
+              <label for="profilePosition"
+                >ตำแหน่ง <span style="color: red">*</span></label
+              >
+              <input
+                type="text"
+                id="profilePosition"
+                placeholder="เช่น พยาบาล"
+                required
+              />
             </div>
 
             <div class="modal-form-group">
-              <label for="profileDepartment">แผนก <span style="color: red">*</span></label>
-              <input type="text" id="profileDepartment" placeholder="เช่น ห้องเจาะเลือด" required />
+              <label for="profileDepartment"
+                >แผนก <span style="color: red">*</span></label
+              >
+              <input
+                type="text"
+                id="profileDepartment"
+                placeholder="เช่น ห้องเจาะเลือด"
+                required
+              />
             </div>
           </div>
 
           <div class="modal-form-group">
-            <label for="profileUsername">ชื่อผู้ใช้งาน <span style="color: red">*</span></label>
-            <input type="text" id="profileUsername" placeholder="เช่น somchai.j" required readonly style="background-color: #f7fafc; cursor: not-allowed;" />
+            <label for="profileUsername"
+              >ชื่อผู้ใช้งาน <span style="color: red">*</span></label
+            >
+            <input
+              type="text"
+              id="profileUsername"
+              placeholder="เช่น somchai.j"
+              required
+              readonly
+              style="background-color: #f7fafc; cursor: not-allowed"
+            />
           </div>
 
           <div class="modal-form-group">
-            <label for="profilePassword">รหัสผ่านใหม่ (เว้นว่างหากไม่ต้องการเปลี่ยน)</label>
-            <input type="password" id="profilePassword" placeholder="กรอกรหัสผ่านใหม่" />
+            <label for="profilePassword"
+              >รหัสผ่านใหม่ (เว้นว่างหากไม่ต้องการเปลี่ยน)</label
+            >
+            <input
+              type="password"
+              id="profilePassword"
+              placeholder="กรอกรหัสผ่านใหม่"
+            />
           </div>
 
           <div class="modal-form-group">
             <label for="profileRole">บทบาท</label>
-            <input type="text" id="profileRole" readonly style="background-color: #f7fafc; cursor: not-allowed;" />
+            <input
+              type="text"
+              id="profileRole"
+              readonly
+              style="background-color: #f7fafc; cursor: not-allowed"
+            />
           </div>
 
-          <div style="display: flex; justify-content: center; gap: 12px; margin-top: 30px; flex-wrap: wrap; width: 100%;">
-            <button type="submit" class="btn-submit" style="flex: 1; min-width: 120px">บันทึก</button>
-            <button type="button" class="btn-cancel" onclick="closeProfileModal()" style="flex: 1; min-width: 120px">ยกเลิก</button>
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              gap: 12px;
+              margin-top: 30px;
+              flex-wrap: wrap;
+              width: 100%;
+            "
+          >
+            <button
+              type="submit"
+              class="btn-submit"
+              style="flex: 1; min-width: 120px"
+            >
+              บันทึก
+            </button>
+            <button
+              type="button"
+              class="btn-cancel"
+              onclick="closeProfileModal()"
+              style="flex: 1; min-width: 120px"
+            >
+              ยกเลิก
+            </button>
           </div>
         </form>
       </div>
@@ -2793,7 +3631,10 @@
         </div>
         <div class="header-right">
           <div class="custom-dropdown">
-            <div class="user-info dropdown-trigger" onclick="toggleProfileDropdown()">
+            <div
+              class="user-info dropdown-trigger"
+              onclick="toggleProfileDropdown()"
+            >
               <div class="user-avatar" id="userAvatar">A</div>
               <div class="user-details">
                 <div class="user-name" id="userName">Admin User</div>
@@ -2801,16 +3642,40 @@
                   ช่อง <span id="counterNumber">1</span>
                 </div>
               </div>
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-left: 8px; color: #718096;">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              <svg
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                style="
+                  width: 16px;
+                  height: 16px;
+                  margin-left: 8px;
+                  color: #718096;
+                "
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
               </svg>
             </div>
-            <div class="dropdown-menu" id="profileDropdown" style="min-width: 200px; right: 0; top: 100%; margin-top: 10px;">
+            <div
+              class="dropdown-menu"
+              id="profileDropdown"
+              style="min-width: 200px; right: 0; top: 100%; margin-top: 10px"
+            >
               <div class="dropdown-items">
                 <div class="dropdown-item" onclick="openProfileModal()">
                   <div class="dropdown-icon">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      ></path>
                     </svg>
                   </div>
                   <div class="dropdown-text">โปรไฟล์</div>
@@ -2818,7 +3683,12 @@
                 <div class="dropdown-item" onclick="handleLogout()">
                   <div class="dropdown-icon">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                      ></path>
                     </svg>
                   </div>
                   <div class="dropdown-text">ออกจากระบบ</div>
@@ -3085,26 +3955,47 @@
               <table class="queue-table">
                 <thead>
                   <tr>
-                    <th onclick="sortQueue('id')" style="cursor: pointer; user-select: none;">
+                    <th
+                      onclick="sortQueue('id')"
+                      style="cursor: pointer; user-select: none"
+                    >
                       หมายเลขคิว <span class="sort-icon">↕</span>
                     </th>
-                    <th onclick="sortQueue('name')" style="cursor: pointer; user-select: none;">
+                    <th
+                      onclick="sortQueue('name')"
+                      style="cursor: pointer; user-select: none"
+                    >
                       ชื่อผู้ป่วย <span class="sort-icon">↕</span>
                     </th>
-                    <th onclick="sortQueue('hn')" style="cursor: pointer; user-select: none;">
+                    <th
+                      onclick="sortQueue('hn')"
+                      style="cursor: pointer; user-select: none"
+                    >
                       HN <span class="sort-icon">↕</span>
                     </th>
-                    <th onclick="sortQueue('type')" style="cursor: pointer; user-select: none;">
+                    <th
+                      onclick="sortQueue('type')"
+                      style="cursor: pointer; user-select: none"
+                    >
                       ประเภท <span class="sort-icon">↕</span>
                     </th>
-                    <th onclick="sortQueue('status')" style="cursor: pointer; user-select: none;">
+                    <th
+                      onclick="sortQueue('status')"
+                      style="cursor: pointer; user-select: none"
+                    >
                       สถานะ <span class="sort-icon">↕</span>
                     </th>
-                    <th onclick="sortQueue('time')" style="cursor: pointer; user-select: none;">
+                    <th
+                      onclick="sortQueue('time')"
+                      style="cursor: pointer; user-select: none"
+                    >
                       เวลาลงทะเบียน <span class="sort-icon">↕</span>
                     </th>
                     <th>ช่อง</th>
-                    <th onclick="sortQueue('calledByStaff')" style="cursor: pointer; user-select: none;">
+                    <th
+                      onclick="sortQueue('calledByStaff')"
+                      style="cursor: pointer; user-select: none"
+                    >
                       เจ้าหน้าที่ <span class="sort-icon">↕</span>
                     </th>
                     <th>การดำเนินการ</th>
@@ -3956,6 +4847,8 @@
                     <option value="">ทุกบทบาท</option>
                     <option value="Admin">Admin</option>
                     <option value="Staff">Staff</option>
+                    <option value="HIS/LIS">HIS/LIS</option>
+                    <option value="Security">Security</option>
                   </select>
                 </div>
                 <button
@@ -4004,19 +4897,34 @@
               <table class="queue-table">
                 <thead>
                   <tr>
-                    <th onclick="sortUsers('username')" style="cursor: pointer; user-select: none;">
+                    <th
+                      onclick="sortUsers('username')"
+                      style="cursor: pointer; user-select: none"
+                    >
                       ชื่อผู้ใช้งาน <span class="sort-icon">↕</span>
                     </th>
-                    <th onclick="sortUsers('fullName')" style="cursor: pointer; user-select: none;">
+                    <th
+                      onclick="sortUsers('fullName')"
+                      style="cursor: pointer; user-select: none"
+                    >
                       ชื่อ-สกุล <span class="sort-icon">↕</span>
                     </th>
-                    <th onclick="sortUsers('position')" style="cursor: pointer; user-select: none;">
+                    <th
+                      onclick="sortUsers('position')"
+                      style="cursor: pointer; user-select: none"
+                    >
                       ตำแหน่ง <span class="sort-icon">↕</span>
                     </th>
-                    <th onclick="sortUsers('department')" style="cursor: pointer; user-select: none;">
+                    <th
+                      onclick="sortUsers('department')"
+                      style="cursor: pointer; user-select: none"
+                    >
                       แผนก <span class="sort-icon">↕</span>
                     </th>
-                    <th onclick="sortUsers('role')" style="cursor: pointer; user-select: none;">
+                    <th
+                      onclick="sortUsers('role')"
+                      style="cursor: pointer; user-select: none"
+                    >
                       บทบาท <span class="sort-icon">↕</span>
                     </th>
                     <th>การจัดการ</th>
@@ -4028,9 +4936,9 @@
               </table>
             </div>
           </div>
-          
+
           <!-- Difficult Blood Draw Modal -->
-          <div id="difficultDrawModal" class="modal" style="display: none;">
+          <div id="difficultDrawModal" class="modal" style="display: none">
             <div class="modal-content" style="max-width: 500px">
               <div class="modal-header">
                 <h2 class="modal-title">บันทึกกรณีเจาะเลือดยาก</h2>
@@ -4049,10 +4957,23 @@
                     "
                     >สาเหตุ:</label
                   >
-                  <select id="difficultReasonSelect" class="form-input" style="width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #e2e8f0; font-family: 'Sarabun', sans-serif; font-size: 16px;">
+                  <select
+                    id="difficultReasonSelect"
+                    class="form-input"
+                    style="
+                      width: 100%;
+                      padding: 10px;
+                      border-radius: 8px;
+                      border: 2px solid #e2e8f0;
+                      font-family: 'Sarabun', sans-serif;
+                      font-size: 16px;
+                    "
+                  >
                     <option value="เส้นเลือดแตก">เส้นเลือดแตก</option>
                     <option value="เส้นเลือดจม/ลึก">เส้นเลือดจม/ลึก</option>
-                    <option value="คนไข้ดิ้น/ไม่ร่วมมือ">คนไข้ดิ้น/ไม่ร่วมมือ</option>
+                    <option value="คนไข้ดิ้น/ไม่ร่วมมือ">
+                      คนไข้ดิ้น/ไม่ร่วมมือ
+                    </option>
                     <option value="อื่นๆ">อื่นๆ</option>
                   </select>
                 </div>
@@ -4071,15 +4992,30 @@
                     class="form-input"
                     rows="3"
                     placeholder="ระบุรายละเอียดเพิ่มเติม..."
-                    style="width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #e2e8f0; font-family: 'Sarabun', sans-serif; font-size: 16px;"
+                    style="
+                      width: 100%;
+                      padding: 10px;
+                      border-radius: 8px;
+                      border: 2px solid #e2e8f0;
+                      font-family: 'Sarabun', sans-serif;
+                      font-size: 16px;
+                    "
                   ></textarea>
                 </div>
               </div>
               <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeDifficultDrawModal()" style="flex: 1;">
+                <button
+                  class="btn btn-secondary"
+                  onclick="closeDifficultDrawModal()"
+                  style="flex: 1"
+                >
                   ยกเลิก
                 </button>
-                <button class="btn btn-primary" onclick="saveDifficultDraw()" style="flex: 1;">
+                <button
+                  class="btn btn-primary"
+                  onclick="saveDifficultDraw()"
+                  style="flex: 1"
+                >
                   บันทึก
                 </button>
               </div>
@@ -4095,7 +5031,11 @@
                   <button
                     class="btn-action btn-call"
                     style="
-                      background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+                      background: linear-gradient(
+                        135deg,
+                        #48bb78 0%,
+                        #38a169 100%
+                      );
                       color: white;
                       font-weight: 700;
                       font-size: 18px;
@@ -4144,7 +5084,11 @@
                   <button
                     class="btn-action btn-complete"
                     style="
-                      background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+                      background: linear-gradient(
+                        135deg,
+                        #4299e1 0%,
+                        #3182ce 100%
+                      );
                       color: white;
                       font-weight: 700;
                       font-size: 18px;
@@ -5352,133 +6296,232 @@
               closeUserModal();
             }
 
+            // Import Modal Variables
+            let selectedFile = null;
+
             function importUsersFromExcel() {
-              // สร้าง input file element แบบ hidden
-              const input = document.createElement('input');
-              input.type = 'file';
-              input.accept = '.xlsx, .xls, .csv';
+              // เปิด Import Modal
+              document.getElementById("importModal").classList.add("active");
+              // Reset to step 1
+              goToStep(1);
+            }
 
-              // เมื่อเลือกไฟล์เสร็จ
-              input.onchange = function(event) {
-                const file = event.target.files[0];
-                if (!file) return;
+            function closeImportModal() {
+              document.getElementById("importModal").classList.remove("active");
+              selectedFile = null;
+              clearFile();
+            }
 
-                // แสดง SweetAlert2 ยืนยันการนำเข้า
-                Swal.fire({
-                  title: 'ยืนยันการนำเข้าข้อมูล',
-                  html: `
-                    <div style="text-align: left; padding: 20px;">
-                      <div style="background: #f7fafc; border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 2px solid #e2e8f0;">
-                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px;">
-                          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 32px; height: 32px; color: #667eea;">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                          </svg>
-                          <div>
-                            <div style="font-size: 14px; color: #718096; margin-bottom: 3px;">ไฟล์ที่เลือก:</div>
-                            <div style="font-size: 16px; color: #2d3748; font-weight: 700;">${file.name}</div>
-                          </div>
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 14px;">
-                          <div>
-                            <span style="color: #718096;">ขนาดไฟล์:</span>
-                            <span style="color: #2d3748; font-weight: 600; margin-left: 5px;">${(file.size / 1024).toFixed(2)} KB</span>
-                          </div>
-                          <div>
-                            <span style="color: #718096;">ประเภท:</span>
-                            <span style="color: #2d3748; font-weight: 600; margin-left: 5px;">${file.type || 'Excel'}</span>
-                          </div>
-                        </div>
+            function goToStep(step) {
+              // Hide all steps
+              document.getElementById("importStep1").style.display = "none";
+              document.getElementById("importStep2").style.display = "none";
+              document.getElementById("importStep3").style.display = "none";
+
+              // Update circles
+              const circles = ["step1Circle", "step2Circle", "step3Circle"];
+              circles.forEach((id, index) => {
+                const circle = document.getElementById(id);
+                circle.classList.remove("active", "completed");
+                if (index + 1 < step) {
+                  circle.classList.add("completed");
+                  circle.innerHTML = "✓";
+                } else if (index + 1 === step) {
+                  circle.classList.add("active");
+                  circle.innerHTML = index + 1;
+                } else {
+                  circle.innerHTML = index + 1;
+                }
+              });
+
+              // Update progress bar
+              const progressBar = document.getElementById("progressBar");
+              if (step === 1) progressBar.style.width = "0%";
+              else if (step === 2) progressBar.style.width = "50%";
+              else if (step === 3) progressBar.style.width = "100%";
+
+              // Show current step
+              document.getElementById("importStep" + step).style.display =
+                "block";
+            }
+
+            function downloadTemplate() {
+              // Mock download template
+              Swal.fire({
+                icon: "success",
+                title: "ดาวน์โหลด Template สำเร็จ!",
+                html: `
+                  <div style="text-align: center; padding: 20px;">
+                    <div style="background: #f0fdf4; border-radius: 12px; padding: 25px; margin-bottom: 20px; border: 2px solid #86efac;">
+                      <div style="font-size: 18px; color: #065f46; font-weight: 700; margin-bottom: 15px;">
+                        📥 ไฟล์ Template ถูกดาวน์โหลดแล้ว
                       </div>
-                      <div style="background: #fff5f5; border: 2px solid #feb2b2; border-radius: 10px; padding: 15px; margin-bottom: 15px;">
-                        <div style="display: flex; align-items: start; gap: 10px;">
-                          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 24px; height: 24px; color: #e53e3e; flex-shrink: 0; margin-top: 2px;">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                          </svg>
-                          <div>
-                            <div style="font-size: 15px; color: #c53030; font-weight: 700; margin-bottom: 8px;">⚠️ คำเตือนสำคัญ</div>
-                            <div style="font-size: 13px; color: #742a2a; line-height: 1.6;">
-                              • ข้อมูลผู้ใช้ปัจจุบันที่ซ้ำกันจะถูกแทนที่<br>
-                              • ตรวจสอบรูปแบบข้อมูลให้ถูกต้องก่อนนำเข้า<br>
-                              • แนะนำให้สำรองข้อมูลเดิมก่อนดำเนินการ
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div style="text-align: center; font-size: 15px; color: #4a5568;">
-                        คุณต้องการนำเข้าข้อมูลผู้ใช้งานจากไฟล์นี้หรือไม่?
+                      <div style="font-size: 14px; color: #059669;">
+                        <strong>users_import_template.xlsx</strong>
                       </div>
                     </div>
-                  `,
-                  icon: 'question',
-                  showCancelButton: true,
-                  confirmButtonColor: '#667eea',
-                  cancelButtonColor: '#e2e8f0',
-                  confirmButtonText: '✓ นำเข้าข้อมูล',
-                  cancelButtonText: '✕ ยกเลิก',
-                  width: '600px'
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    // แสดง Loading
-                    Swal.fire({
-                      title: 'กำลังนำเข้าข้อมูล...',
-                      html: '<div style="padding: 20px;"><div class="spinner-border" role="status"></div><p style="margin-top: 15px; color: #718096;">กรุณารอสักครู่</p></div>',
-                      allowOutsideClick: false,
-                      showConfirmButton: false,
-                      didOpen: () => {
-                        Swal.showLoading();
-                      }
-                    });
+                    <div style="background: #fffbeb; border-radius: 10px; padding: 15px; text-align: left; border: 1px solid #fcd34d;">
+                      <div style="font-size: 14px; color: #92400e; line-height: 1.8;">
+                        📝 <strong>ขั้นตอนถัดไป:</strong><br>
+                        1. เปิดไฟล์ Excel ที่ดาวน์โหลด<br>
+                        2. กรอกข้อมูลผู้ใช้งานตามคอลัมน์<br>
+                        3. บันทึกไฟล์และกลับมาอัพโหลด
+                      </div>
+                    </div>
+                  </div>
+                `,
+                confirmButtonText: "ถัดไป: อัพโหลดไฟล์",
+                confirmButtonColor: "#667eea",
+                width: "550px",
+              }).then(() => {
+                goToStep(2);
+              });
 
-                    // Simulate import process (ในการใช้งานจริงจะใช้ SheetJS อ่านไฟล์)
-                    setTimeout(() => {
-                      // TODO: ในการใช้งานจริง อ่านไฟล์ Excel ด้วย SheetJS
-                      // const reader = new FileReader();
-                      // reader.onload = function(e) {
-                      //   const data = new Uint8Array(e.target.result);
-                      //   const workbook = XLSX.read(data, {type: 'array'});
-                      //   const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                      //   const jsonData = XLSX.utils.sheet_to_json(firstSheet);
-                      //   // นำข้อมูลเข้าสู่ usersData
-                      // };
-                      // reader.readAsArrayBuffer(file);
+              // TODO: ในการใช้งานจริง สร้างไฟล์ Template Excel และดาวน์โหลด
+              // const ws = XLSX.utils.json_to_sheet([
+              //   { username: 'example', fullName: 'ชื่อ-สกุล', position: 'ตำแหน่ง', department: 'แผนก', password: 'Password123', role: 'Staff' }
+              // ]);
+              // const wb = XLSX.utils.book_new();
+              // XLSX.utils.book_append_sheet(wb, ws, 'Users');
+              // XLSX.writeFile(wb, 'users_import_template.xlsx');
+            }
 
-                      // Mock: สมมติว่านำเข้าสำเร็จ
-                      const mockImportedCount = Math.floor(Math.random() * 10) + 5;
+            function handleDragOver(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              document.getElementById("dropZone").classList.add("dragover");
+            }
 
-                      Swal.fire({
-                        icon: 'success',
-                        title: 'นำเข้าข้อมูลสำเร็จ!',
-                        html: `
-                          <div style="text-align: center; padding: 20px;">
-                            <div style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-radius: 16px; padding: 25px; margin-bottom: 20px; border: 2px solid #86efac;">
-                              <div style="font-size: 48px; margin-bottom: 10px;">✓</div>
-                              <div style="font-size: 20px; color: #065f46; font-weight: 700;">
-                                นำเข้า ${mockImportedCount} รายการสำเร็จ
-                              </div>
-                            </div>
-                            <div style="background: #f7fafc; border-radius: 12px; padding: 20px; text-align: left;">
-                              <div style="font-size: 15px; color: #4a5568; line-height: 1.8;">
-                                ✅ ข้อมูลได้ถูกนำเข้าสู่ระบบเรียบร้อยแล้ว<br>
-                                📊 กำลังรีเฟรชตารางผู้ใช้งาน<br>
-                                💾 บันทึกข้อมูลอัตโนมัติ
-                              </div>
-                            </div>
-                          </div>
-                        `,
-                        confirmButtonText: 'เข้าใจแล้ว',
-                        confirmButtonColor: '#667eea',
-                        width: '500px'
-                      }).then(() => {
-                        // รีเฟรชตารางผู้ใช้งาน
-                        renderUsers();
-                      });
-                    }, 2000);
-                  }
-                });
-              };
+            function handleDragLeave(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              document.getElementById("dropZone").classList.remove("dragover");
+            }
 
-              // เปิด file picker
-              input.click();
+            function handleDrop(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              document.getElementById("dropZone").classList.remove("dragover");
+
+              const files = e.dataTransfer.files;
+              if (files.length > 0) {
+                const file = files[0];
+                // ตรวจสอบประเภทไฟล์
+                const validTypes = [
+                  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                  "application/vnd.ms-excel",
+                  "text/csv",
+                ];
+                if (
+                  validTypes.includes(file.type) ||
+                  file.name.endsWith(".xlsx") ||
+                  file.name.endsWith(".xls") ||
+                  file.name.endsWith(".csv")
+                ) {
+                  displaySelectedFile(file);
+                } else {
+                  Swal.fire({
+                    icon: "error",
+                    title: "ไฟล์ไม่ถูกต้อง",
+                    text: "กรุณาเลือกไฟล์ Excel (.xlsx, .xls) หรือ CSV (.csv) เท่านั้น",
+                    confirmButtonColor: "#667eea",
+                  });
+                }
+              }
+            }
+
+            function handleFileSelect(e) {
+              const file = e.target.files[0];
+              if (file) {
+                displaySelectedFile(file);
+              }
+            }
+
+            function displaySelectedFile(file) {
+              selectedFile = file;
+              document.getElementById("fileName").textContent = file.name;
+              document.getElementById("fileSize").textContent =
+                (file.size / 1024).toFixed(2) + " KB";
+              document.getElementById("selectedFileInfo").style.display =
+                "block";
+              document.getElementById("dropZone").style.display = "none";
+
+              // Enable upload button
+              const uploadBtn = document.getElementById("uploadBtn");
+              uploadBtn.disabled = false;
+              uploadBtn.style.opacity = "1";
+              uploadBtn.style.cursor = "pointer";
+            }
+
+            function clearFile() {
+              selectedFile = null;
+              document.getElementById("selectedFileInfo").style.display =
+                "none";
+              document.getElementById("dropZone").style.display = "block";
+              document.getElementById("fileInput").value = "";
+
+              // Disable upload button
+              const uploadBtn = document.getElementById("uploadBtn");
+              uploadBtn.disabled = true;
+              uploadBtn.style.opacity = "0.5";
+              uploadBtn.style.cursor = "not-allowed";
+            }
+
+            function processImport() {
+              if (!selectedFile) return;
+
+              // แสดง Loading
+              Swal.fire({
+                title: "กำลังประมวลผล...",
+                html: '<div style="padding: 30px; text-align: center;"><div style="width: 60px; height: 60px; margin: 0 auto 20px; border: 5px solid #f3f3f3; border-top: 5px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite;"></div><p style="font-size: 15px; color: #64748b;">กำลังอ่านและตรวจสอบข้อมูล...</p></div><style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }}</style>',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+              });
+
+              // Simulate import process
+              setTimeout(() => {
+                Swal.close();
+
+                // Mock data
+                const mockTotal = Math.floor(Math.random() * 10) + 10;
+                const mockSuccess = Math.floor(mockTotal * 0.8);
+                const mockFailed = mockTotal - mockSuccess;
+
+                // Update summary
+                document.getElementById("totalImported").textContent =
+                  mockTotal;
+                document.getElementById("successImported").textContent =
+                  mockSuccess;
+                document.getElementById("failedImported").textContent =
+                  mockFailed;
+
+                // Go to success step
+                goToStep(3);
+
+                // TODO: ในการใช้งานจริง อ่านและประมวลผลไฟล์ Excel
+                // const reader = new FileReader();
+                // reader.onload = function(e) {
+                //   const data = new Uint8Array(e.target.result);
+                //   const workbook = XLSX.read(data, {type: 'array'});
+                //   const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                //   const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+                //   // ประมวลผลและนำเข้าข้อมูล
+                // };
+                // reader.readAsArrayBuffer(selectedFile);
+              }, 2500);
+            }
+
+            function finishImport() {
+              closeImportModal();
+              renderUsers();
+
+              Swal.fire({
+                icon: "success",
+                title: "เสร็จสิ้น!",
+                text: "ตารางผู้ใช้งานได้รับการอัพเดทแล้ว",
+                timer: 2000,
+                showConfirmButton: false,
+              });
             }
 
             function handleLogin(event) {
@@ -5489,11 +6532,11 @@
               // ตรวจสอบว่ากรอกข้อมูลครบหรือไม่
               if (!username || !password) {
                 Swal.fire({
-                  icon: 'warning',
-                  title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
-                  text: 'กรุณากรอก Username และ Password',
-                  confirmButtonText: 'ตกลง',
-                  confirmButtonColor: '#667eea'
+                  icon: "warning",
+                  title: "กรุณากรอกข้อมูลให้ครบถ้วน",
+                  text: "กรุณากรอก Username และ Password",
+                  confirmButtonText: "ตกลง",
+                  confirmButtonColor: "#667eea",
                 });
                 return;
               }
@@ -5514,21 +6557,21 @@
 
                 // แสดงข้อความต้อนรับ
                 Swal.fire({
-                  icon: 'success',
-                  title: 'เข้าสู่ระบบสำเร็จ!',
+                  icon: "success",
+                  title: "เข้าสู่ระบบสำเร็จ!",
                   text: `ยินดีต้อนรับ ${username}`,
                   timer: 1500,
-                  showConfirmButton: false
+                  showConfirmButton: false,
                 });
               } else {
                 // Login ไม่สำเร็จ
                 Swal.fire({
-                  icon: 'error',
-                  title: 'เข้าสู่ระบบไม่สำเร็จ',
+                  icon: "error",
+                  title: "เข้าสู่ระบบไม่สำเร็จ",
                   html: '<p style="font-size: 16px; color: #718096;">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</p><p style="font-size: 14px; color: #a0aec0; margin-top: 10px;">กรุณาตรวจสอบและลองใหม่อีกครั้ง</p>',
-                  confirmButtonText: 'ลองใหม่',
-                  confirmButtonColor: '#667eea',
-                  showCancelButton: false
+                  confirmButtonText: "ลองใหม่",
+                  confirmButtonColor: "#667eea",
+                  showCancelButton: false,
                 });
 
                 // Clear password field
@@ -5567,17 +6610,18 @@
 
             // Sort variables for queue and users
             let queueSortColumn = null;
-            let queueSortDirection = 'asc';
+            let queueSortDirection = "asc";
             let usersSortColumn = null;
-            let usersSortDirection = 'asc';
+            let usersSortDirection = "asc";
 
             // Sort Queue Table
             function sortQueue(column) {
               if (queueSortColumn === column) {
-                queueSortDirection = queueSortDirection === 'asc' ? 'desc' : 'asc';
+                queueSortDirection =
+                  queueSortDirection === "asc" ? "desc" : "asc";
               } else {
                 queueSortColumn = column;
-                queueSortDirection = 'asc';
+                queueSortDirection = "asc";
               }
 
               // Sort queueData
@@ -5586,17 +6630,17 @@
                 let valB = b[column];
 
                 // Handle null/undefined values
-                valA = valA || '';
-                valB = valB || '';
+                valA = valA || "";
+                valB = valB || "";
 
                 // String comparison
-                if (typeof valA === 'string' && typeof valB === 'string') {
+                if (typeof valA === "string" && typeof valB === "string") {
                   valA = valA.toLowerCase();
                   valB = valB.toLowerCase();
                 }
 
-                if (valA < valB) return queueSortDirection === 'asc' ? -1 : 1;
-                if (valA > valB) return queueSortDirection === 'asc' ? 1 : -1;
+                if (valA < valB) return queueSortDirection === "asc" ? -1 : 1;
+                if (valA > valB) return queueSortDirection === "asc" ? 1 : -1;
                 return 0;
               });
 
@@ -5606,10 +6650,11 @@
             // Sort Users Table
             function sortUsers(column) {
               if (usersSortColumn === column) {
-                usersSortDirection = usersSortDirection === 'asc' ? 'desc' : 'asc';
+                usersSortDirection =
+                  usersSortDirection === "asc" ? "desc" : "asc";
               } else {
                 usersSortColumn = column;
-                usersSortDirection = 'asc';
+                usersSortDirection = "asc";
               }
 
               // Sort userData
@@ -5618,17 +6663,17 @@
                 let valB = b[column];
 
                 // Handle null/undefined values
-                valA = valA || '';
-                valB = valB || '';
+                valA = valA || "";
+                valB = valB || "";
 
                 // String comparison
-                if (typeof valA === 'string' && typeof valB === 'string') {
+                if (typeof valA === "string" && typeof valB === "string") {
                   valA = valA.toLowerCase();
                   valB = valB.toLowerCase();
                 }
 
-                if (valA < valB) return usersSortDirection === 'asc' ? -1 : 1;
-                if (valA > valB) return usersSortDirection === 'asc' ? 1 : -1;
+                if (valA < valB) return usersSortDirection === "asc" ? -1 : 1;
+                if (valA > valB) return usersSortDirection === "asc" ? 1 : -1;
                 return 0;
               });
 
@@ -5636,7 +6681,12 @@
             }
 
             function backToQueue() {
+              console.log("backToQueue called");
+              stopServiceTimer(); // หยุด timer ก่อนออกจากหน้า
               showPage("queuePage");
+              renderQueue(); // รีเฟรชตารางคิว
+              updateStats(); // อัปเดตสถิติ
+              console.log("Switched to queuePage");
             }
 
             // --- Queue Page Functions ---
@@ -5791,184 +6841,206 @@
             }
 
             function renderHistory(data = historyData) {
-                const tbody = document.getElementById('historyTableBody');
-                tbody.innerHTML = '';
+              const tbody = document.getElementById("historyTableBody");
+              tbody.innerHTML = "";
 
-                if (data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 30px; color: #718096;">ไม่พบข้อมูลประวัติการให้บริการ</td></tr>';
-                    return;
+              if (data.length === 0) {
+                tbody.innerHTML =
+                  '<tr><td colspan="9" style="text-align: center; padding: 30px; color: #718096;">ไม่พบข้อมูลประวัติการให้บริการ</td></tr>';
+                return;
+              }
+
+              data.forEach((item) => {
+                const tr = document.createElement("tr");
+
+                // Calculate Overtime
+                const durationSecs = durationStringToSeconds(item.duration);
+                const targetSecs = 30 * 60; // Default 30 mins, should ideally come from settings
+                let overtimeHtml =
+                  '<span style="color: #718096;">0 นาที</span>';
+
+                if (durationSecs && durationSecs > targetSecs) {
+                  const overtimeSecs = durationSecs - targetSecs;
+                  const overtimeMins = Math.ceil(overtimeSecs / 60);
+                  overtimeHtml = `<span style="color: #e53e3e; font-weight: 600;">+${overtimeMins} นาที</span>`;
                 }
 
-                data.forEach(item => {
-                    const tr = document.createElement('tr');
-                    
-                    // Calculate Overtime
-                    const durationSecs = durationStringToSeconds(item.duration);
-                    const targetSecs = 30 * 60; // Default 30 mins, should ideally come from settings
-                    let overtimeHtml = '<span style="color: #718096;">0 นาที</span>';
-                    
-                    if (durationSecs && durationSecs > targetSecs) {
-                        const overtimeSecs = durationSecs - targetSecs;
-                        const overtimeMins = Math.ceil(overtimeSecs / 60);
-                        overtimeHtml = `<span style="color: #e53e3e; font-weight: 600;">+${overtimeMins} นาที</span>`;
-                    }
-
-                    tr.innerHTML = `
-                        <td><span class="queue-number" style="font-size: 18px;">${item.id}</span></td>
+                tr.innerHTML = `
+                        <td><span class="queue-number" style="font-size: 18px;">${
+                          item.id
+                        }</span></td>
                         <td>${item.name}</td>
                         <td>${item.hn}</td>
-                        <td><span class="type-badge ${item.type}">${typeLabels[item.type]}</span></td>
+                        <td><span class="type-badge ${item.type}">${
+                  typeLabels[item.type]
+                }</span></td>
                         <td>${item.startTime}</td>
                         <td>${item.endTime}</td>
                         <td>${item.duration}</td>
                         <td>${overtimeHtml}</td>
                         <td>
-                            <button class="btn-action btn-view" onclick="viewHistoryDetail('${item.id}')">
+                            <button class="btn-action btn-view" onclick="viewHistoryDetail('${
+                              item.id
+                            }')">
                                 ดูรายละเอียด
                             </button>
                         </td>
                     `;
-                    tbody.appendChild(tr);
-                });
-                
-                // Update sort icons
-                document.querySelectorAll('.sort-icon').forEach(icon => icon.textContent = '↕');
-                const activeHeader = document.querySelector(`th[onclick="sortHistory('${currentSortColumn}')"] .sort-icon`);
-                if (activeHeader) {
-                    activeHeader.textContent = currentSortDirection === 'asc' ? '▲' : '▼';
-                }
+                tbody.appendChild(tr);
+              });
+
+              // Update sort icons
+              document
+                .querySelectorAll(".sort-icon")
+                .forEach((icon) => (icon.textContent = "↕"));
+              const activeHeader = document.querySelector(
+                `th[onclick="sortHistory('${currentSortColumn}')"] .sort-icon`
+              );
+              if (activeHeader) {
+                activeHeader.textContent =
+                  currentSortDirection === "asc" ? "▲" : "▼";
+              }
             }
 
             function filterHistory() {
-                const searchText = document.getElementById('historySearchInput').value.toLowerCase();
-                const typeFilter = document.getElementById('historyTypeFilter').value;
-                const startDate = document.getElementById('historyStartDate').value;
-                const endDate = document.getElementById('historyEndDate').value;
+              const searchText = document
+                .getElementById("historySearchInput")
+                .value.toLowerCase();
+              const typeFilter =
+                document.getElementById("historyTypeFilter").value;
+              const startDate =
+                document.getElementById("historyStartDate").value;
+              const endDate = document.getElementById("historyEndDate").value;
 
-                let filtered = historyData.filter(item => {
-                    // Search Text
-                    const matchSearch = 
-                        item.name.toLowerCase().includes(searchText) || 
-                        item.hn.toLowerCase().includes(searchText) || 
-                        item.id.toLowerCase().includes(searchText);
-                    
-                    // Type Filter
-                    const matchType = typeFilter === '' || item.type === typeFilter;
-                    
-                    // Date Filter (Mocking date check as mock data doesn't have full date in this context, assuming today for demo)
-                    // In real app, item would have a full date field. 
-                    // For now, we'll skip date filter if data doesn't support it, or assume all data is "today"
-                    // Let's assume we filter if we had a 'date' field.
-                    // const itemDate = item.date; // YYYY-MM-DD
-                    // const matchDate = (!startDate || itemDate >= startDate) && (!endDate || itemDate <= endDate);
-                    
-                    return matchSearch && matchType;
-                });
+              let filtered = historyData.filter((item) => {
+                // Search Text
+                const matchSearch =
+                  item.name.toLowerCase().includes(searchText) ||
+                  item.hn.toLowerCase().includes(searchText) ||
+                  item.id.toLowerCase().includes(searchText);
 
-                // Apply Sort
-                sortData(filtered);
-                
-                renderHistory(filtered);
+                // Type Filter
+                const matchType = typeFilter === "" || item.type === typeFilter;
+
+                // Date Filter (Mocking date check as mock data doesn't have full date in this context, assuming today for demo)
+                // In real app, item would have a full date field.
+                // For now, we'll skip date filter if data doesn't support it, or assume all data is "today"
+                // Let's assume we filter if we had a 'date' field.
+                // const itemDate = item.date; // YYYY-MM-DD
+                // const matchDate = (!startDate || itemDate >= startDate) && (!endDate || itemDate <= endDate);
+
+                return matchSearch && matchType;
+              });
+
+              // Apply Sort
+              sortData(filtered);
+
+              renderHistory(filtered);
             }
 
             function clearHistoryFilter() {
-                document.getElementById('historySearchInput').value = '';
-                document.getElementById('historyTypeFilter').value = '';
-                document.getElementById('historyStartDate').value = '';
-                document.getElementById('historyEndDate').value = '';
-                filterHistory();
+              document.getElementById("historySearchInput").value = "";
+              document.getElementById("historyTypeFilter").value = "";
+              document.getElementById("historyStartDate").value = "";
+              document.getElementById("historyEndDate").value = "";
+              filterHistory();
             }
 
             function sortHistory(column) {
-                if (currentSortColumn === column) {
-                    currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
-                } else {
-                    currentSortColumn = column;
-                    currentSortDirection = 'asc';
-                }
-                filterHistory();
+              if (currentSortColumn === column) {
+                currentSortDirection =
+                  currentSortDirection === "asc" ? "desc" : "asc";
+              } else {
+                currentSortColumn = column;
+                currentSortDirection = "asc";
+              }
+              filterHistory();
             }
 
             function sortData(data) {
-                data.sort((a, b) => {
-                    let valA = a[currentSortColumn];
-                    let valB = b[currentSortColumn];
+              data.sort((a, b) => {
+                let valA = a[currentSortColumn];
+                let valB = b[currentSortColumn];
 
-                    // Special handling for calculated fields
-                    if (currentSortColumn === 'overtime') {
-                        const durA = durationStringToSeconds(a.duration) || 0;
-                        const durB = durationStringToSeconds(b.duration) || 0;
-                        valA = Math.max(0, durA - (30 * 60));
-                        valB = Math.max(0, durB - (30 * 60));
-                    } else if (currentSortColumn === 'duration') {
-                        valA = durationStringToSeconds(a.duration) || 0;
-                        valB = durationStringToSeconds(b.duration) || 0;
-                    }
+                // Special handling for calculated fields
+                if (currentSortColumn === "overtime") {
+                  const durA = durationStringToSeconds(a.duration) || 0;
+                  const durB = durationStringToSeconds(b.duration) || 0;
+                  valA = Math.max(0, durA - 30 * 60);
+                  valB = Math.max(0, durB - 30 * 60);
+                } else if (currentSortColumn === "duration") {
+                  valA = durationStringToSeconds(a.duration) || 0;
+                  valB = durationStringToSeconds(b.duration) || 0;
+                }
 
-                    if (valA < valB) return currentSortDirection === 'asc' ? -1 : 1;
-                    if (valA > valB) return currentSortDirection === 'asc' ? 1 : -1;
-                    return 0;
-                });
+                if (valA < valB) return currentSortDirection === "asc" ? -1 : 1;
+                if (valA > valB) return currentSortDirection === "asc" ? 1 : -1;
+                return 0;
+              });
             }
 
             function exportHistoryToExcel() {
-                // Get current filtered data
-                const searchText = document.getElementById('historySearchInput').value.toLowerCase();
-                const typeFilter = document.getElementById('historyTypeFilter').value;
-                
-                let dataToExport = historyData.filter(item => {
-                    const matchSearch = 
-                        item.name.toLowerCase().includes(searchText) || 
-                        item.hn.toLowerCase().includes(searchText) || 
-                        item.id.toLowerCase().includes(searchText);
-                    const matchType = typeFilter === '' || item.type === typeFilter;
-                    return matchSearch && matchType;
-                });
-                
-                sortData(dataToExport);
+              // Get current filtered data
+              const searchText = document
+                .getElementById("historySearchInput")
+                .value.toLowerCase();
+              const typeFilter =
+                document.getElementById("historyTypeFilter").value;
 
-                // CSV Header
-                let csvContent = "data:text/csv;charset=utf-8,";
-                csvContent += "หมายเลขคิว,ชื่อผู้ป่วย,HN,ประเภท,เวลาเริ่ม,เวลาเสร็จ,ระยะเวลา,เกินระยะเวลา (นาที)\n";
+              let dataToExport = historyData.filter((item) => {
+                const matchSearch =
+                  item.name.toLowerCase().includes(searchText) ||
+                  item.hn.toLowerCase().includes(searchText) ||
+                  item.id.toLowerCase().includes(searchText);
+                const matchType = typeFilter === "" || item.type === typeFilter;
+                return matchSearch && matchType;
+              });
 
-                dataToExport.forEach(item => {
-                    const durationSecs = durationStringToSeconds(item.duration);
-                    const targetSecs = 30 * 60;
-                    let overtime = 0;
-                    if (durationSecs && durationSecs > targetSecs) {
-                        overtime = Math.ceil((durationSecs - targetSecs) / 60);
-                    }
+              sortData(dataToExport);
 
-                    const row = [
-                        item.id,
-                        item.name,
-                        item.hn,
-                        typeLabels[item.type],
-                        item.startTime,
-                        item.endTime,
-                        item.duration,
-                        overtime > 0 ? overtime : 0
-                    ].join(",");
-                    csvContent += row + "\n";
-                });
+              // CSV Header
+              let csvContent = "data:text/csv;charset=utf-8,";
+              csvContent +=
+                "หมายเลขคิว,ชื่อผู้ป่วย,HN,ประเภท,เวลาเริ่ม,เวลาเสร็จ,ระยะเวลา,เกินระยะเวลา (นาที)\n";
 
-                const encodedUri = encodeURI(csvContent);
-                const link = document.createElement("a");
-                link.setAttribute("href", encodedUri);
-                link.setAttribute("download", "history_export.csv");
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+              dataToExport.forEach((item) => {
+                const durationSecs = durationStringToSeconds(item.duration);
+                const targetSecs = 30 * 60;
+                let overtime = 0;
+                if (durationSecs && durationSecs > targetSecs) {
+                  overtime = Math.ceil((durationSecs - targetSecs) / 60);
+                }
+
+                const row = [
+                  item.id,
+                  item.name,
+                  item.hn,
+                  typeLabels[item.type],
+                  item.startTime,
+                  item.endTime,
+                  item.duration,
+                  overtime > 0 ? overtime : 0,
+                ].join(",");
+                csvContent += row + "\n";
+              });
+
+              const encodedUri = encodeURI(csvContent);
+              const link = document.createElement("a");
+              link.setAttribute("href", encodedUri);
+              link.setAttribute("download", "history_export.csv");
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
             }
 
             function viewHistoryDetail(id) {
-                Swal.fire({
-                  icon: 'info',
-                  title: 'ดูรายละเอียดคิว',
-                  html: `ดูรายละเอียดคิว: <strong>${id}</strong><br>(ฟังก์ชันนี้จะเชื่อมโยงไปยังหน้าแสดงรายละเอียดในอนาคต)`,
-                  confirmButtonText: 'ตกลง',
-                  confirmButtonColor: '#667eea'
-                });
+              Swal.fire({
+                icon: "info",
+                title: "ดูรายละเอียดคิว",
+                html: `ดูรายละเอียดคิว: <strong>${id}</strong><br>(ฟังก์ชันนี้จะเชื่อมโยงไปยังหน้าแสดงรายละเอียดในอนาคต)`,
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#667eea",
+              });
             }
 
             // --- Patient Detail Page Functions ---
@@ -6035,6 +7107,7 @@
               if (!queue) return;
 
               window.currentPatientQueueId = queueId;
+              window.currentPatientQueue = queue;
               stopServiceTimer();
 
               const timerElement = document.getElementById("detail-timer");
@@ -6066,7 +7139,8 @@
               document.getElementById("detail-channel").textContent =
                 queue.calledByCounter || "-";
               document.getElementById("detail-patient-photo").src = queue.photo;
-              document.getElementById("detail-patient-name").textContent = queue.name || "-";
+              document.getElementById("detail-patient-name").textContent =
+                queue.name || "-";
               document.getElementById("detail-queue-no").textContent = queue.id;
               document.getElementById("detail-type").textContent =
                 typeLabels[queue.type] || "-";
@@ -6144,7 +7218,9 @@
                                         </div>
                                     </div>
                                     <div class="tube-actions">
-                                        <span class="tube-action-icon" onclick="printTubeLabel('${tube.name}')" title="พิมพ์สติ๊กเกอร์">🖨️</span>
+                                        <span class="tube-action-icon" onclick="printTubeLabel('${
+                                          tube.name
+                                        }')" title="พิมพ์สติ๊กเกอร์">🖨️</span>
                                         <span class="tube-action-icon barcode-indicator ${
                                           tube.scanned ? "scanned" : ""
                                         }" onclick="scanTube(${
@@ -6226,17 +7302,21 @@
               if (!queue) return;
 
               Swal.fire({
-                icon: 'success',
-                title: 'เริ่มให้บริการและดำเนินการพิมพ์ Label',
-                text: '🖨️ ระบบกำลังพิมพ์สติ๊กเกอร์หลอดเลือดทั้งหมด...',
-                confirmButtonText: 'ตกลง',
-                confirmButtonColor: '#667eea',
+                icon: "success",
+                title: "เริ่มให้บริการและดำเนินการพิมพ์ Label",
+                text: "🖨️ ระบบกำลังพิมพ์สติ๊กเกอร์หลอดเลือดทั้งหมด...",
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#667eea",
                 timer: 2000,
-                timerProgressBar: true
+                timerProgressBar: true,
               });
 
               queue.status = "serving";
               queue.serviceStartTime = new Date().toISOString();
+
+              // อัปเดต queue object ใน window
+              window.currentPatientQueue = queue;
+
               viewPatient(queue.id);
             }
 
@@ -6246,14 +7326,14 @@
               );
               if (queue) {
                 Swal.fire({
-                  icon: 'warning',
-                  title: 'ยืนยันปล่อยคิว',
+                  icon: "warning",
+                  title: "ยืนยันปล่อยคิว",
                   html: `ยืนยันปล่อยคิว <strong>${queue.id}</strong> (<strong>${queue.name}</strong>) กลับไปรอเรียก?`,
                   showCancelButton: true,
-                  confirmButtonText: 'ยืนยัน',
-                  cancelButtonText: 'ยกเลิก',
-                  confirmButtonColor: '#f59e0b',
-                  cancelButtonColor: '#6b7280'
+                  confirmButtonText: "ยืนยัน",
+                  cancelButtonText: "ยกเลิก",
+                  confirmButtonColor: "#f59e0b",
+                  cancelButtonColor: "#6b7280",
                 }).then((result) => {
                   if (result.isConfirmed) {
                     queue.status = "waiting";
@@ -6269,13 +7349,13 @@
                     backToQueue();
 
                     Swal.fire({
-                      icon: 'success',
-                      title: 'ปล่อยคิวเรียบร้อยแล้ว',
-                      text: '⚠️ คิวได้ถูกส่งกลับไปรอเรียกใหม่',
-                      confirmButtonText: 'ตกลง',
-                      confirmButtonColor: '#667eea',
+                      icon: "success",
+                      title: "ปล่อยคิวเรียบร้อยแล้ว",
+                      text: "⚠️ คิวได้ถูกส่งกลับไปรอเรียกใหม่",
+                      confirmButtonText: "ตกลง",
+                      confirmButtonColor: "#667eea",
                       timer: 2000,
-                      timerProgressBar: true
+                      timerProgressBar: true,
                     });
                   }
                 });
@@ -6284,21 +7364,38 @@
 
             function completeService() {
               console.log("completeService called");
-              console.log("currentPatientQueueId:", window.currentPatientQueueId);
 
-              const queue = queueData.find(
+              // Ensure we have a valid ID from cached queue if global ID is missing
+              if (!window.currentPatientQueueId && window.currentPatientQueue) {
+                window.currentPatientQueueId = window.currentPatientQueue.id;
+              }
+
+              console.log(
+                "currentPatientQueueId:",
+                window.currentPatientQueueId
+              );
+
+              // ลองหา queue จาก queueData ก่อน
+              let queue = queueData.find(
                 (q) => q.id === window.currentPatientQueueId
               );
 
+              // ถ้าไม่เจอใน queueData ให้ใช้ queue ที่เก็บไว้ใน window.currentPatientQueue
+              if (!queue && window.currentPatientQueue) {
+                console.log("Queue not found in queueData, using cached queue");
+                queue = window.currentPatientQueue;
+              }
+
               console.log("queue found:", queue);
+
               if (!queue) {
                 console.error("Queue not found!");
                 Swal.fire({
-                  icon: 'error',
-                  title: 'ไม่พบข้อมูลผู้ป่วย',
-                  text: 'ไม่พบข้อมูลคิวนี้ในระบบ',
-                  confirmButtonText: 'ตกลง',
-                  confirmButtonColor: '#667eea'
+                  icon: "error",
+                  title: "ไม่พบข้อมูลผู้ป่วย",
+                  text: "ไม่พบข้อมูลคิวนี้ในระบบ กรุณาลองเรียกคิวใหม่อีกครั้ง",
+                  confirmButtonText: "ตกลง",
+                  confirmButtonColor: "#667eea",
                 });
                 return;
               }
@@ -6316,6 +7413,9 @@
               queue.serviceEndTime = endISOString;
               queue.serviceDuration = duration;
 
+              // อัปเดต queue object ใน window
+              window.currentPatientQueue = queue;
+
               const startDisplay = queue.serviceStartTime
                 ? new Date(queue.serviceStartTime).toLocaleTimeString("th-TH")
                 : "-";
@@ -6323,63 +7423,101 @@
                 "th-TH"
               );
 
-              // Add complete data to history with all queue information
-              const historyRecord = {
-                id: queue.id,
-                name: queue.name,
-                hn: queue.hn,
-                sex: queue.sex || "-",
-                birthdate: queue.birthdate || "-",
-                age: queue.age || "-",
-                ward: queue.ward || "-",
-                right: queue.right || "-",
-                department: queue.department || "-",
-                nationality: queue.nationality || "-",
-                notes: queue.notes || "-",
-                photo: queue.photo || "",
-                type: queue.type || "general",
-                startTime: startDisplay,
-                endTime: endDisplay,
-                duration: duration,
-                queueCallTime: queue.queueCallTime || "-",
-                billingNo: queue.billingNo || "-",
-                billingDate: queue.billingDate || "-",
-                serviceStartTime: queue.serviceStartTime || "-",
-                drawOutcome: "สำเร็จ",
-                tubes: queue.tubes || [],
-                calledByStaff: queue.calledByStaff || "-",
-                calledByCounter: queue.calledByCounter || "-"
-              };
+              try {
+                // Add complete data to history with all queue information
+                const historyRecord = {
+                  id: queue.id,
+                  name: queue.name,
+                  hn: queue.hn,
+                  sex: queue.sex || "-",
+                  birthdate: queue.birthdate || "-",
+                  age: queue.age || "-",
+                  ward: queue.ward || "-",
+                  right: queue.right || "-",
+                  department: queue.department || "-",
+                  nationality: queue.nationality || "-",
+                  notes: queue.notes || "-",
+                  photo: queue.photo || "",
+                  type: queue.type || "general",
+                  startTime: startDisplay,
+                  endTime: endDisplay,
+                  duration: duration,
+                  queueCallTime: queue.queueCallTime || "-",
+                  billingNo: queue.billingNo || "-",
+                  billingDate: queue.billingDate || "-",
+                  serviceStartTime: queue.serviceStartTime || "-",
+                  drawOutcome: "สำเร็จ",
+                  tubes: queue.tubes || [],
+                  calledByStaff: queue.calledByStaff || "-",
+                  calledByCounter: queue.calledByCounter || "-",
+                };
 
-              console.log("historyRecord:", historyRecord);
-              historyData.unshift(historyRecord);
-              console.log("historyData after unshift:", historyData);
+                console.log("historyRecord:", historyRecord);
+                historyData.unshift(historyRecord);
+                console.log("historyData after unshift:", historyData);
 
-              // Remove from active queue
-              const queueIndex = queueData.findIndex(q => q.id === queue.id);
-              console.log("queueIndex to remove:", queueIndex);
-              if (queueIndex > -1) {
-                queueData.splice(queueIndex, 1);
+                // Remove from active queue
+                const queueIndex = queueData.findIndex((q) => q.id === queue.id);
+                console.log("queueIndex to remove:", queueIndex);
+                if (queueIndex > -1) {
+                  queueData.splice(queueIndex, 1);
+                }
+
+                renderQueue();
+                renderHistory();
+                updateStats();
+              } catch (error) {
+                console.error("Error updating data or rendering:", error);
+                // Continue to show success message even if rendering fails
               }
-
-              renderQueue();
-              renderHistory();
-              updateStats();
 
               // Show success message
               console.log("Showing success message");
               Swal.fire({
-                icon: 'success',
-                title: 'บันทึกการให้บริการสำเร็จ',
-                html: '✅ รายการนี้ได้ถูกเพิ่มเข้าประวัติการให้บริการแล้ว',
-                confirmButtonText: 'ตกลง',
-                confirmButtonColor: '#667eea',
-                timer: 2000,
-                timerProgressBar: true
-              }).then(() => {
+                icon: "success",
+                title: "บันทึกการให้บริการสำเร็จ!",
+                html: `
+                  <div style="text-align: center; padding: 25px 20px;">
+                    <div style="width: 100px; height: 100px; margin: 0 auto 25px; background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);">
+                      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 60px; height: 60px; color: #10b981;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #86efac; border-radius: 16px; padding: 25px; margin-bottom: 25px;">
+                      <div style="font-size: 18px; color: #065f46; font-weight: 700; margin-bottom: 15px;">
+                        คิวหมายเลข: <span style="color: #10b981; font-size: 24px;">${queue.id}</span>
+                      </div>
+                      <div style="font-size: 16px; color: #059669; font-weight: 600; margin-bottom: 10px;">
+                        ${queue.name}
+                      </div>
+                      <div style="font-size: 14px; color: #047857;">
+                        HN: ${queue.hn}
+                      </div>
+                    </div>
+                    <div style="background: #f8fafc; border-radius: 12px; padding: 20px; text-align: left;">
+                      <div style="font-size: 15px; color: #475569; line-height: 2;">
+                        ✅ บันทึกการให้บริการเรียบร้อยแล้ว<br>
+                        📋 เพิ่มเข้าประวัติการให้บริการแล้ว<br>
+                        ⏱️ ระยะเวลาการให้บริการ: <strong style="color: #667eea;">${duration}</strong><br>
+                        💾 บันทึกข้อมูลอัตโนมัติ
+                      </div>
+                    </div>
+                  </div>
+                `,
+                confirmButtonText: "✓ ตกลง กลับหน้าจัดการคิว",
+                confirmButtonColor: "#667eea",
+                width: "600px",
+                allowOutsideClick: false,
+                customClass: {
+                  confirmButton: "swal-confirm-large",
+                },
+              }).then((result) => {
                 // Return to queue page
                 console.log("Returning to queue page");
-                backToQueue();
+                console.log("SweetAlert result:", result);
+                if (result.isConfirmed || result.isDismissed) {
+                  backToQueue();
+                }
               });
             }
 
@@ -6389,14 +7527,14 @@
               );
               if (queueIndex > -1) {
                 Swal.fire({
-                  icon: 'warning',
-                  title: 'ยืนยันการปิดคิว',
-                  text: 'คุณต้องการปิดคิวนี้ใช่หรือไม่?',
+                  icon: "warning",
+                  title: "ยืนยันการปิดคิว",
+                  text: "คุณต้องการปิดคิวนี้ใช่หรือไม่?",
                   showCancelButton: true,
-                  confirmButtonText: 'ยืนยัน',
-                  cancelButtonText: 'ยกเลิก',
-                  confirmButtonColor: '#ef4444',
-                  cancelButtonColor: '#6b7280'
+                  confirmButtonText: "ยืนยัน",
+                  cancelButtonText: "ยกเลิก",
+                  confirmButtonColor: "#ef4444",
+                  cancelButtonColor: "#6b7280",
                 }).then((result) => {
                   if (result.isConfirmed) {
                     queueData.splice(queueIndex, 1);
@@ -6410,78 +7548,86 @@
 
             function recallNew() {
               Swal.fire({
-                icon: 'warning',
-                title: 'แจ้งเตือน: รอเรียกใหม่',
-                text: '🔔 คิวนี้จะถูกส่งกลับไปรอเรียกใหม่',
-                confirmButtonText: 'ตกลง',
-                confirmButtonColor: '#667eea'
+                icon: "warning",
+                title: "แจ้งเตือน: รอเรียกใหม่",
+                text: "🔔 คิวนี้จะถูกส่งกลับไปรอเรียกใหม่",
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#667eea",
               });
             }
             function labelling() {
               Swal.fire({
-                icon: 'info',
-                title: 'กำลังพิมพ์สติ๊กเกอร์',
-                text: '🖨️ ระบบกำลังดำเนินการพิมพ์สติ๊กเกอร์...',
-                confirmButtonText: 'ตกลง',
-                confirmButtonColor: '#667eea',
+                icon: "info",
+                title: "กำลังพิมพ์สติ๊กเกอร์",
+                text: "🖨️ ระบบกำลังดำเนินการพิมพ์สติ๊กเกอร์...",
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#667eea",
                 timer: 2000,
-                timerProgressBar: true
+                timerProgressBar: true,
               });
             }
 
             function printTubeLabel(tubeName) {
               Swal.fire({
-                icon: 'info',
-                title: 'พิมพ์สติ๊กเกอร์สำหรับหลอด',
+                icon: "info",
+                title: "พิมพ์สติ๊กเกอร์สำหรับหลอด",
                 html: `🖨️ กำลังพิมพ์สติ๊กเกอร์สำหรับหลอด <strong>${tubeName}</strong>`,
-                confirmButtonText: 'ตกลง',
-                confirmButtonColor: '#667eea',
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#667eea",
                 timer: 2000,
-                timerProgressBar: true
+                timerProgressBar: true,
               });
             }
 
             function recallPatient() {
               Swal.fire({
-                icon: 'info',
-                title: 'กำลังเรียกผู้ป่วยซ้ำ',
-                text: '📢 ระบบกำลังดำเนินการเรียกผู้ป่วยซ้ำ...',
-                confirmButtonText: 'ตกลง',
-                confirmButtonColor: '#667eea'
+                icon: "info",
+                title: "กำลังเรียกผู้ป่วยซ้ำ",
+                text: "📢 ระบบกำลังดำเนินการเรียกผู้ป่วยซ้ำ...",
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#667eea",
               });
             }
 
             function openDifficultDrawModal() {
-              document.getElementById("difficultDrawModal").style.display = "flex";
+              document.getElementById("difficultDrawModal").style.display =
+                "flex";
             }
 
             function closeDifficultDrawModal() {
-              document.getElementById("difficultDrawModal").style.display = "none";
+              document.getElementById("difficultDrawModal").style.display =
+                "none";
               // Reset form
               document.getElementById("difficultDrawComment").value = "";
-              document.getElementById("difficultReasonSelect").selectedIndex = 0;
+              document.getElementById(
+                "difficultReasonSelect"
+              ).selectedIndex = 0;
             }
 
             function saveDifficultDraw() {
-              const reason = document.getElementById("difficultReasonSelect").value;
-              const comment = document.getElementById("difficultDrawComment").value;
-              
+              const reason = document.getElementById(
+                "difficultReasonSelect"
+              ).value;
+              const comment = document.getElementById(
+                "difficultDrawComment"
+              ).value;
+
               const queue = queueData.find(
                 (q) => q.id === window.currentPatientQueueId
               );
-              
+
               if (queue) {
                 queue.difficultDraw = {
                   reason: reason,
                   comment: comment,
-                  timestamp: new Date().toLocaleString('th-TH')
+                  timestamp: new Date().toLocaleString("th-TH"),
                 };
 
                 closeDifficultDrawModal();
 
                 Swal.fire({
-                  icon: 'success',
-                  title: 'บันทึกข้อมูลเรียบร้อย',
+                  icon: "success",
+                  title: "บันทึกข้อมูลเรียบร้อย",
                   html: `
                     <div style="text-align: left;">
                       ✅ บันทึกข้อมูลการเจาะเลือดยากเรียบร้อยแล้ว<br><br>
@@ -6489,8 +7635,8 @@
                       <strong>เพิ่มเติม:</strong> ${comment || "-"}
                     </div>
                   `,
-                  confirmButtonText: 'ตกลง',
-                  confirmButtonColor: '#667eea'
+                  confirmButtonText: "ตกลง",
+                  confirmButtonColor: "#667eea",
                 });
               }
             }
@@ -6552,11 +7698,11 @@
               if (minutes < 5 || minutes > 120) {
                 if (showAlert) {
                   Swal.fire({
-                    icon: 'warning',
-                    title: 'กรุณากรอกเวลาให้ถูกต้อง',
-                    text: '⚠️ กรุณากรอกเวลาระหว่าง 5-120 นาที',
-                    confirmButtonText: 'ตกลง',
-                    confirmButtonColor: '#667eea'
+                    icon: "warning",
+                    title: "กรุณากรอกเวลาให้ถูกต้อง",
+                    text: "⚠️ กรุณากรอกเวลาระหว่าง 5-120 นาที",
+                    confirmButtonText: "ตกลง",
+                    confirmButtonColor: "#667eea",
                   });
                 }
                 return false;
@@ -6574,13 +7720,13 @@
               // Show success message only if requested
               if (showAlert) {
                 Swal.fire({
-                  icon: 'success',
-                  title: 'บันทึกการตั้งค่าเวลาเป้าหมายเรียบร้อยแล้ว',
+                  icon: "success",
+                  title: "บันทึกการตั้งค่าเวลาเป้าหมายเรียบร้อยแล้ว",
                   html: `✅ เวลาเป้าหมาย: <strong>${minutes}</strong> นาที`,
-                  confirmButtonText: 'ตกลง',
-                  confirmButtonColor: '#667eea',
+                  confirmButtonText: "ตกลง",
+                  confirmButtonColor: "#667eea",
                   timer: 2000,
-                  timerProgressBar: true
+                  timerProgressBar: true,
                 });
               }
 
@@ -6683,10 +7829,12 @@
               }
 
               // Show comprehensive success message
-              const summaryText = settingsSummary.map(item => `<div style="text-align: left;">${item}</div>`).join("");
+              const summaryText = settingsSummary
+                .map((item) => `<div style="text-align: left;">${item}</div>`)
+                .join("");
               Swal.fire({
-                icon: 'success',
-                title: 'บันทึกการตั้งค่าทั้งหมดเรียบร้อยแล้ว',
+                icon: "success",
+                title: "บันทึกการตั้งค่าทั้งหมดเรียบร้อยแล้ว",
                 html: `
                   <div style="text-align: left;">
                     ✅ บันทึกการตั้งค่าสำเร็จ<br><br>
@@ -6696,8 +7844,8 @@
                     <strong>💾 บันทึกสำเร็จ ${successCount} รายการ</strong>
                   </div>
                 `,
-                confirmButtonText: 'ตกลง',
-                confirmButtonColor: '#667eea'
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#667eea",
               });
 
               // Update stats and UI
@@ -6740,11 +7888,11 @@
               console.log("queue found:", queue);
               if (!queue) {
                 Swal.fire({
-                  icon: 'error',
-                  title: 'ไม่พบข้อมูลคิวนี้ในระบบ',
-                  text: 'ไม่สามารถค้นหาข้อมูลคิวที่ต้องการได้',
-                  confirmButtonText: 'ตกลง',
-                  confirmButtonColor: '#667eea'
+                  icon: "error",
+                  title: "ไม่พบข้อมูลคิวนี้ในระบบ",
+                  text: "ไม่สามารถค้นหาข้อมูลคิวที่ต้องการได้",
+                  confirmButtonText: "ตกลง",
+                  confirmButtonColor: "#667eea",
                 });
                 return;
               }
@@ -6760,39 +7908,58 @@
                 general: "ผู้ป่วยทั่วไป",
                 wheelchair: "ผู้ป่วยรถเข็น",
                 urgent: "ผู้ป่วยเร่งด่วน",
-                container: "กระปุก"
+                container: "กระปุก",
               };
 
               // Update all detail fields
-              document.getElementById("detail-patient-name").textContent = queue.name || "-";
+              document.getElementById("detail-patient-name").textContent =
+                queue.name || "-";
               document.getElementById("detail-queue-no").textContent = queue.id;
               document.getElementById("detail-type").textContent =
                 typeLabels[queue.type] || "-";
-              document.getElementById("detail-hn").textContent = queue.hn || "-";
-              document.getElementById("detail-sex").textContent = queue.sex || "-";
-              document.getElementById("detail-birthdate").textContent = queue.birthdate || "-";
-              document.getElementById("detail-age").textContent = queue.age || "-";
-              document.getElementById("detail-ward").textContent = queue.ward || "-";
-              document.getElementById("detail-right").textContent = queue.right || "-";
-              document.getElementById("detail-department").textContent = queue.department || "-";
-              document.getElementById("detail-nationality").textContent = queue.nationality || "-";
-              document.getElementById("detail-notes").textContent = queue.notes || "-";
-              document.getElementById("detail-patient-photo").src = queue.photo || "";
+              document.getElementById("detail-hn").textContent =
+                queue.hn || "-";
+              document.getElementById("detail-sex").textContent =
+                queue.sex || "-";
+              document.getElementById("detail-birthdate").textContent =
+                queue.birthdate || "-";
+              document.getElementById("detail-age").textContent =
+                queue.age || "-";
+              document.getElementById("detail-ward").textContent =
+                queue.ward || "-";
+              document.getElementById("detail-right").textContent =
+                queue.right || "-";
+              document.getElementById("detail-department").textContent =
+                queue.department || "-";
+              document.getElementById("detail-nationality").textContent =
+                queue.nationality || "-";
+              document.getElementById("detail-notes").textContent =
+                queue.notes || "-";
+              document.getElementById("detail-patient-photo").src =
+                queue.photo || "";
 
               // Update service information
-              document.getElementById("detail-call-time").textContent = queue.queueCallTime || queue.startTime || "-";
-              document.getElementById("detail-billing-no").textContent = queue.billingNo || "-";
-              document.getElementById("detail-billing-date").textContent = queue.billingDate || "-";
-              document.getElementById("detail-service-start").textContent = queue.serviceStartTime || "-";
-              document.getElementById("detail-draw-outcome").textContent = queue.drawOutcome || "สำเร็จ";
-              document.getElementById("detail-provider").textContent = queue.calledByStaff || "-";
+              document.getElementById("detail-call-time").textContent =
+                queue.queueCallTime || queue.startTime || "-";
+              document.getElementById("detail-billing-no").textContent =
+                queue.billingNo || "-";
+              document.getElementById("detail-billing-date").textContent =
+                queue.billingDate || "-";
+              document.getElementById("detail-service-start").textContent =
+                queue.serviceStartTime || "-";
+              document.getElementById("detail-draw-outcome").textContent =
+                queue.drawOutcome || "สำเร็จ";
+              document.getElementById("detail-provider").textContent =
+                queue.calledByStaff || "-";
 
               // Set channel and counter
-              document.getElementById("detail-channel").textContent = queue.calledByCounter || "-";
+              document.getElementById("detail-channel").textContent =
+                queue.calledByCounter || "-";
 
               // Display duration
               if (queue.duration) {
-                document.getElementById("detail-duration").textContent = queue.duration;
+                document.getElementById("detail-duration").textContent =
+                  queue.duration;
               }
 
               // Render tube list if available
@@ -6802,83 +7969,105 @@
 
               // Hide action buttons for history view
               document.getElementById("initial-actions").style.display = "none";
-              document.getElementById("in-service-actions").style.display = "none";
+              document.getElementById("in-service-actions").style.display =
+                "none";
 
               console.log("History detail displayed successfully");
             }
 
             // Profile Management Functions
             function toggleProfileDropdown() {
-              const dropdown = document.getElementById('profileDropdown');
-              const trigger = document.querySelector('.dropdown-trigger');
-              
-              if (dropdown.classList.contains('active')) {
-                dropdown.classList.remove('active');
-                trigger.classList.remove('active');
+              const dropdown = document.getElementById("profileDropdown");
+              const trigger = document.querySelector(".dropdown-trigger");
+
+              if (dropdown.classList.contains("active")) {
+                dropdown.classList.remove("active");
+                trigger.classList.remove("active");
               } else {
-                dropdown.classList.add('active');
-                trigger.classList.add('active');
+                dropdown.classList.add("active");
+                trigger.classList.add("active");
               }
             }
 
             // Close dropdown when clicking outside
-            document.addEventListener('click', function(event) {
-              const dropdown = document.getElementById('profileDropdown');
-              const trigger = document.querySelector('.dropdown-trigger');
-              const isClickInside = trigger && (trigger.contains(event.target) || dropdown.contains(event.target));
-              
-              if (dropdown && !isClickInside && dropdown.classList.contains('active')) {
-                dropdown.classList.remove('active');
-                trigger.classList.remove('active');
+            document.addEventListener("click", function (event) {
+              const dropdown = document.getElementById("profileDropdown");
+              const trigger = document.querySelector(".dropdown-trigger");
+              const isClickInside =
+                trigger &&
+                (trigger.contains(event.target) ||
+                  dropdown.contains(event.target));
+
+              if (
+                dropdown &&
+                !isClickInside &&
+                dropdown.classList.contains("active")
+              ) {
+                dropdown.classList.remove("active");
+                trigger.classList.remove("active");
               }
             });
 
             function openProfileModal() {
               // Close dropdown first
-              document.getElementById('profileDropdown').classList.remove('active');
-              document.querySelector('.dropdown-trigger').classList.remove('active');
-              
+              document
+                .getElementById("profileDropdown")
+                .classList.remove("active");
+              document
+                .querySelector(".dropdown-trigger")
+                .classList.remove("active");
+
               // Get current user data (Mock data for now)
               const currentUser = {
                 fullName: "Admin User",
                 position: "Admin",
                 department: "IT",
                 username: "admin",
-                role: "Admin"
+                role: "Admin",
               };
-              
+
               // Populate form
-              document.getElementById('profileFullName').value = currentUser.fullName;
-              document.getElementById('profilePosition').value = currentUser.position;
-              document.getElementById('profileDepartment').value = currentUser.department;
-              document.getElementById('profileUsername').value = currentUser.username;
-              document.getElementById('profileRole').value = currentUser.role;
-              document.getElementById('profilePassword').value = "";
-              
+              document.getElementById("profileFullName").value =
+                currentUser.fullName;
+              document.getElementById("profilePosition").value =
+                currentUser.position;
+              document.getElementById("profileDepartment").value =
+                currentUser.department;
+              document.getElementById("profileUsername").value =
+                currentUser.username;
+              document.getElementById("profileRole").value = currentUser.role;
+              document.getElementById("profilePassword").value = "";
+
               // Show modal
-              document.getElementById('profileModal').style.display = 'flex';
+              document.getElementById("profileModal").style.display = "flex";
             }
 
             function closeProfileModal() {
-              document.getElementById('profileModal').style.display = 'none';
+              document.getElementById("profileModal").style.display = "none";
             }
 
             function handleProfileSubmit(event) {
               event.preventDefault();
 
-              const fullName = document.getElementById('profileFullName').value.trim();
-              const position = document.getElementById('profilePosition').value.trim();
-              const department = document.getElementById('profileDepartment').value.trim();
-              const password = document.getElementById('profilePassword').value;
+              const fullName = document
+                .getElementById("profileFullName")
+                .value.trim();
+              const position = document
+                .getElementById("profilePosition")
+                .value.trim();
+              const department = document
+                .getElementById("profileDepartment")
+                .value.trim();
+              const password = document.getElementById("profilePassword").value;
 
               // ตรวจสอบว่ากรอกข้อมูลครบหรือไม่
               if (!fullName || !position || !department) {
                 Swal.fire({
-                  icon: 'warning',
-                  title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
-                  text: 'กรุณากรอกชื่อ-สกุล, ตำแหน่ง และแผนก',
-                  confirmButtonText: 'ตกลง',
-                  confirmButtonColor: '#667eea'
+                  icon: "warning",
+                  title: "กรุณากรอกข้อมูลให้ครบถ้วน",
+                  text: "กรุณากรอกชื่อ-สกุล, ตำแหน่ง และแผนก",
+                  confirmButtonText: "ตกลง",
+                  confirmButtonColor: "#667eea",
                 });
                 return;
               }
@@ -6888,8 +8077,8 @@
 
               // แสดง Sweet Alert บันทึกสำเร็จ
               Swal.fire({
-                icon: 'success',
-                title: 'บันทึกข้อมูลโปรไฟล์เรียบร้อย!',
+                icon: "success",
+                title: "บันทึกข้อมูลโปรไฟล์เรียบร้อย!",
                 html: `
                   <div style="text-align: left; padding: 20px; background: #f7fafc; border-radius: 12px; margin-top: 15px;">
                     <h3 style="color: #2d3748; font-size: 18px; margin-bottom: 15px; text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">
@@ -6904,16 +8093,22 @@
                         <span style="color: #718096; font-weight: 500;">💼 ตำแหน่ง:</span>
                         <span style="color: #2d3748; font-weight: 600;">${position}</span>
                       </div>
-                      <div style="display: flex; justify-content: space-between; padding: 8px 0; ${password ? 'border-bottom: 1px solid #e2e8f0;' : ''}">
+                      <div style="display: flex; justify-content: space-between; padding: 8px 0; ${
+                        password ? "border-bottom: 1px solid #e2e8f0;" : ""
+                      }">
                         <span style="color: #718096; font-weight: 500;">🏢 แผนก:</span>
                         <span style="color: #2d3748; font-weight: 600;">${department}</span>
                       </div>
-                      ${password ? `
+                      ${
+                        password
+                          ? `
                         <div style="display: flex; justify-content: space-between; padding: 8px 0;">
                           <span style="color: #718096; font-weight: 500;">🔐 รหัสผ่าน:</span>
                           <span style="color: #38a169; font-weight: 700;">เปลี่ยนเรียบร้อย ✓</span>
                         </div>
-                      ` : ''}
+                      `
+                          : ""
+                      }
                     </div>
                     <div style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-radius: 10px; border-left: 4px solid #22c55e;">
                       <p style="margin: 0; color: #065f46; font-size: 14px; font-weight: 500;">
@@ -6922,13 +8117,13 @@
                     </div>
                   </div>
                 `,
-                confirmButtonText: 'ตกลง',
-                confirmButtonColor: '#667eea',
-                width: '550px'
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#667eea",
+                width: "550px",
               });
 
               // Update UI
-              document.getElementById('userName').textContent = fullName;
+              document.getElementById("userName").textContent = fullName;
             }
 
             // --- Init & Event Listeners ---
@@ -6946,11 +8141,13 @@
               const serviceButtons = document.querySelectorAll(
                 "#in-service-actions > button"
               );
-              if (serviceButtons[0]) serviceButtons[0].onclick = completeService;
+              if (serviceButtons[0])
+                serviceButtons[0].onclick = completeService;
               if (serviceButtons[1]) serviceButtons[1].onclick = recallNew;
               if (serviceButtons[2]) serviceButtons[2].onclick = cancelQueue;
               if (serviceButtons[3]) serviceButtons[3].onclick = labelling;
-              if (serviceButtons[4]) serviceButtons[4].onclick = openDifficultDrawModal;
+              if (serviceButtons[4])
+                serviceButtons[4].onclick = openDifficultDrawModal;
 
               // Load Target Time Setting
               loadTargetTimeSetting();
