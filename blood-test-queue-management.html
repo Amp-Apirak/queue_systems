@@ -103,6 +103,121 @@
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
       }
 
+      /* Service Channel Form Styles */
+      .service-channel-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 14px;
+        color: #374151;
+        margin-bottom: 8px;
+        font-weight: 600;
+      }
+
+      .form-select {
+        width: 100%;
+        padding: 12px 16px;
+        font-size: 15px;
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        background-color: white;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .form-select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      /* Toggle Switch Styles */
+      .toggle-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .toggle-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        padding: 16px 20px;
+        background: #f8fafc;
+        border-radius: 12px;
+        border: 2px solid #e2e8f0;
+        transition: all 0.3s ease;
+      }
+
+      .toggle-label:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+      }
+
+      .toggle-text {
+        font-size: 15px;
+        font-weight: 600;
+        color: #1e293b;
+      }
+
+      .toggle-switch {
+        position: relative;
+        width: 52px;
+        height: 28px;
+      }
+
+      .toggle-input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #cbd5e1;
+        transition: 0.4s;
+        border-radius: 34px;
+      }
+
+      .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .toggle-input:checked + .toggle-slider {
+        background-color: #10b981;
+      }
+
+      .toggle-input:checked + .toggle-slider:before {
+        transform: translateX(24px);
+      }
+
+      .toggle-description {
+        font-size: 13px;
+        color: #64748b;
+        line-height: 1.5;
+        margin: 0;
+        padding: 0 4px;
+      }
+
       .btn {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
@@ -1952,6 +2067,38 @@
         margin-top: 28px;
       }
 
+      /* Reset Password Modal Specific Styles */
+      #resetPasswordModal .modal-content {
+        padding: 40px 50px 50px 50px;
+        max-width: 600px;
+      }
+
+      #resetPasswordModal h2 {
+        margin-top: 15px;
+        margin-bottom: 8px;
+      }
+
+      #resetPasswordModal p {
+        margin-bottom: 25px;
+      }
+
+      #resetPasswordModal .modal-form-group {
+        margin-bottom: 24px;
+      }
+
+      #resetPasswordModal .modal-form-group:last-of-type {
+        margin-bottom: 0;
+      }
+
+      #resetPasswordModal .modal-form-group label {
+        margin-bottom: 12px;
+        font-weight: 600;
+      }
+
+      #resetPasswordModal form > div:last-child {
+        margin-top: 28px;
+      }
+
       /* Counter Selection */
       .counter-selection-grid {
         display: grid;
@@ -3418,14 +3565,64 @@
           <input type="hidden" id="userId" />
 
           <div class="modal-form-group">
+            <label for="userUsername"
+              >ชื่อผู้ใช้งาน <span style="color: red">*</span></label
+            >
+            <input
+              type="text"
+              id="userUsername"
+              placeholder="เช่น somchai.j"
+              required
+            />
+          </div>
+
+          <div class="modal-form-group">
+            <label for="userRole"
+              >บทบาท <span style="color: red">*</span></label
+            >
+            <select id="userRole" required>
+              <option value="">เลือกบทบาท</option>
+              <option value="Admin">Admin</option>
+              <option value="Staff">Staff</option>
+            </select>
+          </div>
+
+          <div class="modal-form-group">
+            <label for="userEmail">อีเมล</label>
+            <input
+              type="email"
+              id="userEmail"
+              placeholder="เช่น somchai@example.com"
+            />
+          </div>
+
+          <div class="modal-form-group">
             <label for="userFullName"
-              >ชื่อ-สกุล <span style="color: red">*</span></label
+              >ชื่อ - นามสกุล (TH) <span style="color: red">*</span></label
             >
             <input
               type="text"
               id="userFullName"
-              placeholder="เช่น นายสมชาย ใจดี"
+              placeholder="เช่น สมชาย ใจดี"
               required
+            />
+          </div>
+
+          <div class="modal-form-group">
+            <label for="userFullNameEN">ชื่อ - นามสกุล (EN)</label>
+            <input
+              type="text"
+              id="userFullNameEN"
+              placeholder="เช่en Somchai Jaidee"
+            />
+          </div>
+
+          <div class="modal-form-group">
+            <label for="userPhone">เบอร์โทรศัพท์</label>
+            <input
+              type="tel"
+              id="userPhone"
+              placeholder="เช่น 0812345678"
             />
           </div>
 
@@ -3456,14 +3653,13 @@
           </div>
 
           <div class="modal-form-group">
-            <label for="userUsername"
-              >ชื่อผู้ใช้งาน <span style="color: red">*</span></label
-            >
+            <label for="userRoleDisplay">บทบาท</label>
             <input
               type="text"
-              id="userUsername"
-              placeholder="เช่น somchai.j"
-              required
+              id="userRoleDisplay"
+              placeholder="บทบาทที่แสดง"
+              readonly
+              style="background-color: #f7fafc; cursor: not-allowed;"
             />
           </div>
 
@@ -3519,17 +3715,6 @@
             ></div>
           </div>
 
-          <div class="modal-form-group">
-            <label for="userRole"
-              >บทบาท <span style="color: red">*</span></label
-            >
-            <select id="userRole" required>
-              <option value="">เลือกบทบาท</option>
-              <option value="Admin">Admin</option>
-              <option value="Staff">Staff</option>
-            </select>
-          </div>
-
           <div
             style="
               display: flex;
@@ -3540,11 +3725,11 @@
               width: 100%;
             "
           >
-            <button type="submit" class="btn-submit" id="userSubmitBtn" style="flex: 1; min-width: 120px">
-              บันทึก
-            </button>
             <button type="button" class="btn-cancel" onclick="closeUserModal()" style="flex: 1; min-width: 120px">
               ยกเลิก
+            </button>
+            <button type="submit" class="btn-submit" id="userSubmitBtn" style="flex: 1; min-width: 120px">
+              บันทึก
             </button>
           </div>
         </form>
@@ -3699,6 +3884,101 @@
           <div style="display: flex; justify-content: center; gap: 15px; margin-top: 28px; flex-wrap: wrap; width: 100%;">
             <button type="submit" class="btn-submit" id="changePasswordBtn" style="flex: 1; min-width: 130px;">เปลี่ยนรหัสผ่าน</button>
             <button type="button" class="btn-cancel" onclick="closeChangePasswordModal()" style="flex: 1; min-width: 130px;">ยกเลิก</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Reset Password Modal -->
+    <div class="modal" id="resetPasswordModal">
+      <div class="modal-content">
+        <div class="modal-icon" style="background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+          </svg>
+        </div>
+        <h2>รีเซ็ตรหัสผ่าน</h2>
+        <p style="margin-bottom: 25px;">ตั้งรหัสผ่านใหม่สำหรับผู้ใช้งาน: <span id="resetPasswordUsername" style="font-weight: 600; color: #3182ce;"></span></p>
+
+        <form onsubmit="handleResetPassword(event)">
+          <input type="hidden" id="resetUserId" />
+          
+          <div class="modal-form-group">
+            <label for="resetNewPassword">รหัสผ่านใหม่ <span style="color: red">*</span></label>
+            <div style="position: relative;">
+              <input type="password" id="resetNewPassword" placeholder="กรอกรหัสผ่านใหม่" required oninput="checkResetPasswordStrength()" />
+              <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('resetNewPassword')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #6b7280; padding: 5px;">
+                <svg class="eye-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Password Strength Meter -->
+            <div id="resetPasswordStrengthMeter" style="margin-top: 14px; display: none;">
+              <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+                <div class="strength-bar" id="resetStrengthBar1"></div>
+                <div class="strength-bar" id="resetStrengthBar2"></div>
+                <div class="strength-bar" id="resetStrengthBar3"></div>
+                <div class="strength-bar" id="resetStrengthBar4"></div>
+              </div>
+              <div id="resetStrengthText" style="font-size: 13px; font-weight: 600;"></div>
+            </div>
+
+            <!-- Password Requirements -->
+            <div style="background: #f8fafc; border-radius: 12px; padding: 18px 20px; margin-top: 15px; font-size: 13px;">
+              <div style="font-weight: 600; color: #374151; margin-bottom: 12px;">📋 ข้อกำหนดรหัสผ่าน:</div>
+              <div class="password-requirement" id="resetReq-length">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink: 0;">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <span>ความยาวอย่างน้อย 8 ตัวอักษร</span>
+              </div>
+              <div class="password-requirement" id="resetReq-uppercase">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink: 0;">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <span>มีตัวพิมพ์ใหญ่ (A-Z)</span>
+              </div>
+              <div class="password-requirement" id="resetReq-lowercase">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink: 0;">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <span>มีตัวพิมพ์เล็ก (a-z)</span>
+              </div>
+              <div class="password-requirement" id="resetReq-number">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink: 0;">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <span>มีตัวเลข (0-9)</span>
+              </div>
+              <div class="password-requirement" id="resetReq-special">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink: 0;">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <span>มีอักขระพิเศษ (!@#$%^&*)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-form-group">
+            <label for="resetConfirmPassword">ยืนยันรหัสผ่านใหม่ <span style="color: red">*</span></label>
+            <div style="position: relative;">
+              <input type="password" id="resetConfirmPassword" placeholder="กรอกรหัสผ่านใหม่อีกครั้ง" required oninput="checkResetPasswordMatch()" />
+              <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('resetConfirmPassword')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #6b7280; padding: 5px;">
+                <svg class="eye-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                </svg>
+              </button>
+            </div>
+            <div id="resetPasswordMatchMessage" style="margin-top: 10px; font-size: 13px; display: none;"></div>
+          </div>
+
+          <div style="display: flex; justify-content: center; gap: 15px; margin-top: 28px; flex-wrap: wrap; width: 100%;">
+            <button type="button" class="btn-cancel" onclick="closeResetPasswordModal()" style="flex: 1; min-width: 130px;">ยกเลิก</button>
+            <button type="submit" class="btn-submit" id="resetPasswordBtn" style="flex: 1; min-width: 130px;">รีเซ็ตรหัสผ่าน</button>
           </div>
         </form>
       </div>
@@ -4167,77 +4447,84 @@
                   </div>
                 </div>
                 <div class="settings-card-content">
-                  <div class="counter-selection-grid">
-                    <button
-                      class="counter-option active"
-                      onclick="selectCounter(1, this)"
-                    >
-                      <div class="counter-number">1</div>
-                      <div class="counter-label">ช่อง 1</div>
-                    </button>
-                    <button
-                      class="counter-option"
-                      onclick="selectCounter(2, this)"
-                    >
-                      <div class="counter-number">2</div>
-                      <div class="counter-label">ช่อง 2</div>
-                    </button>
-                    <button
-                      class="counter-option"
-                      onclick="selectCounter(3, this)"
-                    >
-                      <div class="counter-number">3</div>
-                      <div class="counter-label">ช่อง 3</div>
-                    </button>
-                    <button
-                      class="counter-option"
-                      onclick="selectCounter(4, this)"
-                    >
-                      <div class="counter-number">4</div>
-                      <div class="counter-label">ช่อง 4</div>
-                    </button>
-                    <button
-                      class="counter-option"
-                      onclick="selectCounter(5, this)"
-                    >
-                      <div class="counter-number">5</div>
-                      <div class="counter-label">ช่อง 5</div>
-                    </button>
-                    <button
-                      class="counter-option"
-                      onclick="selectCounter(6, this)"
-                    >
-                      <div class="counter-number">6</div>
-                      <div class="counter-label">ช่อง 6</div>
-                    </button>
-                    <button
-                      class="counter-option"
-                      onclick="selectCounter(7, this)"
-                    >
-                      <div class="counter-number">7</div>
-                      <div class="counter-label">ช่อง 7</div>
-                    </button>
-                    <button
-                      class="counter-option"
-                      onclick="selectCounter(8, this)"
-                    >
-                      <div class="counter-number">8</div>
-                      <div class="counter-label">ช่อง 8</div>
-                    </button>
-                    <button
-                      class="counter-option"
-                      onclick="selectCounter(9, this)"
-                    >
-                      <div class="counter-number">9</div>
-                      <div class="counter-label">ช่อง 9</div>
-                    </button>
-                    <button
-                      class="counter-option"
-                      onclick="selectCounter(10, this)"
-                    >
-                      <div class="counter-number">10</div>
-                      <div class="counter-label">ช่อง 10</div>
-                    </button>
+                  <div class="service-channel-form">
+                    <div class="form-group">
+                      <label for="channelName" class="form-label">ชื่อช่องบริการ</label>
+                      <input 
+                        type="text" 
+                        id="channelName" 
+                        class="form-input" 
+                        placeholder="กรอกชื่อช่องบริการของคุณ"
+                        value="ช่องบริการ"
+                      >
+                    </div>
+                    <div class="form-group">
+                      <label for="channelNumber" class="form-label">เลือกหมายเลขช่อง</label>
+                      <select id="channelNumber" class="form-select">
+                        <option value="">-- เลือกช่อง --</option>
+                        <option value="1">ช่อง 1</option>
+                        <option value="2">ช่อง 2</option>
+                        <option value="3">ช่อง 3</option>
+                        <option value="4">ช่อง 4</option>
+                        <option value="5">ช่อง 5</option>
+                        <option value="6">ช่อง 6</option>
+                        <option value="7">ช่อง 7</option>
+                        <option value="8">ช่อง 8</option>
+                        <option value="9">ช่อง 9</option>
+                        <option value="10">ช่อง 10</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Individual Queue Calling Settings Card -->
+              <div class="settings-card">
+                <div class="settings-card-header">
+                  <div
+                    class="settings-icon"
+                    style="
+                      background: linear-gradient(
+                        135deg,
+                        #10b981 0%,
+                        #059669 100%
+                      );
+                    "
+                  >
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="settings-card-title">การตั้งค่าการเรียกคิวรายบุคคล</h3>
+                    <p class="settings-card-description">
+                      เปิดหรือปิดการใช้งานปุ่มเรียกคิวรายบุคคล
+                    </p>
+                  </div>
+                </div>
+                <div class="settings-card-content">
+                  <div class="toggle-container">
+                    <label class="toggle-label">
+                      <span class="toggle-text">เปิดการเรียกคิวรายบุคคล</span>
+                      <div class="toggle-switch">
+                        <input 
+                          type="checkbox" 
+                          id="individualQueueToggle" 
+                          class="toggle-input"
+                          onchange="toggleIndividualQueueCalling(this.checked)"
+                        >
+                        <span class="toggle-slider"></span>
+                      </div>
+                    </label>
+                    <p class="toggle-description">
+                      เมื่อเปิดใช้งาน: จะแสดงปุ่มเรียกคิวรายบุคคลบนหน้าจัดการคิว<br>
+                      เมื่อปิดใช้งาน: ปุ่มเรียกคิวรายบุคคลจะถูกซ่อน
+                    </p>
                   </div>
                 </div>
               </div>
@@ -4851,7 +5138,7 @@
                         d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                       ></path>
                     </svg>
-                    Export Excel
+                    Import Data
                   </button>
                 </div>
 
@@ -5117,7 +5404,7 @@
                       d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                     ></path>
                   </svg>
-                  Export Excel
+                  Import Data
                 </button>
                 <button
                   class="btn"
@@ -6458,7 +6745,10 @@
                             <button class="btn-action" onclick="editUser(${
                               user.id
                             })" style="margin-right: 5px;">แก้ไข</button>
-                            <button class="btn-action" style="background: #e53e3e;" onclick="deleteUser(${
+                            <button class="btn-action" style="background: #3182ce;" onclick="openResetPasswordModal(${
+                              user.id
+                            })">รีเซ็ตรหัสผ่าน</button>
+                            <button class="btn-action" style="background: #e53e3e; margin-left: 5px;" onclick="deleteUser(${
                               user.id
                             })">ลบ</button>
                         </td>
@@ -6483,16 +6773,26 @@
                 document.getElementById("userModalDescription").textContent =
                   "แก้ไขข้อมูลผู้ใช้งานระบบ";
                 document.getElementById("userId").value = user.id;
+                document.getElementById("userUsername").value = user.username;
+                document.getElementById("userRole").value = user.role;
+                document.getElementById("userRoleDisplay").value = user.role;
+                document.getElementById("userEmail").value = user.email || "";
                 document.getElementById("userFullName").value = user.fullName;
+                document.getElementById("userFullNameEN").value = user.fullNameEN || "";
+                document.getElementById("userPhone").value = user.phone || "";
                 document.getElementById("userPosition").value = user.position;
                 document.getElementById("userDepartment").value =
                   user.department;
-                document.getElementById("userUsername").value = user.username;
                 document.getElementById("userPassword").value = "";
                 document.getElementById("userPassword").required = false;
                 document.getElementById("userPasswordConfirm").value = "";
                 document.getElementById("userPasswordConfirm").required = false;
-                document.getElementById("userRole").value = user.role;
+                
+                // Hide password fields in edit mode
+                const passwordField = document.getElementById("userPassword").closest('.modal-form-group');
+                const confirmPasswordField = document.getElementById("userPasswordConfirm").closest('.modal-form-group');
+                if (passwordField) passwordField.style.display = 'none';
+                if (confirmPasswordField) confirmPasswordField.style.display = 'none';
               } else {
                 // เพิ่มใหม่
                 document.getElementById("userModalTitle").textContent =
@@ -6500,15 +6800,25 @@
                 document.getElementById("userModalDescription").textContent =
                   "กรอกข้อมูลผู้ใช้งานระบบ";
                 document.getElementById("userId").value = "";
+                document.getElementById("userUsername").value = "";
+                document.getElementById("userRole").value = "";
+                document.getElementById("userRoleDisplay").value = "";
+                document.getElementById("userEmail").value = "";
                 document.getElementById("userFullName").value = "";
+                document.getElementById("userFullNameEN").value = "";
+                document.getElementById("userPhone").value = "";
                 document.getElementById("userPosition").value = "";
                 document.getElementById("userDepartment").value = "";
-                document.getElementById("userUsername").value = "";
                 document.getElementById("userPassword").value = "";
                 document.getElementById("userPassword").required = true;
                 document.getElementById("userPasswordConfirm").value = "";
                 document.getElementById("userPasswordConfirm").required = true;
-                document.getElementById("userRole").value = "";
+                
+                // Show password fields in add mode
+                const passwordField = document.getElementById("userPassword").closest('.modal-form-group');
+                const confirmPasswordField = document.getElementById("userPasswordConfirm").closest('.modal-form-group');
+                if (passwordField) passwordField.style.display = 'block';
+                if (confirmPasswordField) confirmPasswordField.style.display = 'block';
               }
 
               resetPasswordValidation();
@@ -6630,6 +6940,9 @@
                 department: document.getElementById("userDepartment").value,
                 username: document.getElementById("userUsername").value,
                 role: document.getElementById("userRole").value,
+                email: document.getElementById("userEmail").value,
+                fullNameEN: document.getElementById("userFullNameEN").value,
+                phone: document.getElementById("userPhone").value,
               };
 
               if (password) {
@@ -8183,6 +8496,28 @@
               }
             }
 
+            // Individual Queue Calling Toggle Function
+            function toggleIndividualQueueCalling(isEnabled) {
+              // Save the setting to localStorage
+              localStorage.setItem('individualQueueCallingEnabled', isEnabled);
+              
+              // Find and toggle the individual queue calling button on the queue management page
+              const individualCallBtn = document.getElementById('individualCallBtn');
+              if (individualCallBtn) {
+                if (isEnabled) {
+                  individualCallBtn.style.display = 'inline-flex';
+                } else {
+                  individualCallBtn.style.display = 'none';
+                }
+              }
+              
+              // Show notification
+              showNotification(
+                isEnabled ? 'เปิดการเรียกคิวรายบุคคลแล้ว' : 'ปิดการเรียกคิวรายบุคคลแล้ว',
+                'success'
+              );
+            }
+
             // Settings Page Functions
             function selectCounter(counterNum, element) {
               currentCounter = counterNum;
@@ -9009,6 +9344,235 @@
               });
             }
 
+            // Reset Password Modal Functions
+            function openResetPasswordModal(userId) {
+              const user = usersData.find((u) => u.id === userId);
+              if (!user) return;
+
+              document.getElementById('resetUserId').value = user.id;
+              document.getElementById('resetPasswordUsername').textContent = user.username;
+              
+              // Reset form
+              document.getElementById('resetNewPassword').value = '';
+              document.getElementById('resetConfirmPassword').value = '';
+              document.getElementById('resetPasswordMatchMessage').style.display = 'none';
+              document.getElementById('resetPasswordStrengthMeter').style.display = 'none';
+              
+              // Reset password requirements
+              resetResetPasswordRequirements();
+              
+              // Show modal
+              document.getElementById('resetPasswordModal').style.display = 'flex';
+            }
+
+            function closeResetPasswordModal() {
+              document.getElementById('resetPasswordModal').style.display = 'none';
+              document.getElementById('resetUserId').value = '';
+            }
+
+            function checkResetPasswordStrength() {
+              const password = document.getElementById('resetNewPassword').value;
+              const meter = document.getElementById('resetPasswordStrengthMeter');
+              const strengthText = document.getElementById('resetStrengthText');
+
+              if (password.length === 0) {
+                meter.style.display = 'none';
+                resetResetPasswordRequirements();
+                return;
+              }
+
+              meter.style.display = 'block';
+              
+              // Check password requirements
+              const hasLength = password.length >= 8;
+              const hasUppercase = /[A-Z]/.test(password);
+              const hasLowercase = /[a-z]/.test(password);
+              const hasNumber = /[0-9]/.test(password);
+              const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+
+              // Update requirement indicators
+              updateResetRequirement('resetReq-length', hasLength);
+              updateResetRequirement('resetReq-uppercase', hasUppercase);
+              updateResetRequirement('resetReq-lowercase', hasLowercase);
+              updateResetRequirement('resetReq-number', hasNumber);
+              updateResetRequirement('resetReq-special', hasSpecial);
+
+              // Calculate strength
+              let strength = 0;
+              if (hasLength) strength++;
+              if (hasUppercase) strength++;
+              if (hasLowercase) strength++;
+              if (hasNumber) strength++;
+              if (hasSpecial) strength++;
+
+              // Update strength meter
+              const bars = ['resetStrengthBar1', 'resetStrengthBar2', 'resetStrengthBar3', 'resetStrengthBar4'];
+              let strengthClass = '';
+              let strengthLabel = '';
+
+              bars.forEach((bar, index) => {
+                const elem = document.getElementById(bar);
+                elem.classList.remove('active', 'weak', 'fair', 'good', 'strong');
+              });
+
+              if (strength === 1 || strength === 2) {
+                strengthClass = 'weak';
+                strengthLabel = 'อ่อนแอ 😰';
+                bars.slice(0, 1).forEach(bar => {
+                  document.getElementById(bar).classList.add('active', 'weak');
+                });
+              } else if (strength === 3) {
+                strengthClass = 'fair';
+                strengthLabel = 'ปานกลาง 😐';
+                bars.slice(0, 2).forEach(bar => {
+                  document.getElementById(bar).classList.add('active', 'fair');
+                });
+              } else if (strength === 4) {
+                strengthClass = 'good';
+                strengthLabel = 'ดี 😊';
+                bars.slice(0, 3).forEach(bar => {
+                  document.getElementById(bar).classList.add('active', 'good');
+                });
+              } else if (strength === 5) {
+                strengthClass = 'strong';
+                strengthLabel = 'แข็งแรงมาก 💪';
+                bars.forEach(bar => {
+                  document.getElementById(bar).classList.add('active', 'strong');
+                });
+              }
+
+              strengthText.className = strengthClass;
+              strengthText.textContent = strengthLabel;
+            }
+
+            function checkResetPasswordMatch() {
+              const newPassword = document.getElementById('resetNewPassword').value;
+              const confirmPassword = document.getElementById('resetConfirmPassword').value;
+              const message = document.getElementById('resetPasswordMatchMessage');
+
+              if (confirmPassword.length === 0) {
+                message.style.display = 'none';
+                return;
+              }
+
+              message.style.display = 'block';
+              if (newPassword === confirmPassword) {
+                message.innerHTML = '<span style="color: #10b981; font-weight: 600;">✓ รหัสผ่านตรงกัน</span>';
+              } else {
+                message.innerHTML = '<span style="color: #ef4444; font-weight: 600;">✗ รหัสผ่านไม่ตรงกัน</span>';
+              }
+            }
+
+            function updateResetRequirement(id, met) {
+              const elem = document.getElementById(id);
+              if (met) {
+                elem.classList.add('met');
+                elem.querySelector('svg path').setAttribute('d', 'M5 13l4 4L19 7');
+              } else {
+                elem.classList.remove('met');
+                elem.querySelector('svg path').setAttribute('d', 'M6 18L18 6M6 6l12 12');
+              }
+            }
+
+            function resetResetPasswordRequirements() {
+              ['resetReq-length', 'resetReq-uppercase', 'resetReq-lowercase', 'resetReq-number', 'resetReq-special'].forEach(id => {
+                updateResetRequirement(id, false);
+              });
+            }
+
+            function handleResetPassword(event) {
+              event.preventDefault();
+
+              const userId = document.getElementById('resetUserId').value;
+              const newPassword = document.getElementById('resetNewPassword').value;
+              const confirmPassword = document.getElementById('resetConfirmPassword').value;
+
+              // Check if passwords match
+              if (newPassword !== confirmPassword) {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'รหัสผ่านไม่ตรงกัน',
+                  text: 'กรุณากรอกรหัสผ่านใหม่ให้ตรงกันทั้งสองช่อง',
+                  confirmButtonText: 'ตกลง',
+                  confirmButtonColor: '#667eea'
+                });
+                return;
+              }
+
+              // Check password strength requirements
+              const hasLength = newPassword.length >= 8;
+              const hasUppercase = /[A-Z]/.test(newPassword);
+              const hasLowercase = /[a-z]/.test(newPassword);
+              const hasNumber = /[0-9]/.test(newPassword);
+              const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(newPassword);
+
+              if (!hasLength || !hasUppercase || !hasLowercase || !hasNumber || !hasSpecial) {
+                Swal.fire({
+                  icon: 'warning',
+                  title: 'รหัสผ่านไม่ปลอดภัย',
+                  html: `
+                    <div style="text-align: left;">
+                      <p style="margin-bottom: 15px;">กรุณาตรวจสอบให้แน่ใจว่ารหัสผ่านมี:</p>
+                      <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 5px;">
+                          ${hasLength ? '✓' : '✗'} ความยาวอย่างน้อย 8 ตัวอักษร
+                        </li>
+                        <li style="margin-bottom: 5px;">
+                          ${hasUppercase ? '✓' : '✗'} มีตัวพิมพ์ใหญ่ (A-Z)
+                        </li>
+                        <li style="margin-bottom: 5px;">
+                          ${hasLowercase ? '✓' : '✗'} มีตัวพิมพ์เล็ก (a-z)
+                        </li>
+                        <li style="margin-bottom: 5px;">
+                          ${hasNumber ? '✓' : '✗'} มีตัวเลข (0-9)
+                        </li>
+                        <li style="margin-bottom: 5px;">
+                          ${hasSpecial ? '✓' : '✗'} มีอักขระพิเศษ (!@#$%^&*)
+                        </li>
+                      </ul>
+                    </div>
+                  `,
+                  confirmButtonText: 'ตกลง',
+                  confirmButtonColor: '#667eea',
+                  width: '500px'
+                });
+                return;
+              }
+
+              // Find user and update password (in real app, this would be done on server)
+              const user = usersData.find((u) => u.id === parseInt(userId));
+              if (user) {
+                user.password = newPassword; // In real app, this would be hashed
+              }
+
+              closeResetPasswordModal();
+
+              Swal.fire({
+                icon: 'success',
+                title: 'รีเซ็ตรหัสผ่านเรียบร้อย!',
+                html: `
+                  <div style="text-align: center; padding: 20px;">
+                    <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 15px; padding: 20px; margin-bottom: 20px;">
+                      <div style="font-size: 48px; margin-bottom: 10px;">🔐</div>
+                      <p style="color: #1e40af; font-size: 16px; font-weight: 600; margin: 0;">
+                        รหัสผ่านของผู้ใช้ <strong>${user.username}</strong> ได้รับการรีเซ็ตเรียบร้อยแล้ว
+                      </p>
+                    </div>
+                    <div style="background: #fef3c7; border: 2px solid #fbbf24; border-radius: 10px; padding: 15px; text-align: left;">
+                      <p style="margin: 0; color: #92400e; font-size: 14px;">
+                        <strong>⚠️ คำแนะนำ:</strong><br>
+                        • แจ้งผู้ใช้งานเกี่ยวกับรหัสผ่านใหม่<br>
+                        • ควรให้ผู้ใช้งานเปลี่ยนรหัสผ่านในครั้งแรกที่เข้าใช้งาน
+                      </p>
+                    </div>
+                  </div>
+                `,
+                confirmButtonText: 'เข้าใจแล้ว',
+                confirmButtonColor: '#3182ce',
+                width: '550px'
+              });
+            }
+
             // --- Init & Event Listeners ---
             window.addEventListener("DOMContentLoaded", () => {
               // Initial actions buttons
@@ -9034,6 +9598,51 @@
               loadTargetTimeSetting();
               setSettingsMenuExpanded(false);
               renderMini8Devices();
+              
+              // Load Individual Queue Calling Setting
+              const individualQueueEnabled = localStorage.getItem('individualQueueCallingEnabled') === 'true';
+              const toggle = document.getElementById('individualQueueToggle');
+              if (toggle) {
+                toggle.checked = individualQueueEnabled;
+                // Apply the setting to the queue page
+                toggleIndividualQueueCalling(individualQueueEnabled);
+              }
+              
+              // Load Service Channel Settings
+              const savedChannelName = localStorage.getItem('channelName');
+              const savedChannelNumber = localStorage.getItem('channelNumber');
+              if (savedChannelName) {
+                document.getElementById('channelName').value = savedChannelName;
+              }
+              if (savedChannelNumber) {
+                document.getElementById('channelNumber').value = savedChannelNumber;
+              }
+              
+              // Add event listeners for service channel settings
+              const channelNameInput = document.getElementById('channelName');
+              const channelNumberSelect = document.getElementById('channelNumber');
+              
+              if (channelNameInput) {
+                channelNameInput.addEventListener('change', (e) => {
+                  localStorage.setItem('channelName', e.target.value);
+                });
+              }
+              
+              if (channelNumberSelect) {
+                channelNumberSelect.addEventListener('change', (e) => {
+                  localStorage.setItem('channelNumber', e.target.value);
+                });
+              }
+              
+              // Add event listener for role synchronization
+              const userRoleSelect = document.getElementById('userRole');
+              const userRoleDisplay = document.getElementById('userRoleDisplay');
+              
+              if (userRoleSelect && userRoleDisplay) {
+                userRoleSelect.addEventListener('change', (e) => {
+                  userRoleDisplay.value = e.target.value;
+                });
+              }
 
               document.getElementById("username").value = "admin";
               document.getElementById("password").value = "admin";
