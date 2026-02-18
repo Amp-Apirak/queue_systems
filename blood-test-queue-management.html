@@ -2099,6 +2099,80 @@
         margin-top: 28px;
       }
 
+      /* Print Preview Styles */
+      .print-preview-container {
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+        background: #f8fafc;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+      }
+
+      .print-preview {
+        background: white;
+        width: 300px;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        font-family: 'Sarabun', sans-serif;
+      }
+
+      .preview-header {
+        margin-bottom: 20px;
+      }
+
+      .preview-hospital-name {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a202c;
+        margin-bottom: 4px;
+      }
+
+      .preview-department {
+        font-size: 13px;
+        color: #4a5568;
+        margin-bottom: 8px;
+      }
+
+      .preview-queue-info {
+        margin: 25px 0;
+        padding: 20px 0;
+        border-top: 2px dashed #cbd5e0;
+        border-bottom: 2px dashed #cbd5e0;
+      }
+
+      .preview-queue-number {
+        font-size: 24px;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 6px;
+        letter-spacing: 1px;
+      }
+
+      .preview-queue-text {
+        font-size: 14px;
+        color: #4a5568;
+        font-weight: 500;
+      }
+
+      .preview-footer {
+        margin-top: 20px;
+      }
+
+      .preview-date {
+        font-size: 12px;
+        color: #718096;
+        margin-bottom: 8px;
+      }
+
+      .preview-note {
+        font-size: 12px;
+        color: #4a5568;
+        line-height: 1.4;
+      }
+
       /* Counter Selection */
       .counter-selection-grid {
         display: grid;
@@ -4132,6 +4206,13 @@
             >
               การตั้งค่าเครื่อง MINI8
             </div>
+            <div
+              class="submenu-item"
+              data-page="printerSettingsPage"
+              onclick="showPage('printerSettingsPage')"
+            >
+              การตั้งค่าเครื่องพิมพ์
+            </div>
           </div>
           <div
             class="menu-item"
@@ -5103,6 +5184,101 @@
                   </tr>
                 </thead>
                 <tbody id="mini8TableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Printer Settings Page -->
+          <div class="page" id="printerSettingsPage">
+            <div class="settings-page-header">
+              <div>
+                <h2 class="settings-page-title">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 32px; height: 32px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                  </svg>
+                  การตั้งค่าเครื่องพิมพ์
+                </h2>
+                <p class="settings-page-subtitle">
+                  หน้าบริหารจัดการ เครื่องพิมพ์ สำหรับเพิ่ม ลบ แก้ไข ค้นหาหรือตรวจสอบสถานะต่างๆ
+                </p>
+              </div>
+            </div>
+
+            <div class="mini8-stats-grid">
+              <div class="mini8-stat-card">
+                <div class="mini8-stat-label">จำนวนเครื่องพิมพ์ทั้งหมด</div>
+                <div class="mini8-stat-number" id="printerTotalCount">0</div>
+              </div>
+              <div class="mini8-stat-card online">
+                <div class="mini8-stat-label">กำลังใช้งาน (ออนไลน์)</div>
+                <div class="mini8-stat-number" id="printerOnlineCount">0</div>
+              </div>
+              <div class="mini8-stat-card offline">
+                <div class="mini8-stat-label">ไม่ได้ใช้งาน (ออฟไลน์)</div>
+                <div class="mini8-stat-number" id="printerOfflineCount">0</div>
+              </div>
+            </div>
+
+            <div class="mini8-toolbar">
+              <div class="mini8-filter-group">
+                <label for="printerSearchInput">ค้นหา</label>
+                <input
+                  type="text"
+                  id="printerSearchInput"
+                  class="form-input"
+                  placeholder="พิมพ์คำค้นหา..."
+                  oninput="renderPrinters()"
+                />
+              </div>
+              <div class="mini8-filter-group">
+                <label for="printerStatusFilter">เลือกกรองตามสถานะ</label>
+                <select
+                  id="printerStatusFilter"
+                  class="form-input"
+                  onchange="renderPrinters()"
+                >
+                  <option value="all">ทั้งหมด</option>
+                  <option value="online">ออนไลน์</option>
+                  <option value="offline">ออฟไลน์</option>
+                </select>
+              </div>
+              <button
+                class="btn"
+                onclick="addPrinter()"
+                style="width: auto; padding: 12px 20px; font-size: 15px; border-radius: 12px"
+              >
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  style="width: 16px; height: 16px; margin-right: 8px"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 4v16m8-8H4"
+                  ></path>
+                </svg>
+                เพิ่ม
+              </button>
+            </div>
+
+            <div class="mini8-table-wrap">
+              <table class="mini8-table">
+                <thead>
+                  <tr>
+                    <th>ลำดับ</th>
+                    <th>ชื่อเครื่องพิมพ์</th>
+                    <th>พอร์ต</th>
+                    <th>ช่องบริการ</th>
+                    <th>เครื่อง MINI8</th>
+                    <th>สถานะ</th>
+                    <th>วันสร้าง</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="printersTableBody"></tbody>
               </table>
             </div>
           </div>
@@ -7115,6 +7291,10 @@
 
               if (pageId === "mini8SettingsPage") {
                 renderMini8Devices();
+              }
+
+              if (pageId === "printerSettingsPage") {
+                renderPrinters();
               }
 
               if (pageId === "systemSettingsPage") {
@@ -9492,48 +9672,52 @@
                 Swal.fire({
                   icon: 'error',
                   title: 'รหัสผ่านไม่ตรงกัน',
-                  text: 'กรุณากรอกรหัสผ่านใหม่ให้ตรงกันทั้งสองช่อง',
-                  confirmButtonText: 'ตกลง',
-                  confirmButtonColor: '#667eea'
+                  text: 'กรุณาตรวจสอบให้แน่ใจว่ารหัสผ่านตรงกันทั้งสองช่อง',
+                  confirmButtonColor: '#e53e3e'
                 });
                 return;
               }
 
-              // Check password strength requirements
-              const hasLength = newPassword.length >= 8;
-              const hasUppercase = /[A-Z]/.test(newPassword);
-              const hasLowercase = /[a-z]/.test(newPassword);
-              const hasNumber = /[0-9]/.test(newPassword);
-              const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(newPassword);
+              // Check password strength
+              const requirements = [
+                { id: 'resetReq-length', test: newPassword.length >= 8 },
+                { id: 'resetReq-uppercase', test: /[A-Z]/.test(newPassword) },
+                { id: 'resetReq-lowercase', test: /[a-z]/.test(newPassword) },
+                { id: 'resetReq-number', test: /[0-9]/.test(newPassword) },
+                { id: 'resetReq-special', test: /[!@#$%^&*]/.test(newPassword) }
+              ];
 
-              if (!hasLength || !hasUppercase || !hasLowercase || !hasNumber || !hasSpecial) {
+              const allMet = requirements.every(req => req.test);
+              if (!allMet) {
                 Swal.fire({
-                  icon: 'warning',
+                  icon: 'error',
                   title: 'รหัสผ่านไม่ปลอดภัย',
+                  text: 'กรุณาตั้งรหัสผ่านตามข้อกำหนดที่ระบุ',
+                  confirmButtonColor: '#e53e3e'
+                });
+                return;
+              }
+
+              // Find and update user
+              const userIndex = usersData.findIndex(u => u.id == userId);
+              if (userIndex !== -1) {
+                usersData[userIndex].password = newPassword;
+                
+                Swal.fire({
+                  icon: 'success',
+                  title: 'รีเซ็ตรหัสผ่านสำเร็จ',
                   html: `
                     <div style="text-align: left;">
-                      <p style="margin-bottom: 15px;">กรุณาตรวจสอบให้แน่ใจว่ารหัสผ่านมี:</p>
-                      <ul style="list-style: none; padding: 0;">
-                        <li style="margin-bottom: 5px;">
-                          ${hasLength ? '✓' : '✗'} ความยาวอย่างน้อย 8 ตัวอักษร
-                        </li>
-                        <li style="margin-bottom: 5px;">
-                          ${hasUppercase ? '✓' : '✗'} มีตัวพิมพ์ใหญ่ (A-Z)
-                        </li>
-                        <li style="margin-bottom: 5px;">
-                          ${hasLowercase ? '✓' : '✗'} มีตัวพิมพ์เล็ก (a-z)
-                        </li>
-                        <li style="margin-bottom: 5px;">
-                          ${hasNumber ? '✓' : '✗'} มีตัวเลข (0-9)
-                        </li>
-                        <li style="margin-bottom: 5px;">
-                          ${hasSpecial ? '✓' : '✗'} มีอักขระพิเศษ (!@#$%^&*)
-                        </li>
-                      </ul>
+                      ✅ รีเซ็ตรหัสผ่านสำหรับผู้ใช้: <strong>${usersData[userIndex].username}</strong><br>
+                      📝 รหัสผ่านใหม่ถูกตั้งเรียบร้อยแล้ว<br><br>
+                      <strong>⚠️ คำแนะนำ:</strong><br>
+                      • แจ้งรหัสผ่านใหม่ให้ผู้ใช้ทราบ<br>
+                      • ควรให้ผู้ใช้เปลี่ยนรหัสผ่านครั้งแรก<br>
+                      • รหัสผ่านนี้มีความปลอดภัยสูง
                     </div>
                   `,
+                  confirmButtonColor: '#3182ce',
                   confirmButtonText: 'ตกลง',
-                  confirmButtonColor: '#667eea',
                   width: '500px'
                 });
                 return;
@@ -9570,6 +9754,382 @@
                 confirmButtonText: 'เข้าใจแล้ว',
                 confirmButtonColor: '#3182ce',
                 width: '550px'
+              });
+            }
+
+            // Printer Settings Functions
+            let printersData = [
+              {
+                id: 1,
+                printerName: 'เครื่องพิมพ์เริ่มต้น',
+                port: 'USB001',
+                serviceChannel: 'ช่องบริการ 1',
+                mini8Device: 'MINI8-001',
+                status: 'online',
+                createdDate: '15/02/2026'
+              },
+              {
+                id: 2,
+                printerName: 'เครื่องพิมพ์ 1',
+                port: 'COM1',
+                serviceChannel: 'ช่องบริการ 2',
+                mini8Device: 'MINI8-002',
+                status: 'offline',
+                createdDate: '16/02/2026'
+              },
+              {
+                id: 3,
+                printerName: 'เครื่องพิมพ์ 2',
+                port: 'USB002',
+                serviceChannel: 'ช่องบริการ 3',
+                mini8Device: 'MINI8-003',
+                status: 'online',
+                createdDate: '17/02/2026'
+              }
+            ];
+
+            function updatePrinterStats() {
+              const totalCount = printersData.length;
+              const onlineCount = printersData.filter(p => p.status === 'online').length;
+              const offlineCount = printersData.filter(p => p.status === 'offline').length;
+              
+              document.getElementById('printerTotalCount').textContent = totalCount;
+              document.getElementById('printerOnlineCount').textContent = onlineCount;
+              document.getElementById('printerOfflineCount').textContent = offlineCount;
+            }
+
+            function renderPrinters() {
+              const tbody = document.getElementById('printersTableBody');
+              const searchTerm = document.getElementById('printerSearchInput').value.toLowerCase();
+              const statusFilter = document.getElementById('printerStatusFilter').value;
+
+              let filteredPrinters = printersData.filter((printer) => {
+                const matchSearch = searchTerm === '' || 
+                  printer.printerName.toLowerCase().includes(searchTerm) ||
+                  printer.port.toLowerCase().includes(searchTerm) ||
+                  printer.serviceChannel.toLowerCase().includes(searchTerm) ||
+                  printer.mini8Device.toLowerCase().includes(searchTerm);
+
+                const matchStatus = statusFilter === 'all' || printer.status === statusFilter;
+                return matchSearch && matchStatus;
+              });
+
+              tbody.innerHTML = filteredPrinters
+                .map(
+                  (printer, index) => `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${printer.printerName}</td>
+                        <td>${printer.port}</td>
+                        <td>${printer.serviceChannel}</td>
+                        <td>${printer.mini8Device}</td>
+                        <td>
+                            <span class="status-badge ${printer.status === 'online' ? 'urgent' : 'general'}">
+                                ${printer.status === 'online' ? 'ออนไลน์' : 'ออฟไลน์'}
+                            </span>
+                        </td>
+                        <td>${printer.createdDate}</td>
+                        <td>
+                            <button class="btn-action" onclick="viewPrinterDetails(${
+                              printer.id
+                            })" style="margin-right: 5px;">ดูรายละเอียด</button>
+                            <button class="btn-action" onclick="editPrinter(${
+                              printer.id
+                            })" style="margin-right: 5px;">แก้ไข</button>
+                            <button class="btn-action" style="background: #e53e3e;" onclick="deletePrinter(${
+                              printer.id
+                            })">ลบ</button>
+                        </td>
+                    </tr>
+                `
+                )
+                .join("");
+                
+              updatePrinterStats();
+            }
+
+            function viewPrinterDetails(id) {
+              const printer = printersData.find(p => p.id === id);
+              if (!printer) return;
+
+              Swal.fire({
+                title: 'รายละเอียดเครื่องพิมพ์',
+                html: `
+                  <div style="text-align: left;">
+                    <div style="margin-bottom: 15px;">
+                      <strong>ชื่อเครื่องพิมพ์:</strong> ${printer.printerName}
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                      <strong>พอร์ต:</strong> ${printer.port}
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                      <strong>ช่องบริการ:</strong> ${printer.serviceChannel}
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                      <strong>เครื่อง MINI8:</strong> ${printer.mini8Device}
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                      <strong>สถานะ:</strong> 
+                      <span class="status-badge ${printer.status === 'online' ? 'urgent' : 'general'}">
+                        ${printer.status === 'online' ? 'ออนไลน์' : 'ออฟไลน์'}
+                      </span>
+                    </div>
+                    <div>
+                      <strong>วันที่สร้าง:</strong> ${printer.createdDate}
+                    </div>
+                  </div>
+                `,
+                confirmButtonText: 'ปิด',
+                confirmButtonColor: '#3182ce',
+                showCancelButton: false
+              });
+            }
+
+            function addPrinter() {
+              Swal.fire({
+                title: 'เพิ่มเครื่องพิมพ์ใหม่',
+                html: `
+                  <div style="display: flex; gap: 30px; min-height: 400px;">
+                    <!-- Left Column -->
+                    <div style="flex: 1; display: flex; flex-direction: column;">
+                      <div style="margin-bottom: 18px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px;">ชื่อเครื่องพิมพ์</label>
+                        <input id="newPrinterName" class="swal2-input" placeholder="เช่น เครื่องพิมพ์ 4" style="width: 100%; height: 40px; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px;">
+                      </div>
+                      <div style="margin-bottom: 18px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px;">ยี่ห้อ</label>
+                        <input id="newPrinterRoom" class="swal2-input" placeholder="เช่น ห้อง 101" style="width: 100%; height: 40px; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px;">
+                      </div>
+                      <div style="margin-bottom: 18px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px;">แบรนด์</label>
+                        <input id="newPrinterBrand" class="swal2-input" placeholder="เช่น Epson" style="width: 100%; height: 40px; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px;">
+                      </div>
+                      <div style="margin-bottom: 18px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px;">โมเดล</label>
+                        <input id="newPrinterModel" class="swal2-input" placeholder="เช่น TM-T88V" style="width: 100%; height: 40px; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px;">
+                      </div>
+                      <div style="margin-bottom: 18px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px;">Mac Address</label>
+                        <input id="newPrinterMac" class="swal2-input" placeholder="เช่น 00:11:22:33:44:55" style="width: 100%; height: 40px; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px;">
+                      </div>
+                      <div style="margin-bottom: 18px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px;">Serial number</label>
+                        <input id="newPrinterSerial" class="swal2-input" placeholder="เช่น SN123456789" style="width: 100%; height: 40px; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px;">
+                      </div>
+                    </div>
+                    
+                    <!-- Right Column -->
+                    <div style="flex: 1; display: flex; flex-direction: column;">
+                      <div style="margin-bottom: 18px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px;">พอร์ต</label>
+                        <select id="newPrinterPort" class="swal2-input" style="width: 100%; height: 40px; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; background-color: white;">
+                          <option value="">เลือกพอร์ต</option>
+                          <option value="USB001">USB001</option>
+                          <option value="USB002">USB002</option>
+                          <option value="COM1">COM1</option>
+                          <option value="COM2">COM2</option>
+                          <option value="COM3">COM3</option>
+                        </select>
+                      </div>
+                      <div style="margin-bottom: 18px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px;">ช่องบริการ</label>
+                        <select id="newPrinterServiceChannel" class="swal2-input" style="width: 100%; height: 40px; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; background-color: white;">
+                          <option value="">เลือกช่องบริการ</option>
+                          <option value="ช่องบริการ 1">ช่องบริการ 1</option>
+                          <option value="ช่องบริการ 2">ช่องบริการ 2</option>
+                          <option value="ช่องบริการ 3">ช่องบริการ 3</option>
+                        </select>
+                      </div>
+                      <div style="margin-bottom: 18px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px;">เครื่อง MINI8</label>
+                        <select id="newPrinterMini8" class="swal2-input" style="width: 100%; height: 40px; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; background-color: white;">
+                          <option value="">เลือกเครื่อง MINI8</option>
+                          <option value="MINI8-001">MINI8-001</option>
+                          <option value="MINI8-002">MINI8-002</option>
+                          <option value="MINI8-003">MINI8-003</option>
+                        </select>
+                      </div>
+                      <div style="margin-bottom: 18px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px;">สถานะ</label>
+                        <select id="newPrinterStatus" class="swal2-input" style="width: 100%; height: 40px; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; background-color: white;">
+                          <option value="">เลือกสถานะ</option>
+                          <option value="online">ออนไลน์</option>
+                          <option value="offline">ออฟไลน์</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                `,
+                confirmButtonText: 'บันทึก',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonColor: '#3182ce',
+                cancelButtonColor: '#6b7280',
+                showCancelButton: true,
+                reverseButtons: true,
+                width: '800px',
+                preConfirm: () => {
+                  const printerName = document.getElementById('newPrinterName').value;
+                  const room = document.getElementById('newPrinterRoom').value;
+                  const brand = document.getElementById('newPrinterBrand').value;
+                  const model = document.getElementById('newPrinterModel').value;
+                  const mac = document.getElementById('newPrinterMac').value;
+                  const serial = document.getElementById('newPrinterSerial').value;
+                  const port = document.getElementById('newPrinterPort').value;
+                  const serviceChannel = document.getElementById('newPrinterServiceChannel').value;
+                  const mini8Device = document.getElementById('newPrinterMini8').value;
+                  const status = document.getElementById('newPrinterStatus').value;
+                  
+                  if (!printerName) {
+                    Swal.showValidationMessage('กรุณากรอกชื่อเครื่องพิมพ์');
+                    return false;
+                  }
+                  return { printerName, room, brand, model, mac, serial, port, serviceChannel, mini8Device, status };
+                }
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  const newPrinter = {
+                    id: printersData.length > 0 ? Math.max(...printersData.map(p => p.id)) + 1 : 1,
+                    printerName: result.value.printerName,
+                    room: result.value.room,
+                    brand: result.value.brand,
+                    model: result.value.model,
+                    mac: result.value.mac,
+                    serial: result.value.serial,
+                    port: result.value.port,
+                    serviceChannel: result.value.serviceChannel,
+                    mini8Device: result.value.mini8Device,
+                    status: result.value.status,
+                    createdDate: new Date().toLocaleDateString('th-TH')
+                  };
+                  
+                  printersData.push(newPrinter);
+                  renderPrinters();
+                  
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'เพิ่มเครื่องพิมพ์สำเร็จ',
+                    text: `เครื่องพิมพ์ "${newPrinter.printerName}" ถูกเพิ่มเข้าระบบเรียบร้อยแล้ว`,
+                    confirmButtonColor: '#3182ce'
+                  });
+                }
+              });
+            }
+
+            function editPrinter(id) {
+              const printer = printersData.find(p => p.id === id);
+              if (!printer) return;
+
+              Swal.fire({
+                title: 'แก้ไขเครื่องพิมพ์',
+                html: `
+                  <div style="text-align: left;">
+                    <div style="margin-bottom: 15px;">
+                      <label style="display: block; margin-bottom: 5px; font-weight: 600;">ชื่อเครื่องพิมพ์</label>
+                      <input id="editPrinterName" class="swal2-input" value="${printer.printerName}" style="width: 100%;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                      <label style="display: block; margin-bottom: 5px; font-weight: 600;">พอร์ต</label>
+                      <select id="editPrinterPort" class="swal2-input" style="width: 100%;">
+                        <option value="USB001" ${printer.port === 'USB001' ? 'selected' : ''}>USB001</option>
+                        <option value="USB002" ${printer.port === 'USB002' ? 'selected' : ''}>USB002</option>
+                        <option value="COM1" ${printer.port === 'COM1' ? 'selected' : ''}>COM1</option>
+                        <option value="COM2" ${printer.port === 'COM2' ? 'selected' : ''}>COM2</option>
+                        <option value="COM3" ${printer.port === 'COM3' ? 'selected' : ''}>COM3</option>
+                      </select>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                      <label style="display: block; margin-bottom: 5px; font-weight: 600;">ช่องบริการ</label>
+                      <select id="editPrinterServiceChannel" class="swal2-input" style="width: 100%;">
+                        <option value="ช่องบริการ 1" ${printer.serviceChannel === 'ช่องบริการ 1' ? 'selected' : ''}>ช่องบริการ 1</option>
+                        <option value="ช่องบริการ 2" ${printer.serviceChannel === 'ช่องบริการ 2' ? 'selected' : ''}>ช่องบริการ 2</option>
+                        <option value="ช่องบริการ 3" ${printer.serviceChannel === 'ช่องบริการ 3' ? 'selected' : ''}>ช่องบริการ 3</option>
+                      </select>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                      <label style="display: block; margin-bottom: 5px; font-weight: 600;">เครื่อง MINI8</label>
+                      <select id="editPrinterMini8" class="swal2-input" style="width: 100%;">
+                        <option value="MINI8-001" ${printer.mini8Device === 'MINI8-001' ? 'selected' : ''}>MINI8-001</option>
+                        <option value="MINI8-002" ${printer.mini8Device === 'MINI8-002' ? 'selected' : ''}>MINI8-002</option>
+                        <option value="MINI8-003" ${printer.mini8Device === 'MINI8-003' ? 'selected' : ''}>MINI8-003</option>
+                      </select>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                      <label style="display: block; margin-bottom: 5px; font-weight: 600;">สถานะ</label>
+                      <select id="editPrinterStatus" class="swal2-input" style="width: 100%;">
+                        <option value="online" ${printer.status === 'online' ? 'selected' : ''}>ออนไลน์</option>
+                        <option value="offline" ${printer.status === 'offline' ? 'selected' : ''}>ออฟไลน์</option>
+                      </select>
+                    </div>
+                  </div>
+                `,
+                confirmButtonText: 'บันทึกการแก้ไข',
+                confirmButtonColor: '#3182ce',
+                showCancelButton: true,
+                cancelButtonText: 'ยกเลิก',
+                preConfirm: () => {
+                  const printerName = document.getElementById('editPrinterName').value;
+                  const port = document.getElementById('editPrinterPort').value;
+                  const serviceChannel = document.getElementById('editPrinterServiceChannel').value;
+                  const mini8Device = document.getElementById('editPrinterMini8').value;
+                  const status = document.getElementById('editPrinterStatus').value;
+                  
+                  if (!printerName) {
+                    Swal.showValidationMessage('กรุณากรอกชื่อเครื่องพิมพ์');
+                    return false;
+                  }
+                  return { printerName, port, serviceChannel, mini8Device, status };
+                }
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  const printerIndex = printersData.findIndex(p => p.id === id);
+                  if (printerIndex !== -1) {
+                    printersData[printerIndex] = {
+                      ...printersData[printerIndex],
+                      printerName: result.value.printerName,
+                      port: result.value.port,
+                      serviceChannel: result.value.serviceChannel,
+                      mini8Device: result.value.mini8Device,
+                      status: result.value.status
+                    };
+                    
+                    renderPrinters();
+                    
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'แก้ไขเครื่องพิมพ์สำเร็จ',
+                      text: `ข้อมูลเครื่องพิมพ์ "${result.value.printerName}" ถูกอัปเดตเรียบร้อยแล้ว`,
+                      confirmButtonColor: '#3182ce'
+                    });
+                  }
+                }
+              });
+            }
+
+            function deletePrinter(id) {
+              const printer = printersData.find(p => p.id === id);
+              if (!printer) return;
+
+              Swal.fire({
+                title: 'ยืนยันการลบเครื่องพิมพ์',
+                text: `คุณต้องการลบเครื่องพิมพ์ "${printer.printerName}" ใช่หรือไม่?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e53e3e',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'ลบ',
+                cancelButtonText: 'ยกเลิก'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  printersData = printersData.filter(p => p.id !== id);
+                  renderPrinters();
+                  
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'ลบเครื่องพิมพ์สำเร็จ',
+                    text: `เครื่องพิมพ์ "${printer.printerName}" ถูกลบออกจากระบบเรียบร้อยแล้ว`,
+                    confirmButtonColor: '#3182ce'
+                  });
+                }
               });
             }
 
@@ -9617,6 +10177,9 @@
               if (savedChannelNumber) {
                 document.getElementById('channelNumber').value = savedChannelNumber;
               }
+              
+              // Load Printer Settings
+              renderPrinters();
               
               // Add event listeners for service channel settings
               const channelNameInput = document.getElementById('channelName');
